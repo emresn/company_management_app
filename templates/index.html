@@ -1,0 +1,22 @@
+{% extends 'layout.html' %} {% block body %} {% for item in products %}
+
+<div
+  id="{{item.id}}"
+  name="product"
+  class="card flex flex-col justify-between bg-white bg-opacity-50 rounded-2xl shadow-xl hover:shadow-2xl cursor-pointer"
+>
+  <div id="{{item.id}}" class="prod-title py-2 px-4 flex flex-col">
+    <a href="products/{{item.id}}">
+      <div>
+        {% for image in item.images.all %}
+        <img width="120px" src="{{image.href}}" alt="{{item.key}}" />
+        {% endfor %}
+
+        <p class="text-2xl text-gray-900 font-bold">{{item.title}}</p>
+        <p class="text-2xl text-gray-900 font-bold">{{item.description}}</p>
+        <p class="font-bold text-xl">{{item.price}} TL</p>
+      </div>
+    </a>
+  </div>
+</div>
+{% endfor %} {% endblock body %}

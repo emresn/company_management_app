@@ -1,0 +1,41 @@
+{% extends 'layout.html' %} 
+
+{% block body %}
+
+
+
+
+    <div class="flex flex-row bg-white my-4 p-8 border-2 border-gray-200 rounded-2xl gap-5">
+      
+      
+        <div class="prod-img flex-1">         
+            {% for image in product.images.all %}
+               <img width="320" src="{{image.href}}" alt="{{product.key}}"></img>
+            {% endfor %}
+        </div>
+      
+        <div class="prod-title py-2 px-4 flex flex-col flex-auto">
+          <p class="text-2xl text-gray-900 font-bold">{{product.title}}</p>
+          <p class="text-base my-2">{{product.description}}</p>
+          
+          <div class="inline-flex flex-row items-center justify-between">
+            <p class="font-bold text-xl ">
+                {{product.price}} TL
+            </p>
+           
+
+            
+          </div>
+         
+     
+
+   
+    </div>
+
+    
+
+
+
+
+
+{% endblock body %}
