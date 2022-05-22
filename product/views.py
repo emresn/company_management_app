@@ -1,5 +1,6 @@
 
 
+from datetime import date, datetime
 import json
 from urllib.request import Request
 from django.shortcuts import render
@@ -25,6 +26,7 @@ def show_products_api(request: Request):
     if request.method == "GET":
         data = {}
         products: list[Product] = Product.objects.order_by("-created_at")
+        
 
         for product in products:
             images_array_raw = product.images.all()
@@ -32,18 +34,21 @@ def show_products_api(request: Request):
             for i in images_array_raw:
                 images_array.append(i.href)
 
-        data[product.key] = {
-            "id": product.id,
-            "key": product.key,
-            "title": product.title,
-            "description": product.description,
-            "created_at": product.created_at,
-            "updated_at": product.updated_at,
-            "stock": product.stock,
-            "is_active": product.is_active,
-            "price": product.price,
-            "images": images_array
-        }
+            data[product.key] = {
+                "id": product.id,
+                "key": product.key,
+                "title": product.title,
+                "description": product.description,
+                "is_active": product.is_active,
+                "price": product.price,
+                "images": images_array,
+                "stock": product.stock,
+                # "customer": {
+                #     "name": product.customer.name
+                # },
+                "created_at": product.created_at,
+                "updated_at": product.updated_at,
+            }
 
         return JsonResponse({
             "data": data,
