@@ -1,3 +1,4 @@
+from dataclasses import fields
 import random
 import string
 from django.db import models
@@ -32,7 +33,7 @@ class Status():
 class OrderItem(models.Model):
     choices = Status.tolist()
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE,null=False) 
+    product = models.ForeignKey(Product, on_delete=models.CASCADE,null=False, serialize=True) 
     quantity =  models.IntegerField(default=0, null=False, verbose_name="Quantity")
     status = models.CharField(max_length=50,choices=choices,default=choices[0],verbose_name="Status",null=False)
     is_active = models.BooleanField(verbose_name="Is Active", default=True)
@@ -40,6 +41,8 @@ class OrderItem(models.Model):
     updated_at= models.DateTimeField(null=True,auto_now=True)
     def __str__(self) -> str:
         return '{} x {}'.format(self.product, self.quantity)
+    class Meta:
+        ordering = ['created_at']
    
 
 class Order(models.Model):
@@ -72,5 +75,7 @@ class Order(models.Model):
     
     class Meta:
         verbose_name_plural = "Orders"
+        ordering = ['created_at']
+        
 
     

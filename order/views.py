@@ -1,6 +1,7 @@
 import json
 from django.shortcuts import render
 from customer.models import Customer
+from erp.utils import LazyEncoder
 from order.models import Order, OrderItem
 from urllib.request import Request
 from django.http import JsonResponse
@@ -8,7 +9,6 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.forms.models import model_to_dict
 import json
 from django.core import serializers
-
 # Create your views here.
 
 
@@ -21,14 +21,14 @@ def index(request: Request):
 def orders_api(request: Request):
     if request.method == "GET":
         data = []
-        orders: list[Order] = Order.objects.order_by("-created_at")
+        orders = Order.objects.all()
 
         for order in orders:
-
             # order_items:list[OrderItem] = order.items
-            order_items = serializers.serialize(
-                'json', OrderItem.objects.all())
-            order_items_json = json.loads(order_items)
+            order_items = OrderItem.objects.all()
+            order_items_serialize = serializers.serialize(
+                'json', order_items)
+            order_items_json = json.loads(order_items_serialize)
             customer = serializers.serialize(
                 'json', Customer.objects.all())
             customer_json = json.loads(customer)[0]
