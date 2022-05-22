@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'product.apps.ProductConfig',
-    'order.apps.OrderConfig'
+    'order.apps.OrderConfig',
+    'customer.apps.CustomerConfig'
+
   
 ]
 

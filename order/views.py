@@ -1,5 +1,6 @@
 import json
 from django.shortcuts import render
+from customer.models import Customer
 from order.models import Order, OrderItem
 from urllib.request import Request
 from django.http import JsonResponse
@@ -28,13 +29,17 @@ def orders_api(request: Request):
             order_items = serializers.serialize(
                 'json', OrderItem.objects.all())
             order_items_json = json.loads(order_items)
+            customer = serializers.serialize(
+                'json', Customer.objects.all())
+            customer_json = json.loads(customer)[0]
+
             data.append({"id": order.id,
-                    "order_no": order.order_no,
-                    "order_items": order_items_json,
-                    "status": order.status,
-                    # "customer": order.customer,
-                    "created_at": order.created_at,
-                    "updated_at": order.updated_at,})
+                         "status": order.status,
+                         "order_no": order.order_no,
+                         "order_items": order_items_json,
+                         "customer": customer_json,
+                         "created_at": order.created_at,
+                         "updated_at": order.updated_at, })
 
         return JsonResponse({
             "data": data,
