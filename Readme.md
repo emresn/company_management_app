@@ -1,4 +1,6 @@
 ### Commands
+**Start Database serice**
+`sudo service postgresql restart`
 
 **Create Virtual Enviroment**
 `virtualenv venv`
@@ -7,7 +9,7 @@
 `source venv/bin/activate`
 
 **start project**
-`django-admin startproject dshop`
+`django-admin startproject product`
 
 **postgres db settings**
 ```python

@@ -20,7 +20,9 @@ class Product(models.Model):
         size = 4
         chars = string.ascii_uppercase + string.digits
         randomstr = "".join(random.choice(chars) for _ in range(size))
-        return '{}_{}'.format(title, randomstr)
+        generated_key = '{}_{}'.format(title, randomstr)
+        Tr2Eng = str.maketrans("çğıöşü", "cgiosu")
+        return generated_key.lower().translate(Tr2Eng)
 
     title = models.CharField(max_length=50, null=True, verbose_name="Name")
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

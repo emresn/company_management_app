@@ -18,12 +18,12 @@ from product import views
 from django.urls import path
 from django.urls.conf import include
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name="index"),
     path('products/', include("product.urls")),
     path('orders/', include("order.urls")),
     path('customers/', include("customer.urls")),
-
 
 ]
