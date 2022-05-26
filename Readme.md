@@ -59,6 +59,7 @@ DATABASES = {
 
 **APIs**
 **POST New Product**
+***http://localhost:8000/products/api***
 ```json
 {
   "title": "Product-18",
@@ -72,3 +73,17 @@ DATABASES = {
   "stock": 8000
 }
 ```
+**POST New Order**
+***http://localhost:8000/orders/api***
+```json
+{
+  "customer": "162eeb12-eff1-4fea-bd96-a0a56c2b461e",
+  "items": [
+    "738b4f78-4766-418d-8013-766018e9755b",
+    "17ea292f-775d-440a-8c01-896c847ee266"
+  ],
+  "status": "CP",
+  "note": "scas"
+}
+```
+

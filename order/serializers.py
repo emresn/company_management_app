@@ -41,9 +41,18 @@ class OrderSerializer(serializers.ModelSerializer):
     def create(self,validated_data):
         
         customer_id = validated_data.pop('customer')
+        items_id_list = validated_data.pop('items')
         customer:Customer = Customer.objects.get(id=customer_id)
         instance:Order = super().create(validated_data)
         instance.customer = customer
+
+        items_obj_list= []
+        for i in items_id_list:
+            item = OrderItem.objects.get(id=i)
+            items_obj_list.append(item)
+        instance.items.set(items_obj_list)
+
+
         instance.save()
        
         serializer = OrderSerializer(instance)
