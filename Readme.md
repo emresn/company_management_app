@@ -62,8 +62,11 @@ DATABASES = {
 **Change Password**
 `python3 manage.py changepassword <user_name>`
 
-**APIs**
-**POST New Product**
+### APIs
+
+#### POST Requests
+
+**New Product**
 ***http://localhost:8000/products/api***
 ```json
 {
@@ -78,7 +81,8 @@ DATABASES = {
   "stock": 8000
 }
 ```
-**POST New Order**
+
+***New Order***
 ***http://localhost:8000/orders/api***
 ```json
 {
@@ -92,3 +96,25 @@ DATABASES = {
 }
 ```
 
+**New Customer**
+***http://localhost:8000/customers/api***
+```json
+{
+  "name": "ABC Inc.",
+  "person": "Hereweald Endre",
+  "taxnumber": "3252352323",
+  "address": "2257 Wandering Ln Brea, California(CA), 92821",
+  "telephone": "(714) 255-8378",
+  "email": "asdasf@asf.com",
+  "bankAccount": "89768584925839454"
+}
+
+```
+
+#### PUT, DELETE Requests
+**Order**
+***http://localhost:8000/orders/api/[id]*** 
+**Customer**
+***http://localhost:8000/customers/api/[id]*** 
+**Product**
+***http://localhost:8000/products/api/[id]*** 

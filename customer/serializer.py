@@ -16,3 +16,7 @@ class CustomerSerializer(serializers.ModelSerializer):
             "email",
             "bankAccount",
         ]
+    def create(self,validated_data):
+        instance:Customer = super().create(validated_data)
+        serializer = CustomerSerializer(instance)
+        return serializer

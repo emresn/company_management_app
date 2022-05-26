@@ -1,5 +1,3 @@
-from datetime import date, datetime
-import json
 from urllib.request import Request
 from django.shortcuts import render
 from .models import Image, Product
@@ -29,23 +27,16 @@ def show_product(request, id):
 
 class ProductListApiView(APIView):
     # add permission to check if user is authenticated
-    # permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
     # 1. List all
     def get(self, request, *args, **kwargs):
-        '''
-        List all the product items for given requested user
-        '''
         products = Product.objects.all()
         serializer = ProductSerializer(products, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     # 2. Create
     def post(self, request, *args, **kwargs):
-        '''
-        Create the Product with given product data
-        '''
-
         data = {
             "name": request.data.get('name'),
             "description": request.data.get('description'),
@@ -64,12 +55,9 @@ class ProductListApiView(APIView):
 
 class ProductDetailApiView(APIView):
     # add permission to check if user is authenticated
-    # permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_object(self, id):
-        '''
-        Helper method to get the object with given todo_id, and user_id
-        '''
         try:
             return Product.objects.get(id=id)
         except Product.DoesNotExist:
@@ -77,9 +65,6 @@ class ProductDetailApiView(APIView):
 
     # 3. Retrieve
     def get(self, request, id, *args, **kwargs):
-        '''
-        Retrieves the Product with given todo_id
-        '''
         product_instance = self.get_object(id)
         if not product_instance:
             return Response(
@@ -92,9 +77,6 @@ class ProductDetailApiView(APIView):
 
     # 4. Update
     def put(self, request, id, *args, **kwargs):
-        '''
-        Updates the todo item with given id if exists
-        '''
         product_instance = self.get_object(id)
         if not product_instance:
             return Response(
@@ -116,9 +98,6 @@ class ProductDetailApiView(APIView):
 
     # 5. Delete
     def delete(self, request, id, *args, **kwargs):
-        '''
-        Deletes the todo item with given id if exists
-        '''
         product_instance = self.get_object(id)
         if not product_instance:
             return Response(
