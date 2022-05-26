@@ -5,7 +5,8 @@ from django.db import models
 import uuid
 from customer.models import Customer
 from product.models import  Product
-# Create your models here.
+from django.core.validators import MinValueValidator
+
 
 
 class Status():
@@ -34,6 +35,8 @@ class OrderItem(models.Model):
     choices = Status.tolist()
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     product = models.ForeignKey(Product, on_delete=models.CASCADE,null=False, serialize=True) 
+    price = models.FloatField(null=False, verbose_name="Price",
+                              default=0.0, validators=[MinValueValidator(0.0)])
     quantity =  models.IntegerField(default=0, null=False, verbose_name="Quantity")
     status = models.CharField(max_length=50,choices=choices,default=choices[0],verbose_name="Status",null=False)
     is_active = models.BooleanField(verbose_name="Is Active", default=True)

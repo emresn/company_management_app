@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 import os
 from pathlib import Path
 import environ
+from erp.constants.site_constants import SiteConstants
 
 
 
@@ -118,9 +119,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = SiteConstants.LANGUAGE_CODE
 
-TIME_ZONE = 'Europe/Istanbul'
+TIME_ZONE = SiteConstants.TIME_ZONE
 
 USE_I18N = True
 

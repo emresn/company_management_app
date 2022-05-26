@@ -51,9 +51,7 @@ class ProductListApiView(APIView):
             "description": request.data.get('description'),
             "stock": request.data.get('stock'),
             "images": request.data.get('images'),
-            "is_active": request.data.get('is_active'),
-            "price": request.data.get('price'),
-            
+            "is_active": request.data.get('is_active')
         }
        
         serializer = ProductSerializer(data=data)
@@ -108,7 +106,6 @@ class ProductDetailApiView(APIView):
             "description": request.data.get('description'),
             "stock": request.data.get('stock'),
             "is_active": request.data.get('is_active'),
-            "price": request.data.get('price'),
             "images": request.data.get('images'),
         }
         serializer = ProductSerializer(instance = product_instance, data=data, partial = True)

@@ -31,8 +31,6 @@ class Product(models.Model):
     is_active = models.BooleanField(default=True, null=False)
     images = models.ManyToManyField(Image, blank=True)
     description = models.TextField(null=True)
-    price = models.FloatField(null=False, verbose_name="Price",
-                              default=0.0, validators=[MinValueValidator(0.0)])
     stock = models.IntegerField(
         null=False, default=0, validators=[MinValueValidator(0)])
     created_at = models.DateTimeField(auto_now_add=True)

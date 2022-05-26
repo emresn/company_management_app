@@ -11,6 +11,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.forms.models import model_to_dict
 import json
 from django.core import serializers
+from order.price_model import OrderPrice
 
 from order.serializers import OrderSerializer
 
@@ -58,6 +59,7 @@ def orders_api(request: Request):
     else:
         pass
 
+
 class OrderListApiView(APIView):
     # add permission to check if user is authenticated
     permission_classes = [permissions.IsAuthenticated]
@@ -77,10 +79,10 @@ class OrderListApiView(APIView):
         Create the Order with given product data
         '''
         data = {
-            "customer" : request.data.get('customer'),
-            "items" : request.data.get('items'),
-            "status" : request.data.get('status'),
-            "note" : request.data.get('note')
+            "customer": request.data.get('customer'),
+            "items": request.data.get('items'),
+            "status": request.data.get('status'),
+            "note": request.data.get('note')
         }
         serializer = OrderSerializer(data=data)
         if serializer.is_valid():
@@ -110,36 +112,39 @@ class OrderDetailApiView(APIView):
         '''
         Retrieves the Order with given todo_id
         '''
-        product_instance = self.get_object(id)
-        if not product_instance:
+        instance = self.get_object(id)
+        if not instance:
             return Response(
                 {"res": "Object with todo id does not exists"},
                 status=status.HTTP_400_BAD_REQUEST
             )
-
-        serializer = OrderSerializer(product_instance)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        
+        serializer = OrderSerializer(instance)
+        order_price_dict = OrderPrice.build(serializer.data['items'])
+        
+        return Response({**serializer.data, **order_price_dict}, status=status.HTTP_200_OK)
 
     # 4. Update
     def put(self, request, id, *args, **kwargs):
         '''
         Updates the todo item with given id if exists
         '''
-        product_instance = self.get_object(id)
-        if not product_instance:
+        instance = self.get_object(id)
+        if not instance:
             return Response(
-                {"res": "Object with todo id does not exists"}, 
+                {"res": "Object with todo id does not exists"},
                 status=status.HTTP_400_BAD_REQUEST
             )
         data = {
-            "id" : request.data.get('id'),
-            "order_no" : request.data.get('order_no'),
-            "customer" : request.data.get('customer'),
-            "items" : request.data.get('items'),
-            "status" : request.data.get('status'),
-            "note" : request.data.get('note'),
+            "id": request.data.get('id'),
+            "order_no": request.data.get('order_no'),
+            "customer": request.data.get('customer'),
+            "items": request.data.get('items'),
+            "status": request.data.get('status'),
+            "note": request.data.get('note'),
         }
-        serializer = OrderSerializer(instance = product_instance, data=data, partial = True)
+        serializer = OrderSerializer(
+            instance=instance, data=data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -150,13 +155,13 @@ class OrderDetailApiView(APIView):
         '''
         Deletes the todo item with given id if exists
         '''
-        product_instance = self.get_object(id)
-        if not product_instance:
+        instance = self.get_object(id)
+        if not instance:
             return Response(
-                {"res": "Object with todo id does not exists"}, 
+                {"res": "Object with todo id does not exists"},
                 status=status.HTTP_400_BAD_REQUEST
             )
-        product_instance.delete()
+        instance.delete()
         return Response(
             {"res": "Object deleted!"},
             status=status.HTTP_200_OK
