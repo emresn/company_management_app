@@ -54,4 +54,16 @@ DATABASES = {
 `SET(...)` : Set a given value. This one is not part of the SQL standard and is entirely handled by Django.
 `DO_NOTHING` : Probably a very bad idea since this would create integrity issues in your database (referencing an object that actually doesn't exist). SQL equivalent: NO ACTION. 
 
+**Change Password**
+`python3 manage.py changepassword <user_name>`
 
+{
+  "title": "product_9",
+  "is_active": true,
+  "images": [
+    "4b0ccb54-6406-42ea-8ee7-7a2d89ae70d5"
+  ],
+  "description": "Şeffaf",
+  "price": 4.25,
+  "stock": 8000
+}

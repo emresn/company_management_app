@@ -27,69 +27,9 @@ def show_product(request, id):
     return render(request, "show_product.html", context)
 
 
-# def show_products_api(request: Request):
-#     if request.method == "GET":
-#         data = {}
-#         products: list[Product] = Product.objects.order_by("-created_at")
-        
-
-#         for product in products:
-#             images_array_raw = product.images.all()
-#             images_array = []
-#             for i in images_array_raw:
-#                 images_array.append(i.href)
-
-#             data[product.key] = {
-#                 "id": product.id,
-#                 "key": product.key,
-#                 "title": product.title,
-#                 "description": product.description,
-#                 "is_active": product.is_active,
-#                 "price": product.price,
-#                 "images": images_array,
-#                 "stock": product.stock,
-#                 # "customer": {
-#                 #     "name": product.customer.name
-#                 # },
-#                 "created_at": product.created_at,
-#                 "updated_at": product.updated_at,
-#             }
-
-#         return JsonResponse({
-#             "data": data,
-
-#         })
-#     else:
-#         pass
-
-
-# def show_product_api(request: Request, id):
-#     if request.method == "GET":
-#         product: Product = Product.objects.get(id=id)
-#         images_array_raw = product.images.all()
-#         images_array = []
-#         for i in images_array_raw:
-#             images_array.append(i.href)
-
-#         return JsonResponse({
-#             "data":  {"id": product.id,
-#                       "key": product.key,
-#                       "title": product.title,
-#                       "description": product.description,
-#                       "created_at": product.created_at,
-#                       "updated_at": product.updated_at,
-#                       "stock": product.stock,
-#                       "is_active": product.is_active,
-#                       "price": product.price,
-#                       "images": images_array}
-#         })
-#     else:
-#         pass
-
-
 class ProductListApiView(APIView):
     # add permission to check if user is authenticated
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
 
     # 1. List all
     def get(self, request, *args, **kwargs):
@@ -105,27 +45,28 @@ class ProductListApiView(APIView):
         '''
         Create the Product with given product data
         '''
-        
+
         data = {
             "title": request.data.get('title'),
             "description": request.data.get('description'),
             "stock": request.data.get('stock'),
+            "images": request.data.get('images'),
             "is_active": request.data.get('is_active'),
             "price": request.data.get('price'),
-            "images": request.data.get('images'),
             
         }
+       
         serializer = ProductSerializer(data=data)
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            new_serializer = serializer.create(data)
+            return Response(new_serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ProductDetailApiView(APIView):
     # add permission to check if user is authenticated
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
 
     def get_object(self, id):
         '''

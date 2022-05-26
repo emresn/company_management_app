@@ -1,4 +1,5 @@
 # todo/todo_api/serializers.py
+from customer.serializer import CustomerSerializer
 from product.serializers import ProductSerializer
 from rest_framework import serializers
 from .models import Order, OrderItem
@@ -16,10 +17,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
 class OrderSerializer(serializers.ModelSerializer):
 
-    customer = serializers.SlugRelatedField(
-        read_only=True,
-        slug_field='name'
-    )
+    customer = CustomerSerializer( read_only=True)
     items = OrderItemSerializer(many=True, read_only=True)
 
     class Meta:
