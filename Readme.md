@@ -67,7 +67,7 @@ DATABASES = {
 ***http://localhost:8000/products/api***
 ```json
 {
-  "title": "Product-18",
+  "name": "Product-18",
   "is_active": true,
   "images": [
     "4b0ccb54-6406-42ea-8ee7-7a2d89ae70d5",

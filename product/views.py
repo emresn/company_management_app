@@ -47,7 +47,7 @@ class ProductListApiView(APIView):
         '''
 
         data = {
-            "title": request.data.get('title'),
+            "name": request.data.get('name'),
             "description": request.data.get('description'),
             "stock": request.data.get('stock'),
             "images": request.data.get('images'),
@@ -102,7 +102,7 @@ class ProductDetailApiView(APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
         data = {
-            "title": request.data.get('title'),
+            "name": request.data.get('name'),
             "description": request.data.get('description'),
             "stock": request.data.get('stock'),
             "is_active": request.data.get('is_active'),

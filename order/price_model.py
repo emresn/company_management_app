@@ -17,9 +17,6 @@ class OrderPrice():
         )
     
     def build(items_dict):
-        print(items_dict)
-        # order_items:list[OrderItem] = order.items
-        # print(order_items)
         price = 0.0
         for item in items_dict:
             price +=(item['price']*item['quantity'])

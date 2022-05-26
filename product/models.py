@@ -15,32 +15,35 @@ class Image(models.Model):
 # Create your models here.
 class Product(models.Model):
 
-    def generateProductKey(title):
+    def generateProductCode(self):
         import random
-        size = 4
-        chars = string.ascii_uppercase + string.digits
-        randomstr = "".join(random.choice(chars) for _ in range(size))
-        generated_key = '{}_{}'.format(title, randomstr)
-        Tr2Eng = str.maketrans("çğıöşü", "cgiosu")
-        return generated_key.lower().translate(Tr2Eng)
+        size1 = 2
+        size2 = 4
+        chars1 = string.ascii_uppercase
+        chars2 = string.digits
+        str1 = "".join(random.choice(chars1) for _ in range(size1))
+        str2 = "".join(random.choice(chars2) for _ in range(size2))
+        generated_code = '{}_{}'.format(str1, str2)
+        return generated_code
 
-    title = models.CharField(max_length=50, null=True, verbose_name="Name")
+    
+    name = models.CharField(max_length=50, null=True, verbose_name="Name")
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    key = models.CharField(editable=False, unique=True,
-                           max_length=50, null=True, verbose_name="Key")
+    code = models.CharField(unique=True, editable=False,
+                           max_length=10, null=False, verbose_name="Code")
     is_active = models.BooleanField(default=True, null=False)
     images = models.ManyToManyField(Image, blank=True)
-    description = models.TextField(null=True)
+    description = models.TextField(null=True, blank=True)
     stock = models.IntegerField(
         null=False, default=0, validators=[MinValueValidator(0)])
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(null=True, auto_now=True)
 
     def __str__(self) -> str:
-        return '{}'.format(self.title)
+        return '{}-{}'.format(self.code,self.name)
 
     def save(self, *args, **kwargs):
-        self.key = self.generateProductKey()
+        self.code = self.generateProductCode()
         super().save(*args, **kwargs)  # Call the "real" save() method.
 
     class Meta:
