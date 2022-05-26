@@ -76,30 +76,18 @@ class OrderListApiView(APIView):
         '''
         Create the Order with given product data
         '''
-        customer_id = request.data.get('customer')
-
-        customer = Customer.objects.get(id=customer_id)
-        customer_serializer = CustomerSerializer(customer)
-
-        # order_items_id_list:list[str] = request.data.get('items')
-        # order_items:list[OrderItem] = []
-        # for item_id in order_items_id_list:
-        #     item = OrderItem.objects.get(id=item_id)
-        #     order_items.append(item)
-
-
         data = {
-            "id" : request.data.get('id'),
-            "order_no" : request.data.get('order_no'),
-            "customer" : customer_serializer.data,
+            "customer" : request.data.get('customer'),
             "items" : request.data.get('items'),
             "status" : request.data.get('status'),
             "note" : request.data.get('note')
         }
         serializer = OrderSerializer(data=data)
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            # serializer.save()
+            # return Response(serializer.data, status=status.HTTP_201_CREATED)
+            new_serializer = serializer.create(data)
+            return Response(new_serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

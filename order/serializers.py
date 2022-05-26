@@ -1,4 +1,5 @@
 # todo/todo_api/serializers.py
+from customer.models import Customer
 from customer.serializer import CustomerSerializer
 from product.serializers import ProductSerializer
 from rest_framework import serializers
@@ -32,3 +33,19 @@ class OrderSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
         ]
+    
+    # def to_representation(self, instance):
+    #     self.fields['customer'] =  CustomerSerializer(read_only=True)
+    #     return super(OrderSerializer, self).to_representation(instance)
+
+    def create(self,validated_data):
+        
+        customer_id = validated_data.pop('customer')
+        customer:Customer = Customer.objects.get(id=customer_id)
+        instance:Order = super().create(validated_data)
+        instance.customer = customer
+        instance.save()
+       
+        serializer = OrderSerializer(instance)
+        return serializer
+

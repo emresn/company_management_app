@@ -57,13 +57,18 @@ DATABASES = {
 **Change Password**
 `python3 manage.py changepassword <user_name>`
 
+**APIs**
+**POST New Product**
+```json
 {
-  "title": "product_9",
+  "title": "Product-18",
   "is_active": true,
   "images": [
-    "4b0ccb54-6406-42ea-8ee7-7a2d89ae70d5"
+    "4b0ccb54-6406-42ea-8ee7-7a2d89ae70d5",
+    "db47c6ea-29cd-4369-8668-d054ae3875f2"
   ],
-  "description": "Şeffaf",
+  "description": "Şeffaf afsg",
   "price": 4.25,
   "stock": 8000
 }
+```

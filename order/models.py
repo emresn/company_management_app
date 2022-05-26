@@ -50,9 +50,11 @@ class Order(models.Model):
     def generateOrderNo(id):
         from datetime import datetime
         date = datetime.now()
-        order_count = Order.objects.count() + 1
-        order_count_str = "{0:03}".format(order_count)
-        return '{}-{}'.format(date.strftime("%Y"),(order_count_str))
+        size = 4
+        chars = string.ascii_uppercase + string.digits
+        randomstr = "".join(random.choice(chars) for _ in range(size))
+        generated_key = '{}_{}'.format(date.strftime("%Y"), randomstr)
+        return generated_key
    
     choices = Status.tolist()
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
