@@ -1,3 +1,8 @@
+### Run Server
+`sudo service postgresql restart`
+`source ../venv/bin/activate`
+`python3 manage.py runserver`
+
 ### Commands
 **Start Database serice**
 `sudo service postgresql restart`
@@ -6,7 +11,7 @@
 `virtualenv venv`
 
 **activate venv**
-`source venv/bin/activate`
+`source ../venv/bin/activate`
 
 **start project**
 `django-admin startproject product`
