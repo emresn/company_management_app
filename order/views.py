@@ -143,6 +143,17 @@ class OrderDetailApiView(APIView):
             "status": request.data.get('status'),
             "note": request.data.get('note'),
         }
+
+        items_id_list = request.data.get('items')
+        items_obj_list= []
+        for i in items_id_list:
+            item = OrderItem.objects.get(id=i)
+            items_obj_list.append(item)
+        instance.items.set(items_obj_list)
+
+        customer = Customer.objects.get(id=request.data.get('customer'))
+        instance.customer = customer
+
         serializer = OrderSerializer(
             instance=instance, data=data, partial=True)
         if serializer.is_valid():
