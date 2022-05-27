@@ -6,7 +6,7 @@ class SiteConstants:
     LANGUAGE_CODE = 'en-us'
     TIME_ZONE = 'Europe/Istanbul'
 
-    COMPANY_NAME = 'ERP COMPANY INC'
+    COMPANY_NAME = 'COMPANY'
     COMPANY_DESCRIPTION = 'A Company build Erp systems'
     COMPANY_ADDRESS = '''
     2211 Pleasant Grove Trl SW

@@ -1,11 +1,22 @@
 from django.shortcuts import render
 
 from customer.serializer import CustomerSerializer
+from erp.constants.context_consts import ContextConsts
 from .models import Customer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import permissions
+from urllib.request import Request
+
+def index(request: Request):
+    customers = Customer.objects.order_by("name")
+    serializer = CustomerSerializer(customers, many=True)
+    context_consts = ContextConsts.dic()
+    context = {"customers": serializer.data,
+                **context_consts}
+    return render(request, "customers.html", context)
+
 
 
 class CustomerListApiView(APIView):

@@ -1,14 +1,10 @@
-from ctypes import Array
 import json
 from django.shortcuts import render
 from customer.models import Customer
-from customer.serializer import CustomerSerializer
-from erp.utils import LazyEncoder
+from erp.constants.context_consts import ContextConsts
 from order.models import Order, OrderItem
 from urllib.request import Request
 from django.http import JsonResponse
-from django.core.serializers.json import DjangoJSONEncoder
-from django.forms.models import model_to_dict
 import json
 from django.core import serializers
 from order.price_model import OrderPrice
@@ -26,8 +22,11 @@ from .serializers import OrderSerializer
 
 def index(request: Request):
     orders = Order.objects.order_by("-created_at")
-    context = {"orders": orders}
-    return render(request, "index.html", context)
+    serializer = OrderSerializer(orders, many=True)
+    context_consts = ContextConsts.dic()
+    context = {"orders": serializer.data,
+                **context_consts}
+    return render(request, "orders.html", context)
 
 
 def orders_api(request: Request):

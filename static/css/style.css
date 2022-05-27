@@ -73,3 +73,7 @@ h6 {
 .navbarItem:hover {
   background-color: rgb(232, 235, 50);
 }
+
+.dark{
+  background-color: rgb(29, 31, 37);
+}

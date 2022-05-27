@@ -4,12 +4,22 @@ from django.shortcuts import render
 from django.shortcuts import render
 
 from customer.serializer import CustomerSerializer
+from erp.constants.context_consts import ContextConsts
 from payment.serializer import PaymentSerializer
 from .models import Customer, Payment
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import permissions
+from urllib.request import Request
+
+def index(request: Request):
+    payments = Payment.objects.all()
+    serializer = PaymentSerializer(payments, many=True)
+    context_consts = ContextConsts.dic()
+    context = {"payments": serializer.data,
+                **context_consts}
+    return render(request, "payments.html", context)
 
 
 class PaymentListApiView(APIView):

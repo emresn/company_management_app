@@ -1,0 +1,53 @@
+{% extends 'layout.html' %} {% block body %}
+<div class="bg-gray-100 h-full">
+  <div class="bg-gray-800">
+    <div
+      class="rounded-tl-2xl bg-gradient-to-r from-blue-900 to-gray-800 p-2 shadow text-lg text-white"
+    >
+      <h2 class="font-bold pl-3">Customers</h2>
+    </div>
+  </div>
+
+  <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <table class="w-full text-lg font-sans text-left text-gray-900">
+      <thead class="font-medium bg-gray-300">
+        <tr>
+            <th scope="col" class="px-6 py-3">Name</th>
+            <th scope="col" class="px-6 py-3">Active Orders</th>
+            <th scope="col" class="px-6 py-3">Total Orders</th>
+            <th scope="col" class="px-6 py-3">Tel</th>
+            <th scope="col" class="px-6 py-3">Email</th>
+            <th scope="col" class="px-6 py-3">
+            <span class="sr-only">Edit</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {%for i in customers %}
+
+        <tr
+          class="border-b {% cycle 'odd' 'even' as stripe %} {% cycle 'bg-gray-50' 'bg-gray-100' as tick %} hover:bg-gray-200"
+        >
+          <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap">
+            {{i.name}}
+          </th>
+            <td class="px-6 py-4">2</td>
+            <td class="px-6 py-4">4</td>
+            <td class="px-6 py-4">{{i.telephone}}</td>
+            <td class="px-6 py-4">{{i.email}}</td>
+
+          <td class="px-6 py-4 text-right">
+            <a
+              href="#"
+              class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+              >Edit</a
+            >
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock body %}
