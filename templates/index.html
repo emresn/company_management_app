@@ -1,22 +1,38 @@
-{% extends 'layout.html' %} {% block body %} {% for item in products %}
+{% extends 'layout.html' %}
+ {% block body %}
 
 <div
-  id="{{item.id}}"
-  name="product"
-  class="card flex flex-col justify-between bg-white bg-opacity-50 rounded-2xl shadow-xl hover:shadow-2xl cursor-pointer"
+  class=" bg-gray-100 h-full "
 >
-  <div id="{{item.id}}" class="prod-title py-2 px-4 flex flex-col">
-    <a href="products/{{item.id}}">
-      <div>
-        {% for image in item.images.all %}
-        <img width="120px" src="{{image.href}}" alt="{{item.key}}" />
-        {% endfor %}
+  <div class="bg-gray-800">
+    <div
+      class="rounded-tl-2xl bg-gradient-to-r from-blue-900 to-gray-800 p-2 shadow text-lg text-white"
+    >
+      <h2 class="font-bold pl-3">Dashboard</h2>
+    </div>
+  </div>
 
-        <p class="text-2xl text-gray-900 font-bold">{{item.name}}</p>
-        <p class="text-2xl text-gray-900 font-bold">{{item.description}}</p>
-        <p class="font-bold text-xl">{{item.price}} TL</p>
+  <div class="flex flex-wrap">
+    <div class="w-full md:w-1/2 xl:w-1/3 p-6">
+        {% include "card_box.html" with color='blue' title='Products' value=products_len href="/products" %}
       </div>
-    </a>
+      <div class="w-full md:w-1/2 xl:w-1/3 p-6">
+        {% include "card_box.html" with color='green' title='Active Orders' value=orders_len href="/orders" %}
+      </div>
+      <div class="w-full md:w-1/2 xl:w-1/3 p-6">
+        {% include "card_box.html" with color='yellow' title='Customers' value=customers_len href="/customers" %}
+      </div>
+  </div>
+
+  <div class="flex flex-row flex-wrap flex-grow mt-2">
+   {%for i in '0123'|make_list %} 
+    <div class="w-full md:w-1/2 xl:w-1/3 p-6">
+      {% include "graph_box.html"%}
+    </div>
+    {% endfor %} 
+    <div class="w-full md:w-1/2 xl:w-1/3 p-6">
+      {% include "table_box.html" %}
+    </div>
   </div>
 </div>
-{% endfor %} {% endblock body %}
+{% endblock body %}

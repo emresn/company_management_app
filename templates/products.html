@@ -1,0 +1,21 @@
+{% extends 'layout.html' %} {% block body %}
+<div
+  class=" bg-gray-100 h-full "
+>
+  <div class="bg-gray-800">
+    <div
+      class="rounded-tl-2xl bg-gradient-to-r from-blue-900 to-gray-800 p-2 shadow text-lg text-white"
+    >
+      <h2 class="font-bold pl-3">Dashboard</h2>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 md:gap-6 m-2 p-2">
+    {%for i in products %}
+    {% include "show_product.html" with product=i %}
+    {% endfor %}
+  </div>
+
+</div>
+
+{% endblock body %}

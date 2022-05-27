@@ -4,24 +4,34 @@
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{% static '/css/tailwind.min.css' %}"/>
-    <link rel="stylesheet" type="text/css" href="{% static '/css/style.css' %}"/>
-    <link rel="icon" href="{% static '/img/favicon.ico' %}" type="image/x-icon" >
-    <title>ERP</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static '/css/tailwind.min.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static '/css/style.css' %}"
+    />
+    <link
+      rel="icon"
+      href="{% static '/img/favicon.ico' %}"
+      type="image/x-icon"
+    />
+    <title>{{company.name}}</title>
   </head>
+  <body>
+    <div class="flex">
+      {% include "includes/sidebar.html" %}
+      <div class="flex flex-col w-full">
+        <header>{% include "includes/navbar.html" %}</header>
 
-  <body class="bg-gray-100">
-    
-    <div class="flex flex-col min-h-screen ">
-
-      <div class="md:container md:mx-auto p-3">
-        {% block body %} {% endblock body %}
+        <main class="w-full h-full overflow-y-auto">
+          {% block body %} {% endblock body %}
+        </main>
       </div>
     </div>
-
-    <footer>
-     
-    </footer>
   </body>
 </html>

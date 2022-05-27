@@ -1,40 +1,18 @@
-{% extends 'layout.html' %} 
-
-{% block body %}
-
-
-
-
-    <div class="flex flex-row bg-white my-4 p-8 border-2 border-gray-200 rounded-2xl gap-5">
-
-        <div class="prod-img flex-1">         
-            {% for image in product.images.all %}
-               <img width="320" src="{{image.href}}" alt="{{product.code}}"></img>
-            {% endfor %}
-        </div>
-      
-        <div class="prod-title py-2 px-4 flex flex-col flex-auto">
-          <p class="text-2xl text-gray-900 font-bold">{{product.title}}</p>
-          <p class="text-base my-2">{{product.description}}</p>
-          
-          <div class="inline-flex flex-row items-center justify-between">
-            <p class="font-bold text-xl ">
-                {{product.price}} TL
-            </p>
-           
-
-            
-          </div>
-         
-     
-
-   
+<div class="py-2 px-4 bg-gray-200 rounded-2xl shadow-md hover:bg-gray-300 cursor-pointer w-full">
+    <div class="flex  flex-col md:flex-row items-center justify-between">
+      <img width="80" style="max-width:100%;height:auto;" src="{{product.images.0.href}}" alt="smartphone3_wjsc1j" />
+      <div class="text-lg py-2 px-4 flex flex-col h-full w-full">
+        <p class="font-bold">{{product.code}}</p>
+        <p class="">{{product.name}}</p>
+        <p class="">{{product.description}}</p>
+      </div>
+      <div class="flex-auto"></div>
+      <div class="text-lg flex flex-col items-center justify-between">
+        <input type="checkbox" name="{{product.code}}_checkbox" id="{{product.code}}_checkbox">
+        <p class="font-bold">Stock</p>
+        <p class="">{{product.stock}}</p>        
+        
+      </div>
     </div>
+  </div>
 
-    
-
-
-
-
-
-{% endblock body %}

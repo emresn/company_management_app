@@ -1,28 +1,57 @@
 from urllib.request import Request
 from django.shortcuts import render
-from .models import Image, Product
-from django.http import JsonResponse
-
-
+from erp.constants.context_consts import ContextConsts
+from .models import Product
+from .serializers import ProductSerializer
+from order.models import Order
+from customer.models import Customer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import permissions
-from .models import Product
-from .serializers import ProductSerializer
 
 # Create your views here.
+
+
 def index(request: Request):
-    products = Product.objects.order_by("-created_at")
-    context = {"products": products}
+    products_len = Product.objects.count
+    orders:Order = Order.objects.all()
+    active_order_items_list= []
+    for i in orders:
+        if i.status == 'NS' or i.status == 'IP':
+            active_order_items_list.append(i)
+
+
+    active_orders_len = len(active_order_items_list)
+    products_len = Product.objects.count
+    customers_len = Customer.objects.count
+    context_consts = ContextConsts.dic()
+    context = {"products_len": products_len,
+               "orders_len": active_orders_len, "customers_len": customers_len, **context_consts}
     return render(request, "index.html", context)
+
+
+def products(request: Request):
+
+    if request.method == 'GET':
+        products = Product.objects.order_by("-created_at")
+        serializer = ProductSerializer(products, many=True)
+        context_consts = ContextConsts.dic()
+        context = {"products": serializer.data, **context_consts}
+        return render(request, "products.html", context)
+
+    elif request.method == 'POST':
+        context_consts = ContextConsts.dic()
+        context = {"products": products, **context_consts}
+        return render(request, "index.html", context)
 
 
 def show_product(request, id):
     product: Product = Product.objects.get(id=id)
     stock_list = range(1, product.stock)
-    context = {"product": product, "stock_list": stock_list}
-    return render(request, "show_product.html", context)
+    context_consts = ContextConsts.dic()
+    context = {"product": product, "stock_list": stock_list, **context_consts}
+    return render(request, "products.html", context)
 
 
 class ProductListApiView(APIView):
@@ -44,7 +73,7 @@ class ProductListApiView(APIView):
             "images": request.data.get('images'),
             "is_active": request.data.get('is_active')
         }
-       
+
         serializer = ProductSerializer(data=data)
         if serializer.is_valid():
             new_serializer = serializer.create(data)
@@ -80,7 +109,7 @@ class ProductDetailApiView(APIView):
         product_instance = self.get_object(id)
         if not product_instance:
             return Response(
-                {"res": "Object with todo id does not exists"}, 
+                {"res": "Object with todo id does not exists"},
                 status=status.HTTP_400_BAD_REQUEST
             )
         data = {
@@ -90,7 +119,8 @@ class ProductDetailApiView(APIView):
             "is_active": request.data.get('is_active'),
             "images": request.data.get('images'),
         }
-        serializer = ProductSerializer(instance = product_instance, data=data, partial = True)
+        serializer = ProductSerializer(
+            instance=product_instance, data=data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -101,7 +131,7 @@ class ProductDetailApiView(APIView):
         product_instance = self.get_object(id)
         if not product_instance:
             return Response(
-                {"res": "Object with todo id does not exists"}, 
+                {"res": "Object with todo id does not exists"},
                 status=status.HTTP_400_BAD_REQUEST
             )
         product_instance.delete()

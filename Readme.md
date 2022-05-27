@@ -1,3 +1,21 @@
+### django-erp
+A simple ERP system which keeps Customer, Product, Order and Payments data.
+
+### Database Settings
+Create an .env file and add these parameters for your Postgresql DB. 
+```markdown
+DB_NAME="..."
+DB_USER="..."
+DB_PASSWORD="..."
+DB_HOST="..."
+DB_PORT="5432"
+```
+and add also
+```
+DEBUG=True
+SECRET_KEY="your secret key"
+```
+
 ### Run Server
 `sudo service postgresql restart`
 `source ../venv/bin/activate`
@@ -16,19 +34,6 @@
 **start project**
 `django-admin startproject product`
 
-**postgres db settings**
-```python
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'mydatabase',
-        'USER': 'mydatabaseuser',
-        'PASSWORD': 'mypassword',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
-    }
-}
-```
 **migrate tables**
 `python3 manage.py migrate`
 

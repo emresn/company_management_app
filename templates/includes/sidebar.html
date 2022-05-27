@@ -1,0 +1,67 @@
+<div
+  class="hidden md:block flex flex-col w-64 h-screen px-4 py-8 overflow-y-auto bg-gray-800"
+>
+  <h2 class="text-xl font-semibold text-center text-gray-100">
+    {{company.name}}
+  </h2>
+  <div class="flex flex-col justify-between mt-6">
+    <aside>
+      <ul>
+        {% for i in navbar %}
+        <li>
+          <a
+            class="flex items-center px-4 py-2 mt-5 text-gray-800 rounded-md bg-gray-200 hover:bg-yellow-100"
+            href="{{i.href}}"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-6 h-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+              />
+            </svg>
+
+            <span class="mx-4 font-medium">{{i.title}}</span>
+          </a>
+        </li>
+
+        {% endfor %}
+      </ul>
+    </aside>
+  </div>
+</div>
+
+{% comment %}
+<nav aria-label="sidebar">
+  <div class="bg-gray-800 hidden md:block z-10 w-full md:w-48">
+    <div class="md:w-48 md:left-0 text-left justify-between">
+      <ul
+        class="flex flex-row md:flex-col pt-3 md:py-3 px-1 md:px-2 text-center md:text-left"
+      >
+        {% for i in navbar %}
+        <li class="mr-3 flex-1">
+          <a
+            href="{{i.href}}"
+            class="block py-1 md:py-3 pl-1 align-middle text-white no-underline hover:text-white border-b-2 border-gray-800 hover:border-pink-500"
+          >
+            <i class="fas fa-tasks pr-0 md:pr-3"></i
+            ><span
+              class="pb-1 md:pb-0 text-xs md:text-base text-gray-400 md:text-gray-200 block md:inline-block"
+              >{{i.title}}</span
+            >
+          </a>
+        </li>
+
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</nav>
+{% endcomment %}

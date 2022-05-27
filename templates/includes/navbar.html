@@ -1,0 +1,11 @@
+<nav class="p-3 w-full bg-gray-800">
+  <ul class="flex gap-4 md:gap-8 justify-end flex-row items-center w-full">
+    {% for i in navbar %}
+    <li class="">
+      <a class="text-white no-underline hover:text-red-400" href="{{i.href}}"
+        >{{i.title}}</a
+      >
+    </li>
+    {% endfor %}
+  </ul>
+</nav>
