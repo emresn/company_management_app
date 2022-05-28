@@ -1,5 +1,5 @@
 ### django-erp
-A simple ERP system which keeps Customer, Product, Order and Payments data.
+A django ERP system which keeps Customer, Product, Order and Payments data.
 
 ### Database Settings
 Create an .env file and add these parameters for your Postgresql DB. 
