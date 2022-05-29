@@ -1,4 +1,6 @@
 {% extends 'layout.html' %} {% block body %}
+{% load custom_tags %}
+
 <div class="bg-gray-100 h-full">
   <div class="bg-gray-800">
     <div
@@ -13,6 +15,7 @@
       <thead class="font-medium bg-gray-300">
         <tr>
             <th scope="col" class="px-6 py-3">Company</th>
+            <th scope="col" class="px-6 py-3">Date</th>
             <th scope="col" class="px-6 py-3">Received Payment</th>
             <th scope="col" class="px-6 py-3">Left Amount</th>
             <th scope="col" class="px-6 py-3">Total Amount</th>
@@ -30,6 +33,7 @@
           <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap">
             {{i.company.name}}
           </th>
+            <td class="px-6 py-4">{{i.date | gen_date}}</td>
             <td class="px-6 py-4">{{i.amount}}</td>
             <td class="px-6 py-4">4</td>
             <td class="px-6 py-4">3433</td>

@@ -11,7 +11,7 @@ class PaymentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Payment
-        fields = ['id', 'company', 'is_received', 'amount','created_at', 'updated_at']
+        fields = ['id', 'company', 'is_received', 'amount','date','created_at', 'updated_at']
 
     def create(self, validated_data):
         print("dgadgag")

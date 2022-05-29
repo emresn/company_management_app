@@ -1,21 +1,19 @@
-<div class="py-2 px-4 bg-gray-200 rounded-2xl shadow-md hover:bg-gray-300 cursor-pointer w-full">
-    <div class="flex  flex-col md:flex-row items-center justify-between">
-
-{% if product.images.0.href %}
-      <img width="80" style="max-width:100%;height:auto;" src="{{product.images.0.href}}" alt="{{product.name}}" />
-{% endif %}
-
-      <div class="text-lg py-2 px-4 flex flex-col h-full w-full">
-        <p class="font-bold">{{product.code}}</p>
-        <p class="">{{product.name}}</p>
-        <p class="">{{product.description}}</p>
+<div id="{{product.id}}" class="relative py-2 px-4 bg-gray-200 rounded-xl shadow-md hover:bg-gray-300 inline-flex justify-between cursor-pointer w-full">
+    <div class="flex flex-col md:flex-row items-center justify-between w-full form-check ">
+     <input class="absolute right-0 top-0 m-2 form-check-input h-4 w-4 border border-gray-300"  type="checkbox" name="{{product.code}}_checkbox" id="{{product.code}}_checkbox">
+    {% if product.images.0.href %}
+      <div class="flex flex-col justify-between items-center">
+        <img width="80" style="max-width:100%;height:auto;" src="{{product.images.0.href}}" alt="{{product.name}}" />
+        <p class="">{{product.stock}} pcs.</p>        
       </div>
-      <div class="flex-auto"></div>
-      <div class="text-lg flex flex-col items-center justify-between">
-        <input type="checkbox" name="{{product.code}}_checkbox" id="{{product.code}}_checkbox">
-        <p class="font-bold">Stock</p>
-        <p class="">{{product.stock}}</p>        
-        
+    {% endif %}
+      <div class="text-lg py-2 px-4 flex flex-col justify-between w-full overflow-hidden">
+        <p class="font-bold">{{product.code}}</p>
+        <p class="text-wrap">{{product.name}}</p>
+        <p class="text-wrap">{{product.description}}</p>
+        {% if product.images.0.href != True %}
+          <p class="">{{product.stock}} pcs.</p>    
+        {% endif %}
       </div>
     </div>
   </div>

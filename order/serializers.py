@@ -29,6 +29,7 @@ class OrderSerializer(serializers.ModelSerializer):
             "items",
             "status",
             "note",
+            'date',
             "created_at",
             "updated_at",
         ]

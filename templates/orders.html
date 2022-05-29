@@ -1,4 +1,7 @@
 {% extends 'layout.html' %} {% block body %}
+{% load static %}
+
+{% load custom_tags %}
 <div class="bg-gray-100 h-full">
   <div class="bg-gray-800">
     <div
@@ -29,7 +32,8 @@
           class="border-b {% cycle 'odd' 'even' as stripe %} {% cycle 'bg-gray-50' 'bg-gray-100' as tick %} hover:bg-gray-200"
         >
           <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap">
-            {{i.status}}
+              {% include "./components/status_icon.html" with status=i.status %}
+
           </th>
           <td class="px-6 py-4">{{i.order_no}}</td>
           <td class="px-6 py-4">
@@ -39,15 +43,19 @@
               {%endfor%}
             </div>
           </td>
-          <td class="px-6 py-4">{{i.customer.name}}</td>
-          <td class="px-6 py-4">{{i.created_at}}</td>
+          <td class="px-6 py-4">{{i.customer.name }}</td>
+          <td class="px-6 py-4">{{ i.date | gen_date }}</td>
 
           <td class="px-6 py-4 text-right">
             <a
-              href="#"
-              class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-              >Edit</a
-            >
+              href="/orders/edit/{{i.id}}"
+              class="font-medium text-blue-600 dark:text-blue-500 hover:underline "
+              >
+              <div class="flex flex-row gap-1 items-center">
+                <img   class='rounded-full w-6 h-6 bg-blue-800 p-1' src="{% static 'img/edit.svg' %}" alt="edit"></img>
+                <span>Edit</span>
+              </div>             
+            </a>
           </td>
         </tr>
         {% endfor %}

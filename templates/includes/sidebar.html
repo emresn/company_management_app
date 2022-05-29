@@ -5,23 +5,15 @@
   <h2 class="text-xl font-semibold text-center text-gray-100">
     {{company.name}}
   </h2>
-  <div class="flex flex-col justify-between mt-6">
+  <div class="flex flex-col justify-between ">
     <aside>
-      <ul>
+      <div class="flex flex-col mt-12 gap-4">
         {% for i in navbar %}
-        <li>
-          <a
-            class="flex items-center px-4 py-2 mt-5 text-gray-800 rounded-md bg-gray-200 hover:bg-yellow-100"
-            href="{{i.href}}"
-          >
-          <img style="max-width:100%;height:auto;" width="28px" src="{% static i.icon %}" alt="home"></img>
-            
-            <span class="mx-4 font-medium">{{i.title}}</span>
-          </a>
-        </li>
-
+       
+          {% include "../components/icon_button.html" with id=i.title colors=colors.light href=i.href title=i.title icon=i.icon %}
+ 
         {% endfor %}
-      </ul>
+      </div>
     </aside>
   </div>
 </div>

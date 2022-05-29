@@ -34,3 +34,26 @@ class CompanyInfo:
         )
 
         return company
+
+
+STATUS_KEYS = {
+    "NOT_STARTED": {"key": "NS", "value": 'Not Started'},
+    "IN_PROGRESS": {"key": "IP", "value": 'In Progress'},
+    "COMPLETED": {"key": "CP", "value":  'Completed'},
+    "DELIVERED": {"key": "DE", "value":  'Delivered'},
+    "RETURNED_BACK": {"key": "RB", "value": 'Returned Back'},
+    "CANCELLED": {"key": "CA", "value":  'Cancelled'},
+}
+
+
+class Status():
+    def tolist():
+        CHOICES = [
+            (STATUS_KEYS['NOT_STARTED']['key'], STATUS_KEYS['NOT_STARTED']['value']),
+            (STATUS_KEYS['IN_PROGRESS']['key'], STATUS_KEYS['IN_PROGRESS']['value']),
+            (STATUS_KEYS['COMPLETED']['key'], STATUS_KEYS['COMPLETED']['value']),
+            (STATUS_KEYS['DELIVERED']['key'], STATUS_KEYS['DELIVERED']['value']),
+            (STATUS_KEYS['RETURNED_BACK']['key'], STATUS_KEYS['RETURNED_BACK']['value']),
+            (STATUS_KEYS['CANCELLED']['key'], STATUS_KEYS['CANCELLED']['value'])
+        ]
+        return CHOICES

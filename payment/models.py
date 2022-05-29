@@ -2,6 +2,7 @@ from django.db import models
 import uuid
 from customer.models import Customer
 from django.core.validators import MinValueValidator
+from django.utils.timezone import now
 
 
 # Create your models here.
@@ -10,6 +11,7 @@ class Payment(models.Model):
     company = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True)  
     is_received = models.BooleanField(default=True, null=False)
     amount = models.FloatField(null=False, verbose_name="Amount", default=0.0, validators=[MinValueValidator(0.0)])
+    date = models.DateTimeField(default=now, editable=True, blank=True)
     created_at= models.DateTimeField(auto_now_add=True)
     updated_at= models.DateTimeField(null=True,auto_now=True)
     

@@ -3,14 +3,15 @@ from django.shortcuts import render, redirect
 from erp.constants.context_consts import ContextConsts
 from product.forms import ProductForm
 from .models import Image, Product
-from .serializers import ProductSerializer
+from .serializers import ImageSerializer, ProductSerializer
 from order.models import Order
 from customer.models import Customer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import permissions
-
+from django.contrib import messages
+from django.urls import path
 # Create your views here.
 
 
@@ -54,12 +55,46 @@ def show_product(request, id):
     context = {"product": product, "stock_list": stock_list, **context_consts}
     return render(request, "products.html", context)
 
+
+def edit_product(request, id):
+    p = Product.objects.get(id=id)
+    serializer = ProductSerializer(p)
+    image_serializer = ImageSerializer(p.images, many=True)
+    context_consts = ContextConsts.dic()
+    form = ProductForm(request.POST or None, initial={"image_href": image_serializer.data[0]['href'] ,**serializer.data}, )
+    
+    context = {
+        "title": "New Product","path": request.path,
+        "form": form, **context_consts
+    }
+
+    if form.is_valid():
+        
+        p.name = form.cleaned_data.get("name")
+        p.is_active = form.cleaned_data.get("is_active")
+        p.description = form.cleaned_data.get("description")
+        p.stock = form.cleaned_data.get("stock")
+       
+        p.save()
+        image_href = form.cleaned_data.get("image_href")
+        image = Image()
+        image.href = image_href
+        image.save()
+       
+        p.images.set([image])        
+        messages.success(request, "Successfully updated")
+        return redirect("/products")
+  
+
+    return render(request, "product_form.html", context)
+
+
 def new_product(request):
     context_consts = ContextConsts.dic()
     form = ProductForm(request.POST or None)
 
     context = {
-        "title": "New Product",
+        "title": "New Product","path": request.path,
         "form": form, **context_consts
     }
 
@@ -79,11 +114,11 @@ def new_product(request):
         image.href = image_href
         image.save()
        
-        product.images.set([image])
+        product.images.set([image])        
+        messages.success(request, "Successfully added")
+
         return redirect("/products")
   
-        
-
 
     return render(request, "product_form.html", context)
 

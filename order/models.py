@@ -3,32 +3,10 @@ import string
 from django.db import models
 import uuid
 from customer.models import Customer
+from erp.constants.site_constants import Status
 from product.models import  Product
 from django.core.validators import MinValueValidator
-
-
-
-class Status():
-   
-    def tolist():
-
-        NOT_STARTED = 'NS'
-        IN_PROGRESS = 'IP'
-        COMPLETED = 'CP'
-        DELIVERED = 'DE'
-        RETURNED_BACK = 'RB'
-        CANCELLED = 'CA'
-
-        CHOICES = [
-            (NOT_STARTED, 'Not Started'),
-            (IN_PROGRESS, 'In Progress'),
-            (COMPLETED, 'Completed'),
-            (DELIVERED, 'Delivered'),
-            (RETURNED_BACK, 'Returned Back'),
-            (CANCELLED, 'Cancelled'),
-        ]
-
-        return CHOICES
+from django.utils.timezone import now
 
 class OrderItem(models.Model):
     choices = Status.tolist()
@@ -65,6 +43,7 @@ class Order(models.Model):
     items = models.ManyToManyField(OrderItem) 
     status = models.CharField(max_length=50,choices=choices,default=choices[0], verbose_name="Status",null=False)
     note= models.TextField(default="", blank=True)
+    date = models.DateTimeField(default=now, editable=True, blank=True)
     created_at= models.DateTimeField(auto_now_add=True)
     updated_at= models.DateTimeField(null=True,auto_now=True)
     
