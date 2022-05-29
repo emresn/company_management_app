@@ -5,3 +5,11 @@
 .env.development.local
 .env.test.local
 .env.production.local
+*.pyc
+*.pyo
+__pycache__/
+migrations/
+*.py[cod]
+# Django stuff:
+*.log
+*.pot

@@ -1,7 +1,8 @@
 from urllib.request import Request
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from erp.constants.context_consts import ContextConsts
-from .models import Product
+from product.forms import ProductForm
+from .models import Image, Product
 from .serializers import ProductSerializer
 from order.models import Order
 from customer.models import Customer
@@ -53,6 +54,38 @@ def show_product(request, id):
     context = {"product": product, "stock_list": stock_list, **context_consts}
     return render(request, "products.html", context)
 
+def new_product(request):
+    context_consts = ContextConsts.dic()
+    form = ProductForm(request.POST or None)
+
+    context = {
+        "title": "New Product",
+        "form": form, **context_consts
+    }
+
+    if form.is_valid():
+        product = Product()
+        name_val = form.cleaned_data.get("name")
+        is_active_val = form.cleaned_data.get("is_active")
+        description_val = form.cleaned_data.get("description")
+        stock_val = form.cleaned_data.get("stock")
+        product.name= name_val
+        product.is_active= is_active_val
+        product.description= description_val
+        product.stock= stock_val
+        product.save()
+        image_href = form.cleaned_data.get("image_href")
+        image = Image()
+        image.href = image_href
+        image.save()
+       
+        product.images.set([image])
+        return redirect("/products")
+  
+        
+
+
+    return render(request, "product_form.html", context)
 
 class ProductListApiView(APIView):
     # add permission to check if user is authenticated

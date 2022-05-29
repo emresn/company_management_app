@@ -32,8 +32,8 @@ class Product(models.Model):
     code = models.CharField(unique=True, editable=False,
                            max_length=10, null=False, verbose_name="Code")
     is_active = models.BooleanField(default=True, null=False)
-    images = models.ManyToManyField(Image, blank=True)
-    description = models.TextField(null=True, blank=True)
+    images = models.ManyToManyField(Image, blank=True, default=[])
+    description = models.TextField(null=True, blank=True, default="")
     stock = models.IntegerField(
         null=False, default=0, validators=[MinValueValidator(0)])
     created_at = models.DateTimeField(auto_now_add=True)

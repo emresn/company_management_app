@@ -47,7 +47,9 @@ INSTALLED_APPS = [
     'order.apps.OrderConfig',
     'customer.apps.CustomerConfig',
     'payment.apps.PaymentConfig',
-    'rest_framework'
+    'rest_framework',
+    'crispy_forms',
+    "crispy_tailwind"
     
   
 ]

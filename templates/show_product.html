@@ -1,6 +1,10 @@
 <div class="py-2 px-4 bg-gray-200 rounded-2xl shadow-md hover:bg-gray-300 cursor-pointer w-full">
     <div class="flex  flex-col md:flex-row items-center justify-between">
-      <img width="80" style="max-width:100%;height:auto;" src="{{product.images.0.href}}" alt="smartphone3_wjsc1j" />
+
+{% if product.images.0.href %}
+      <img width="80" style="max-width:100%;height:auto;" src="{{product.images.0.href}}" alt="{{product.name}}" />
+{% endif %}
+
       <div class="text-lg py-2 px-4 flex flex-col h-full w-full">
         <p class="font-bold">{{product.code}}</p>
         <p class="">{{product.name}}</p>
