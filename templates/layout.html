@@ -17,7 +17,9 @@
       <div class="flex flex-col w-full">
         <header>{% include "includes/navbar.html" %}</header>
         <main class="w-full h-full">
-          {% block body %} {% endblock body %}
+          {% include "components/alerts.html" %}
+          {% block body %}
+          {% endblock body %}
         </main>
       </div>
     </div>

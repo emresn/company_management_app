@@ -36,7 +36,7 @@ def index(request: Request):
 def products(request: Request):
 
     if request.method == 'GET':
-        products = Product.objects.order_by("-created_at")
+        products = Product.objects.order_by("created_at")
         serializer = ProductSerializer(products, many=True)
         context_consts = ContextConsts.dic()
         context = {"products": serializer.data, **context_consts}
@@ -58,7 +58,7 @@ def show_product(request, id):
 def delete_product(request,id):
     p = Product.objects.get(id=id)
     p.delete()
-    messages.success(request, "Successfully deleted")
+    messages.warning(request, "Successfully deleted")
     return redirect("/products")
 
 def edit_product(request, id):
