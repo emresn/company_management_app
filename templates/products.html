@@ -3,7 +3,7 @@
 
 {% block body %}
 
-<div name='products_view'
+<div name='products_view'  x-init="" x-data="{ isSelected: false, selectedProductId: ``, selectedProductName: ``, isDeleteButtonClicked: false }"
   class=" bg-gray-100 h-full "
 >
   <div class="bg-gray-800 flex flex-row items-center justify-between overflow-auto">
@@ -13,22 +13,26 @@
       <h2 class="font-bold pl-3">Products</h2>
     </div>
     
- <div class="flex flex-row">
-  {% include "./components/icon_button.html" with id="delete_button" name='delete_button' colors=colors.danger style="hidden" href="/products/new" title="Delete" icon="./img/delete.svg" %}
-  {% include "./components/icon_button.html" with id="edit_button" name='edit_button' colors=colors.primary style="hidden" href="/products/new" title="Edit" icon="./img/edit.svg" %}
-  {% include "./components/icon_button.html" with id="add_button" name='add_button' colors=colors.light style="" href="/products/new" title="New Product" icon="./img/add.svg" %}
- </div>
-
+    <div class="flex flex-row">
+      <div :class='isSelected ? `` : `hidden`' @click="isDeleteButtonClicked = true;">
+        {% include "./components/icon_button.html" with id="delete_button" name='delete_button' colors=colors.danger style="" href="/products/new" title="Delete" icon="./img/delete.svg" %}
+      </div>
+      <div :class='isSelected ? `` : `hidden`' >
+        {% include "./components/icon_button.html" with id="edit_button" name='edit_button' colors=colors.primary style="" href="/products/edit/" title="Edit" icon="./img/edit.svg" %}
+      </div>
+      <div>
+        {% include "./components/icon_button.html" with id="add_button" name='add_button' colors=colors.light style="" href="/products/new" title="New Product" icon="./img/add.svg" %}
+      </div>
+    </div>
   </div>
+     {% include "./components/warning_alert.html"  %}
 
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 m-2 p-2">
+   
     {%for i in products %}
     {% include "show_product.html" with product=i %}
     {% endfor %}
   </div>
-
 </div>
-    <script src="{% static '/js/handlers.js' %}"></script>
-
 
 {% endblock body %}

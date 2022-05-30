@@ -1,10 +1,11 @@
-<div id="{{product.id}}" class="relative py-2 px-4 bg-gray-200 rounded-xl shadow-md hover:bg-gray-300 inline-flex justify-between cursor-pointer w-full">
+<div x-on:click="isSelected =  isSelected && selectedProductId !=  '{{product.id}}' ? true :  !isSelected; selectedProductId = '{{product.id}}'; selectedProductName = '{{product.code}}_{{product.name}}';" :class="isSelected && selectedProductId == '{{product.id}}' ? 'bg-yellow-200 hover:bg-yellow-300' : 'bg-gray-200 hover:bg-gray-300'"  id="{{product.id}}" class="relative py-2 px-4 rounded-xl shadow-md  inline-flex justify-between cursor-pointer w-full">
     <div class="flex flex-col md:flex-row items-center justify-between w-full form-check ">
-     <input class="absolute right-0 top-0 m-2 form-check-input h-4 w-4 border border-gray-300"  type="checkbox" name="{{product.code}}_checkbox" id="{{product.code}}_checkbox">
+     <input x-model="isSelected && selectedProductId == `{{product.id}}` ? true : false"    class="absolute right-0 top-0 m-2 form-check-input h-4 w-4 border border-gray-300"  type="checkbox" name="checkbox" id="{{product.id}}">
+
     {% if product.images.0.href %}
-      <div class="flex flex-col justify-between items-center">
-        <img width="80" style="max-width:100%;height:auto;" src="{{product.images.0.href}}" alt="{{product.name}}" />
-        <p class="">{{product.stock}} pcs.</p>        
+      <div   class="flex flex-col justify-between items-center">
+        <img  width="80" style="max-width:100%;height:auto;" src="{{product.images.0.href}}" alt="{{product.name}}" />
+        <p  class="">{{product.stock}} pcs.</p>  
       </div>
     {% endif %}
       <div class="text-lg py-2 px-4 flex flex-col justify-between w-full overflow-hidden">
@@ -17,4 +18,3 @@
       </div>
     </div>
   </div>
-

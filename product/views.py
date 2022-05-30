@@ -55,6 +55,11 @@ def show_product(request, id):
     context = {"product": product, "stock_list": stock_list, **context_consts}
     return render(request, "products.html", context)
 
+def delete_product(request,id):
+    p = Product.objects.get(id=id)
+    p.delete()
+    messages.success(request, "Successfully deleted")
+    return redirect("/products")
 
 def edit_product(request, id):
     p = Product.objects.get(id=id)
@@ -64,7 +69,7 @@ def edit_product(request, id):
     form = ProductForm(request.POST or None, initial={"image_href": image_serializer.data[0]['href'] ,**serializer.data}, )
     
     context = {
-        "title": "New Product","path": request.path,
+        "title": "New Product","mode": "edit",
         "form": form, **context_consts
     }
 
@@ -94,7 +99,7 @@ def new_product(request):
     form = ProductForm(request.POST or None)
 
     context = {
-        "title": "New Product","path": request.path,
+        "title": "New Product","mode": "new",
         "form": form, **context_consts
     }
 
