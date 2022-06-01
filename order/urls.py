@@ -5,6 +5,8 @@ app_name = 'order'
 
 urlpatterns = [
     path('', views.index, name="orders"),
+    path('new', views.new_order, name="new_order"),
+
     # path('api', views.orders_api, name="orders_api"),
     path('api', views.OrderListApiView.as_view()), 
     path('api/<uuid:id>/', views.OrderDetailApiView.as_view()), 

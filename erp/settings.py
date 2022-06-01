@@ -49,9 +49,8 @@ INSTALLED_APPS = [
     'payment.apps.PaymentConfig',
     'rest_framework',
     'crispy_forms',
-    "crispy_tailwind"
-    
-  
+    'crispy_tailwind'
+   
 ]
 
 MIDDLEWARE = [

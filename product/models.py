@@ -27,13 +27,14 @@ class Product(models.Model):
         return generated_code
 
     
-    name = models.CharField(max_length=50, null=True, verbose_name="Name")
+    name = models.CharField(max_length=50, null=False, default="", verbose_name="Name")
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     code = models.CharField(unique=True, editable=False,
                            max_length=10, null=False, verbose_name="Code")
     is_active = models.BooleanField(default=True, null=False)
     images = models.ManyToManyField(Image, blank=True, default=[])
     description = models.TextField(null=True, blank=True, default="")
+    gr = models.FloatField(default=0.0,verbose_name="Weight(gr)", blank=True, null=False )
     stock = models.IntegerField(
         null=False, default=0, validators=[MinValueValidator(0)])
     created_at = models.DateTimeField(auto_now_add=True)

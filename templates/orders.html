@@ -2,12 +2,16 @@
 {% load static %}
 
 {% load custom_tags %}
-<div class="bg-gray-100 h-full">
-  <div class="bg-gray-800">
+<div name='orders_view' class="bg-gray-100 h-full">
+  <div class="bg-gray-800 flex flex-row items-center justify-between overflow-auto">
     <div
-      class="rounded-tl-2xl bg-gradient-to-r from-blue-900 to-gray-800 p-2 shadow text-lg text-white"
-    >
+      class="rounded-tl-2xl bg-gradient-to-r from-blue-900 to-gray-800 p-2 shadow text-lg text-white">
       <h2 class="font-bold pl-3">Orders</h2>
+    </div>
+    <div class="flex flex-row">
+      <div>
+        {% include "./components/icon_button.html" with id="new_order" name='new_order' colors=colors.light style="" href="/orders/new" title="New Order" icon="./img/add.svg" %}
+      </div>
     </div>
   </div>
 

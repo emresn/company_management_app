@@ -1,7 +1,9 @@
 import json
-from django.shortcuts import render
+from pyexpat.errors import messages
+from django.shortcuts import render, redirect
 from customer.models import Customer
 from erp.constants.context_consts import ContextConsts
+from order.forms import OrderForm, OrderItemForm
 from order.models import Order, OrderItem
 from urllib.request import Request
 from django.http import JsonResponse
@@ -21,12 +23,29 @@ from .serializers import OrderSerializer
 
 
 def index(request: Request):
-    orders = Order.objects.order_by("-created_at")
+    orders = Order.objects.order_by("created_at")
     serializer = OrderSerializer(orders, many=True)
     context_consts = ContextConsts.dic()
     context = {"orders": serializer.data,
                 **context_consts}
     return render(request, "orders.html", context)
+
+def new_order(request):
+    context_consts = ContextConsts.dic()
+    orderItemForm = OrderItemForm(request.POST or None)
+    orderForm = OrderForm(request.POST or None)
+
+    context = {
+        "title": "New Order","mode": "new",
+        "orderItemForm":orderItemForm,
+        "orderForm": orderForm, **context_consts
+    }
+
+    if orderForm.is_valid():
+        messages.success(request, "Successfully added")
+
+        return redirect("/orders")
+    return render(request, "order_form.html", context)
 
 
 def orders_api(request: Request):

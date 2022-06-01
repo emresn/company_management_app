@@ -1,5 +1,5 @@
 from erp.constants.navbar_constants import Navbar
-from erp.constants.site_constants import STATUS_KEYS, CompanyInfo
+from erp.constants.site_constants import STATUS_KEYS, CompanyInfo, SiteConstants
 
 
 class ContextConsts:
@@ -12,6 +12,7 @@ class ContextConsts:
             "navbar": navbar,
             "company": company_info,
             "status_keys": STATUS_KEYS,
+            "currency": SiteConstants.CURRENCY,
             "colors": {
                 "danger": "bg-red-600 text-gray-200 hover:bg-red-500",
                 "primary": "bg-blue-600 text-gray-200 hover:bg-blue-500",

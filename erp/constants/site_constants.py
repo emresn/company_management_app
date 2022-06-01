@@ -14,6 +14,7 @@ class SiteConstants:
     '''
     COMPANY_TEL = '(423) 476-1220'
     COMPANY_EMAIL = ''
+    CURRENCY = '$'
 
 
 class CompanyInfo:

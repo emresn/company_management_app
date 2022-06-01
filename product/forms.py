@@ -11,6 +11,8 @@ class ProductForm(forms.Form):
         attrs={'placeholder': 'url://', 'class': 'p-3 my-2 w-full border border-black'}))
     description = forms.CharField(label="Description",required=False,  widget=forms.TextInput(
         attrs={'placeholder': 'description', 'class': 'p-3 my-2 w-full border border-black'}))
-    stock = forms.IntegerField(initial=0, label="Stock",required=False, min_value=0, widget=forms.NumberInput(
+    stock = forms.IntegerField(label="Stock",required=False, min_value=0, widget=forms.NumberInput(
+        attrs={'placeholder': '', 'class': 'p-3 my-2 w-full border border-black'}))
+    gr = forms.FloatField(label="Weight(gr)",required=False, min_value=0, widget=forms.NumberInput(
         attrs={'placeholder': '', 'class': 'p-3 my-2 w-full border border-black'}))
     

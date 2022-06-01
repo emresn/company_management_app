@@ -5,7 +5,7 @@
   class="relative py-2 px-4 rounded-xl shadow-md inline-flex justify-between cursor-pointer w-full"
 >
   <div
-    class="flex flex-col md:flex-row items-center justify-between w-full form-check"
+    class="flex flex-col md:flex-row justify-between items-start w-full form-check"
   >
     <input
       :checked="isSelected && selectedProductId === `{{product.id}}` ? true : false"
@@ -18,18 +18,19 @@
     {% if product.images.0.href %}
     <div class="flex flex-col justify-between items-center">
       <img
-        width="80"
-        style="max-width: 100%; height: auto"
+        width="120"
+        style="max-width: 100%; height: auto; margin-top:.4rem;"
         src="{{product.images.0.href}}"
         alt="{{product.name}}"
       />
-      <p class="">{{product.stock}} pcs.</p>
+      <p class="text-sm">{{product.stock}} pcs.</p>
+      <p class="text-sm">{{product.gr | floatformat}} gr.</p>
     </div>
     {% endif %}
     <div
-      class="text-lg py-2 px-4 flex flex-col justify-between w-full overflow-hidden"
+      class="text-lg  px-4 flex flex-col  w-full overflow-hidden"
     >
-      <p class="font-bold">{{product.code}}</p>
+      <span class="font-bold">{{product.code}}</span>
       <p class="text-wrap">{{product.name}}</p>
       <p class="text-wrap">{{product.description}}</p>
       {% if product.images.0.href != True %}

@@ -79,6 +79,7 @@ def edit_product(request, id):
         p.is_active = form.cleaned_data.get("is_active")
         p.description = form.cleaned_data.get("description")
         p.stock = form.cleaned_data.get("stock")
+        p.gr = form.cleaned_data.get("gr")
        
         p.save()
         image_href = form.cleaned_data.get("image_href")
@@ -105,14 +106,11 @@ def new_product(request):
 
     if form.is_valid():
         product = Product()
-        name_val = form.cleaned_data.get("name")
-        is_active_val = form.cleaned_data.get("is_active")
-        description_val = form.cleaned_data.get("description")
-        stock_val = form.cleaned_data.get("stock")
-        product.name= name_val
-        product.is_active= is_active_val
-        product.description= description_val
-        product.stock= stock_val
+        product.name= form.cleaned_data.get("name")
+        product.is_active= form.cleaned_data.get("is_active")
+        product.description= form.cleaned_data.get("description")
+        product.stock= form.cleaned_data.get("stock")
+        product.gr = form.cleaned_data.get("gr")
         product.save()
         image_href = form.cleaned_data.get("image_href")
         image = Image()
