@@ -15,6 +15,8 @@ class SiteConstants:
     COMPANY_TEL = '(423) 476-1220'
     COMPANY_EMAIL = ''
     CURRENCY = '$'
+    # DATE_FORMAT should be "DD-MM-YYYY", "YYYY-MM-DD" or "D d M, Y"
+    DATE_FORMAT= "D d M, Y"
 
 
 class CompanyInfo:
@@ -49,12 +51,8 @@ STATUS_KEYS = {
 
 class Status():
     def tolist():
-        CHOICES = [
-            (STATUS_KEYS['NOT_STARTED']['key'], STATUS_KEYS['NOT_STARTED']['value']),
-            (STATUS_KEYS['IN_PROGRESS']['key'], STATUS_KEYS['IN_PROGRESS']['value']),
-            (STATUS_KEYS['COMPLETED']['key'], STATUS_KEYS['COMPLETED']['value']),
-            (STATUS_KEYS['DELIVERED']['key'], STATUS_KEYS['DELIVERED']['value']),
-            (STATUS_KEYS['RETURNED_BACK']['key'], STATUS_KEYS['RETURNED_BACK']['value']),
-            (STATUS_KEYS['CANCELLED']['key'], STATUS_KEYS['CANCELLED']['value'])
-        ]
+        CHOICES = []
+        keylist = STATUS_KEYS.keys()
+        for i in keylist:
+            CHOICES.append((STATUS_KEYS[i]['key'], STATUS_KEYS[i]['value']))
         return CHOICES

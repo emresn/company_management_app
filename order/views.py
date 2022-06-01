@@ -1,8 +1,10 @@
+from datetime import datetime
 import json
-from pyexpat.errors import messages
+from django.contrib import messages
 from django.shortcuts import render, redirect
 from customer.models import Customer
 from erp.constants.context_consts import ContextConsts
+from erp.utils.time_functions import generateTimeObj
 from order.forms import OrderForm, OrderItemForm
 from order.models import Order, OrderItem
 from urllib.request import Request
@@ -12,6 +14,7 @@ from django.core import serializers
 from order.price_model import OrderPrice
 
 from order.serializers import OrderSerializer
+from product.models import Product
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -23,7 +26,7 @@ from .serializers import OrderSerializer
 
 
 def index(request: Request):
-    orders = Order.objects.order_by("created_at")
+    orders = Order.objects.order_by("date")
     serializer = OrderSerializer(orders, many=True)
     context_consts = ContextConsts.dic()
     context = {"orders": serializer.data,
@@ -42,6 +45,29 @@ def new_order(request):
     }
 
     if orderForm.is_valid():
+        order:Order = Order()
+        date_str= orderForm.cleaned_data.get("date")
+        date = generateTimeObj(date_str)
+
+        order.customer = orderForm.cleaned_data.get("customer")
+        order.note = orderForm.cleaned_data.get("note")
+        order.status = orderForm.cleaned_data.get("status")
+        order.date=date
+        order.save()
+        
+        items_obj:dict = orderForm.cleaned_data.get("items")
+        items:list[OrderItem]= []
+        items_id_list = []
+        for i in items_obj.keys():
+            orderItem = OrderItem()
+            orderItem.product = Product.objects.get(id=i)
+            orderItem.quantity = items_obj[i]['qty']
+            orderItem.price = items_obj[i]['price']
+            orderItem.save()
+            items_id_list.append(orderItem.id)
+            items.append(orderItem)
+        order_items_list = OrderItem.objects.filter(id__in = items_id_list)
+        order.items.set(order_items_list)
         messages.success(request, "Successfully added")
 
         return redirect("/orders")

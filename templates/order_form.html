@@ -47,7 +47,8 @@
                 <fieldset class="border border-b p-3 border-gray-800">
                   <legend class="font-medium">Order</legend>
                     <div class="flex flex-col">
-                      <div class="border border-gray-800 bg-white mb-2">
+                    {{ orderForm.items|as_crispy_field }}
+                      <div class="border border-gray-800 bg-white my-2">
                         <table class="w-full p-2 font-sans text-left text-gray-900">
                           <thead class="font-medium bg-gray-300">
                             <tr>
@@ -79,18 +80,23 @@
                         </table>
                       </div>
                     </div>
-                  {{ orderForm.items|as_crispy_field }}
+                <div class="flex flex-col md:flex-row justify-between items-center gap-3">
+                  {% include './components/date_picker.html' with parentName='date' %}
+                   <div class="w-full">{{ orderForm.status|as_crispy_field }}</div>
+                </div>
                   {{ orderForm.customer|as_crispy_field }}
-                  {{ orderForm.status|as_crispy_field }}
-                  {{ orderForm.date|as_crispy_field }}
                   {{ orderForm.note|as_crispy_field }}
-              </fieldset>
+                  
+                  {{ orderForm.date|as_crispy_field }}
+              
                 
                 {% if mode == 'edit'  %}
                 <button type="submit" class="my-2 py-2 px-8 bg-indigo-800 text-white hover:bg-indigo-700 rounded-lg">Update</button>
                 {% else %}
                 <button type="submit" class="my-2 py-2 px-8 bg-indigo-800 text-white hover:bg-indigo-700 rounded-lg">Add Order</button>
                 {% endif %}
+
+                </fieldset>
             </form>
         </div>
         </div>
@@ -104,6 +110,7 @@
 document.addEventListener('alpine:init', () => {
     Alpine.data('orders', () => ({
         order_items: {}, 
+        orderDate: "",
         selectedProductId: '',
         selectedProductName : '', 
         selectedProductPrice : "0.0", 
@@ -139,9 +146,12 @@ document.addEventListener('alpine:init', () => {
         },
         getOrderItems(evt,d){
           this.order_items_json_stringfy = JSON.stringify(evt);
-        }
+        },
+        
     }))
 })
+
+
 
     function findName(id){
       let selectbox = document.querySelector('#id_product');

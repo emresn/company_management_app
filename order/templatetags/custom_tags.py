@@ -1,14 +1,16 @@
 from django import template
 from datetime import datetime
 
+from erp.utils.time_functions import generateTimeStr
+
 
 
 register = template.Library()
 
 def gen_date(value):
     d = datetime.strptime(value, '%Y-%m-%dT%H:%M:%S%z')
-    new_date = d.strftime('%d/%m/%Y %H:%M')
-    return new_date
+    time = generateTimeStr(d)
+    return time
 
 
 register.filter('gen_date', gen_date)

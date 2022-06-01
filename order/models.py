@@ -40,7 +40,7 @@ class Order(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     order_no = models.CharField(editable=False,unique=True,max_length=50,null=True,verbose_name="Order No")
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL,null=True, blank=True)  
-    items = models.ManyToManyField(OrderItem) 
+    items = models.ManyToManyField(OrderItem, default=[], blank=True) 
     status = models.CharField(max_length=50,choices=choices,default=choices[0], verbose_name="Status",null=False)
     note= models.TextField(default="", blank=True)
     date = models.DateTimeField(default=now, editable=True, blank=True)
