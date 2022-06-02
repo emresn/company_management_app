@@ -54,7 +54,7 @@
                             <tr>
                               <th scope="col" class="px-2 py-1">Products</th>
                               <th scope="col" class="px-2 py-1">Quantity</th>
-                              <th scope="col" class="px-2 py-1">Price 1x ({{currency}})</th>
+                              <th scope="col" class="px-2 py-1 text-right">Price 1x ({{currency}})</th>
                               <th scope="col" class="px-2 py-1 text-right">Total Price ({{currency}})</th>
                               <th scope="col" class="px-2 py-1"></th>
                             </tr>
@@ -68,7 +68,7 @@
                             <tr :id="item.id">
                               <td class="px-2 py-1" x-text="item.name"></td>
                               <td class="px-2 py-1" x-text="item.qty"></td>
-                              <td class="px-2 py-1" x-text="item.price"></td>
+                              <td class="px-2 py-1 text-right" x-text="item.price"></td>
                               <td class="px-2 py-1 text-right" x-text="(item.qty*item.price).toFixed(2)"> </td>
                               <td @click="removeItem" :id="k" class="px-2 py-1 "><img :id="k" class="w-6 h-6 cursor-pointer" src="{% static '/img/clear.svg' %}" alt="clear"></img></td>
                              </tr>

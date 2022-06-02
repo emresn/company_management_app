@@ -1,5 +1,6 @@
-from django.shortcuts import render
-
+from django.shortcuts import render, redirect
+from customer.forms import CustomerForm
+from django.contrib import messages
 from customer.serializer import CustomerSerializer
 from erp.constants.context_consts import ContextConsts
 from .models import Customer
@@ -16,6 +17,33 @@ def index(request: Request):
     context = {"customers": serializer.data,
                 **context_consts}
     return render(request, "customers.html", context)
+
+def new_customer(request:Request):
+    context_consts = ContextConsts.dic()
+    form = CustomerForm(request.POST or None)
+
+    context = {
+        "title": "New Product","mode": "new",
+        "form": form, **context_consts
+    }
+
+    if form.is_valid():
+        product = Customer()
+        product.name= form.cleaned_data.get("name")
+        product.person= form.cleaned_data.get("person")
+        product.taxnumber= form.cleaned_data.get("taxnumber")
+        product.address= form.cleaned_data.get("address")
+        product.telephone = form.cleaned_data.get("telephone")
+        product.email= form.cleaned_data.get("email")
+        product.bankAccount = form.cleaned_data.get("bankAccount")
+        product.save()
+       
+        messages.success(request, "Successfully added")
+
+        return redirect("/customers")
+  
+
+    return render(request, "customer_form.html", context)
 
 
 

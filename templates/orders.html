@@ -2,60 +2,58 @@
 {% load static %}
 
 {% load custom_tags %}
-<div name='orders_view' x-init="" x-data="{ isSelected: false, selectedName: '', selectedId: ``, isDeleteButtonClicked: false }" class="bg-gray-100 h-full">
-  <div class="bg-gray-800 flex flex-row items-center justify-between overflow-auto">
-    <div
-      class="rounded-tl-2xl bg-gradient-to-r from-blue-900 to-gray-800 p-2 shadow text-lg text-white">
+
+<div name='orders_view' x-init="" x-data="{ isSelected: false, selectedName: '', selectedId: ``, isDeleteButtonClicked: false }" class="bg-gray-100 h-full" class="bg-gray-800 flex flex-row items-center justify-between overflow-auto">
+  <div class="bg-gray-800 overflow-auto">
+    <div class="flex flex-col md:flex-row items-center justify-between rounded-tl-2xl bg-gradient-to-r from-blue-900 to-gray-800 p-2 shadow text-lg text-white">
       <h2 class="font-bold pl-3">Orders</h2>
-    </div>
-    <div class="flex flex-row">
-     <div :class='isSelected ? `` : `hidden`' @click="isDeleteButtonClicked = true;">
-        {% include "./components/icon_button.html" with id="delete_button" name='delete_button' colors=colors.danger style="" href="#" title="Delete" icon="./img/delete.svg" %}
+      <div class="flex flex-row">
+        <div :class='isSelected ? `` : `hidden`' @click="isDeleteButtonClicked = true;">
+          {% include "./components/icon_button.html" with id="delete_button" name='delete_button' colors=colors.danger style="" href="#" title="Delete" icon="./img/delete.svg" %}
+        </div>
+        <div :class='isSelected ? `` : `hidden`' >
+          {% include "./components/icon_button.html" with id="selectedOrderId" name='edit_button' colors=colors.primary style="" href="" title="Edit" icon="./img/edit.svg" %}
+        </div>
+        <div>
+          {% include "./components/icon_button.html" with id="new_order" name='new_button' colors=colors.light style="" href="" title="New Order" icon="./img/add.svg" %}
+        </div>
       </div>
-      <div :class='isSelected ? `` : `hidden`' >
-        {% include "./components/icon_button.html" with id="selectedOrderId" name='edit_button' colors=colors.primary style="" href="" title="Edit" icon="./img/edit.svg" %}
-      </div>
-      <div>
-        {% include "./components/icon_button.html" with id="new_order" name='new_button' colors=colors.light style="" href="" title="New Order" icon="./img/add.svg" %}
-      </div>
-     
     </div>
   </div>
+  {% include "./components/delete_alert.html" with id="selectedId" name="selectedName" %}
 
   <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-   {% include "./components/delete_alert.html" with id="selectedId" name="selectedName" %}
     <table class="w-full text-lg font-sans text-left text-gray-900">
       <thead class="font-medium bg-gray-300">
         <tr>
-          <th scope="col" class="px-6 py-3">Status</th>
-          <th scope="col" class="px-6 py-3">Order No</th>
-          <th scope="col" class="px-6 py-3">Product</th>
-          <th scope="col" class="px-6 py-3">Company</th>
-          <th scope="col" class="px-6 py-3">Date</th>
-         
+          <th scope="col" class="px-2 md:px-6 py-2 md:py-4">Status</th>
+          <th scope="col" class="px-2 md:px-6 py-2 md:py-4">Order No</th>
+          <th scope="col" class="px-2 md:px-6 py-2 md:py-4">Product</th>
+          <th scope="col" class="px-2 md:px-6 py-2 md:py-4">Company</th>
+          <th scope="col" class="px-2 md:px-6 py-2 md:py-4">Date</th>
         </tr>
       </thead>
       <tbody>
         {%for i in orders %}
 
         <tr  x-on:click="isSelected = isSelected && selectedId !== '{{i.id}}' ? true : !isSelected; selectedId = '{{i.id}}';selectedName = '{{i.order_no}}'"
-          :class="isSelected && selectedId === '{{i.id}}' ? 'bg-yellow-200 hover:bg-yellow-300' : 'bg-gray-200 hover:bg-gray-300'"
+          :class="isSelected && selectedId === '{{i.id}}' ? 'bg-yellow-200 hover:bg-yellow-300' : 'bg-gray-100 hover:bg-gray-300'"
           class="border-b cursor-pointer {% cycle 'odd' 'even' as stripe %} {% cycle 'bg-gray-50' 'bg-gray-100' as tick %} hover:bg-gray-200"
         >
-          <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap">
+          <th scope="row" class="px-2 md:px-6 py-2 md:py-4 font-medium">
               {% include "./components/status_icon.html" with status=i.status %}
 
           </th>
-          <td class="px-6 py-4">{{i.order_no}}</td>
-          <td class="px-6 py-4">
+          <td class="px-2 md:px-6 py-2 md:py-4">{{i.order_no}}</td>
+          <td class="px-2 md:px-6 py-2 md:py-4">
             <div class="flex flex-col">
               {%for j in i.items%}
               <p>{{j.product.name}} x {{j.quantity}} pcs.</p>
               {%endfor%}
             </div>
           </td>
-          <td class="px-6 py-4">{{i.customer.name }}</td>
-          <td class="px-6 py-4">{{ i.date | gen_date }}</td>
+          <td class="px-2 md:px-6 py-2 md:py-4">{{i.customer.name }}</td>
+          <td class="px-2 md:px-6 py-2 md:py-4">{{ i.date | gen_date }}</td>
         </tr>
         {% endfor %}
       </tbody>

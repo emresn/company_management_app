@@ -1,10 +1,11 @@
 from django.shortcuts import render
 
 # Create your views here.
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 
 from customer.serializer import CustomerSerializer
 from erp.constants.context_consts import ContextConsts
+from payment.forms import PaymentForm
 from payment.serializer import PaymentSerializer
 from .models import Customer, Payment
 from rest_framework.views import APIView
@@ -12,6 +13,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import permissions
 from urllib.request import Request
+from django.contrib import messages
 
 def index(request: Request):
     payments = Payment.objects.all()
@@ -20,6 +22,29 @@ def index(request: Request):
     context = {"payments": serializer.data,
                 **context_consts}
     return render(request, "payments.html", context)
+    
+def add_payment(request:Request):
+    context_consts = ContextConsts.dic()
+    form = PaymentForm(request.POST or None)
+
+    context = {
+        "title": "New Product","mode": "new",
+        "form": form, 
+        **context_consts
+    }
+
+    if form.is_valid():
+        product = Payment()
+        product.company= form.cleaned_data.get("company")
+        product.is_received= form.cleaned_data.get("is_received")
+        product.amount= form.cleaned_data.get("amount")
+        product.date= form.cleaned_data.get("date")
+        product.save()
+        messages.success(request, "Successfully added")
+        return redirect("/customers")
+  
+
+    return render(request, "customer_form.html", context)
 
 
 class PaymentListApiView(APIView):
