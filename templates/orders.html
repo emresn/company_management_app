@@ -2,20 +2,28 @@
 {% load static %}
 
 {% load custom_tags %}
-<div name='orders_view' class="bg-gray-100 h-full">
+<div name='orders_view' x-init="" x-data="{ isSelected: false, selectedOrderNo: '', selectedOrderId: ``, isDeleteButtonClicked: false }" class="bg-gray-100 h-full">
   <div class="bg-gray-800 flex flex-row items-center justify-between overflow-auto">
     <div
       class="rounded-tl-2xl bg-gradient-to-r from-blue-900 to-gray-800 p-2 shadow text-lg text-white">
       <h2 class="font-bold pl-3">Orders</h2>
     </div>
     <div class="flex flex-row">
-      <div>
-        {% include "./components/icon_button.html" with id="new_order" name='new_order' colors=colors.light style="" href="/orders/new" title="New Order" icon="./img/add.svg" %}
+     <div :class='isSelected ? `` : `hidden`' @click="isDeleteButtonClicked = true;">
+        {% include "./components/icon_button.html" with id="delete_button" name='delete_button' colors=colors.danger style="" href="#" title="Delete" icon="./img/delete.svg" %}
       </div>
+      <div :class='isSelected ? `` : `hidden`' >
+        {% include "./components/icon_button.html" with id="selectedOrderId" name='edit_order_button' colors=colors.primary style="" href="orders/edit" title="Edit" icon="./img/edit.svg" %}
+      </div>
+      <div>
+        {% include "./components/icon_button.html" with id="new_order" name='new_order_button' colors=colors.light style="" href="./orders/new" title="New Order" icon="./img/add.svg" %}
+      </div>
+     
     </div>
   </div>
 
   <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+   {% include "./components/delete_alert.html" with id="selectedOrderId" name="selectedOrderNo" %}
     <table class="w-full text-lg font-sans text-left text-gray-900">
       <thead class="font-medium bg-gray-300">
         <tr>
@@ -24,16 +32,15 @@
           <th scope="col" class="px-6 py-3">Product</th>
           <th scope="col" class="px-6 py-3">Company</th>
           <th scope="col" class="px-6 py-3">Date</th>
-          <th scope="col" class="px-6 py-3">
-            <span class="sr-only">Edit</span>
-          </th>
+         
         </tr>
       </thead>
       <tbody>
         {%for i in orders %}
 
-        <tr
-          class="border-b {% cycle 'odd' 'even' as stripe %} {% cycle 'bg-gray-50' 'bg-gray-100' as tick %} hover:bg-gray-200"
+        <tr  x-on:click="isSelected = isSelected && selectedOrderId !== '{{i.id}}' ? true : !isSelected; selectedOrderId = '{{i.id}}';selectedOrderNo = '{{i.order_no}}'"
+          :class="isSelected && selectedOrderId === '{{i.id}}' ? 'bg-yellow-200 hover:bg-yellow-300' : 'bg-gray-200 hover:bg-gray-300'"
+          class="border-b cursor-pointer {% cycle 'odd' 'even' as stripe %} {% cycle 'bg-gray-50' 'bg-gray-100' as tick %} hover:bg-gray-200"
         >
           <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap">
               {% include "./components/status_icon.html" with status=i.status %}
@@ -49,18 +56,6 @@
           </td>
           <td class="px-6 py-4">{{i.customer.name }}</td>
           <td class="px-6 py-4">{{ i.date | gen_date }}</td>
-
-          <td class="px-6 py-4 text-right">
-            <a
-              href="/orders/edit/{{i.id}}"
-              class="font-medium text-blue-600 dark:text-blue-500 hover:underline "
-              >
-              <div class="flex flex-row gap-1 items-center">
-                <img   class='rounded-full w-6 h-6 bg-blue-800 p-1' src="{% static 'img/edit.svg' %}" alt="edit"></img>
-                <span>Edit</span>
-              </div>             
-            </a>
-          </td>
         </tr>
         {% endfor %}
       </tbody>

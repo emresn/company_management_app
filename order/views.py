@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from customer.models import Customer
 from erp.constants.context_consts import ContextConsts
-from erp.utils.time_functions import generateTimeObj
+from erp.utils.time_functions import generateTimeObj, generateTimeObjBackend, generateTimeStr
 from order.forms import OrderForm, OrderItemForm
 from order.models import Order, OrderItem
 from urllib.request import Request
@@ -15,23 +15,84 @@ from order.price_model import OrderPrice
 
 from order.serializers import OrderSerializer
 from product.models import Product
+from product.serializers import ProductSerializer
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import permissions
 from .models import Order
-from .serializers import OrderSerializer
+from .serializers import OrderItemSerializer, OrderSerializer
+from customer.serializer import CustomerSerializer
 # Create your views here.
 
 
 def index(request: Request):
-    orders = Order.objects.order_by("date")
+    orders = Order.objects.order_by("-date")
     serializer = OrderSerializer(orders, many=True)
     context_consts = ContextConsts.dic()
     context = {"orders": serializer.data,
                 **context_consts}
     return render(request, "orders.html", context)
+
+def edit_order(request, id):
+    o:Order = Order.objects.get(id=id)
+    serializer = OrderSerializer(o)
+    o_items = OrderItemSerializer(o.items, many=True)
+    o_customer = CustomerSerializer(o.customer)
+    o_date = generateTimeStr(generateTimeObjBackend(serializer.data['date']))
+    products = Product.objects.all()
+    products_serializer = ProductSerializer(products, many=True)
+    context_consts = ContextConsts.dic()
+    
+
+    o_items_filtered = {}
+    for i in o_items.data:
+        item_dict = {"id": i['product']['id'],"name": "{}-{}".format(i['product']['code'],i['product']['name']), "qty": i['quantity'], "price": i['price']}
+        o_items_filtered[i['id']] = item_dict
+
+    orderItemForm = OrderItemForm(request.POST or None, initial={'products': products_serializer.data})
+    orderForm = OrderForm(request.POST or None ,initial={'status': serializer.data['status'], 'note': serializer.data['note'], 'customer': o_customer.data['id']})
+    
+    context = {
+        "title": "Edit Order",
+        "mode": "edit",
+        'date': o_date,
+        'items': o_items_filtered,
+        "orderItemForm":orderItemForm,
+        "orderForm": orderForm, **context_consts
+    }
+    if orderForm.is_valid():
+        print('valid')
+        
+        date_str= orderForm.cleaned_data.get("date")
+        date = generateTimeObj(date_str)
+
+        o.customer = orderForm.cleaned_data.get("customer")
+        o.note = orderForm.cleaned_data.get("note")
+        o.status = orderForm.cleaned_data.get("status")
+        o.date=date
+        o.save()
+        
+        items_obj:dict = orderForm.cleaned_data.get("items")
+        items:list[OrderItem]= []
+        items_id_list = []
+        for i in items_obj.keys():
+            orderItem = OrderItem()
+            orderItem.product = Product.objects.get(id=items_obj[i]['id'])
+            orderItem.quantity = items_obj[i]['qty']
+            orderItem.price = items_obj[i]['price']
+            orderItem.save()
+            items_id_list.append(orderItem.id)
+            items.append(orderItem)
+        order_items_list = OrderItem.objects.filter(id__in = items_id_list)
+        o.items.set(order_items_list)
+        messages.success(request, "Successfully updated.")
+
+        return redirect("/orders")
+    return render(request, "order_form.html", context)
+
+
 
 def new_order(request):
     context_consts = ContextConsts.dic()

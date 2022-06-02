@@ -15,17 +15,17 @@
     
     <div class="flex flex-row">
       <div :class='isSelected ? `` : `hidden`' @click="isDeleteButtonClicked = true;">
-        {% include "./components/icon_button.html" with id="delete_button" name='delete_button' colors=colors.danger style="" href="/products/new" title="Delete" icon="./img/delete.svg" %}
+        {% include "./components/icon_button.html" with id="delete_button" name='delete_button' colors=colors.danger style="" href="#" title="Delete" icon="./img/delete.svg" %}
       </div>
       <div :class='isSelected ? `` : `hidden`' >
-        {% include "./components/icon_button.html" with id="edit_button" name='edit_button' colors=colors.primary style="" href="/products/edit/" title="Edit" icon="./img/edit.svg" %}
+        {% include "./components/icon_button.html" with id="edit_product_button" name='edit_product_button' colors=colors.primary style="" href="/products/edit/" title="Edit" icon="./img/edit.svg" %}
       </div>
       <div>
-        {% include "./components/icon_button.html" with id="add_button" name='add_button' colors=colors.light style="" href="/products/new" title="New Product" icon="./img/add.svg" %}
+        {% include "./components/icon_button.html" with id="add_product_button" name='add_product_button' colors=colors.light style="" href="./products/new" title="New Product" icon="./img/add.svg" %}
       </div>
     </div>
   </div>
-     {% include "./components/delete_alert.html"  %}
+     {% include "./components/delete_alert.html" with id="selectedProductId" name="selectedProductName"  %}
 
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 m-2 p-2">
    

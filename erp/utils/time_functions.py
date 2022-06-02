@@ -27,3 +27,10 @@ def generateTimeStr(time:datetime):
     date_str = datetime.strftime(time,date_format_py)
     return date_str
 
+def generateTimeObjBackend(time_str:str):
+    date_format = '%Y-%m-%dT%H:%M:%S%z'
+    time_obj = datetime.strptime(time_str, date_format)
+    return time_obj
+
+
+

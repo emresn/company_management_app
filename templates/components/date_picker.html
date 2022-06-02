@@ -106,7 +106,7 @@
         parentName : '{{parentName}}',
         showDatepicker: false,
         datepickerValue: "",
-        selectedDate: "",
+        selectedDate: '{{mode}}' == 'edit' ? '{{date}}' : '',
         dateFormat: '{{date_format}}',
         month: "",
         year: "",
@@ -204,6 +204,7 @@
           field.value = this.datepickerValue
 
         }
+        
       };
     }
   </script>

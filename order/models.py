@@ -52,7 +52,8 @@ class Order(models.Model):
         return '{} - {}'.format(self.order_no, self.customer)
     
     def save(self, *args, **kwargs):
-        self.order_no = self.generateOrderNo()
+        if self.order_no == "" or self.order_no is None :
+            self.order_no = self.generateOrderNo()
         super().save(*args, **kwargs)  # Call the "real" save() method.
         
     

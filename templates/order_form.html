@@ -56,22 +56,21 @@
                               <th scope="col" class="px-2 py-1">Quantity</th>
                               <th scope="col" class="px-2 py-1">Price 1x ({{currency}})</th>
                               <th scope="col" class="px-2 py-1 text-right">Total Price ({{currency}})</th>
-
                               <th scope="col" class="px-2 py-1"></th>
                             </tr>
                           </thead>
                           <tbody>
-                            
-                            <template x-if="!Object.keys(order_items).length > 0">
-                              <tr><td class="p-3 text-center text-gray-500" colspan="4">Your list is empty.</td></tr>
-                            </template>
-                            <template x-for="item in order_items">
+                          
+                          <template x-if="!Object.keys(order_items).length > 0">
+                            <tr><td class="p-3 text-center text-gray-500" colspan="4">Your list is empty.</td></tr>
+                          </template>
+                          <template x-for="(item,k) in order_items">
                             <tr :id="item.id">
                               <td class="px-2 py-1" x-text="item.name"></td>
                               <td class="px-2 py-1" x-text="item.qty"></td>
                               <td class="px-2 py-1" x-text="item.price"></td>
                               <td class="px-2 py-1 text-right" x-text="(item.qty*item.price).toFixed(2)"> </td>
-                              <td @click="removeItem" :id="item.id" class="px-2 py-1 "><img :id="item.id" class="w-6 h-6 cursor-pointer" src="{% static '/img/clear.svg' %}" alt="clear"></img></td>
+                              <td @click="removeItem" :id="k" class="px-2 py-1 "><img :id="k" class="w-6 h-6 cursor-pointer" src="{% static '/img/clear.svg' %}" alt="clear"></img></td>
                              </tr>
                             </template>
                              
@@ -86,12 +85,10 @@
                 </div>
                   {{ orderForm.customer|as_crispy_field }}
                   {{ orderForm.note|as_crispy_field }}
-                  
                   {{ orderForm.date|as_crispy_field }}
-              
                 
                 {% if mode == 'edit'  %}
-                <button type="submit" class="my-2 py-2 px-8 bg-indigo-800 text-white hover:bg-indigo-700 rounded-lg">Update</button>
+                <button type="submit" x-init="editModeHandler({{items}})" class="my-2 py-2 px-8 bg-indigo-800 text-white hover:bg-indigo-700 rounded-lg">Update</button>
                 {% else %}
                 <button type="submit" class="my-2 py-2 px-8 bg-indigo-800 text-white hover:bg-indigo-700 rounded-lg">Add Order</button>
                 {% endif %}
@@ -108,14 +105,15 @@
 <script>
 
 document.addEventListener('alpine:init', () => {
+
     Alpine.data('orders', () => ({
         order_items: {}, 
-        orderDate: "",
         selectedProductId: '',
         selectedProductName : '', 
         selectedProductPrice : "0.0", 
         selectedProductQty: "0",
         order_items_json_stringfy: "",
+        isInitialized : false,
         setName(id) {
                 this.selectedProductId= id;
                 var name = findName(id);
@@ -140,13 +138,20 @@ document.addEventListener('alpine:init', () => {
           }
         },
         removeItem(evt){
+          console.log(evt.target.id)
           let id = evt.target.id;
           delete this.order_items[id];
           
         },
-        getOrderItems(evt,d){
+        converStrOrderItems(evt,d){
           this.order_items_json_stringfy = JSON.stringify(evt);
         },
+        editModeHandler(initial_data){
+          console.log(initial_data)
+          if (this.isInitialized === false)
+            this.order_items = initial_data;
+            this.isInitialized = true;
+        }
         
     }))
 })
