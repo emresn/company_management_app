@@ -29,4 +29,4 @@ class OrderForm(forms.Form):
     date = forms.CharField(label="",required=True, widget=forms.TextInput(
         attrs={'class': 'hidden p-3 my-2  w-full border border-black'}))
     items = forms.JSONField(label="Items", widget=forms.Textarea(
-        attrs={'class': ' p-3 my-2  w-full border border-black', 'x-text': "order_items_json_stringfy", 'x-init': "$watch('order_items', value => converStrOrderItems(value))"}))
+        attrs={'class': 'hidden p-3 my-2  w-full border border-black', 'x-text': "order_items_json_stringfy", 'x-init': "$watch('order_items', value => converStrOrderItems(value))"}))

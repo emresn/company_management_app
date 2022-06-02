@@ -35,6 +35,12 @@ def index(request: Request):
                 **context_consts}
     return render(request, "orders.html", context)
 
+def delete_order(request,id):
+    o:Order = Order.objects.get(id=id)
+    o.delete()
+    messages.warning(request, "Successfully deleted.")
+    return redirect("/orders")
+
 def edit_order(request, id):
     o:Order = Order.objects.get(id=id)
     serializer = OrderSerializer(o)

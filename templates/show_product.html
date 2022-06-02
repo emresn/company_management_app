@@ -1,6 +1,6 @@
 <div 
-  x-on:click="isSelected = isSelected && selectedProductId !== '{{product.id}}' ? true : !isSelected; selectedProductId = '{{product.id}}'; selectedProductName = '{{product.code}}_{{product.name}}';"
-  :class="isSelected && selectedProductId === '{{product.id}}' ? 'bg-yellow-200 hover:bg-yellow-300' : 'bg-gray-200 hover:bg-gray-300'"
+  x-on:click="isSelected = isSelected && selectedId !== '{{product.id}}' ? true : !isSelected; selectedId = '{{product.id}}'; selectedName = '{{product.code}}_{{product.name}}';"
+  :class="isSelected && selectedId === '{{product.id}}' ? 'bg-yellow-200 hover:bg-yellow-300' : 'bg-gray-200 hover:bg-gray-300'"
   id="{{product.id}}"
   class="relative py-2 px-4 rounded-xl shadow-md inline-flex justify-between cursor-pointer w-full"
 >
@@ -8,7 +8,7 @@
     class="flex flex-col md:flex-row justify-between items-start w-full form-check"
   >
     <input
-      :checked="isSelected && selectedProductId === `{{product.id}}` ? true : false"
+      :checked="isSelected && selectedId === `{{product.id}}` ? true : false"
       class="absolute right-0 top-0 m-2 form-check-input h-4 w-4 border border-gray-300"
       type="checkbox"
       name="checkbox"

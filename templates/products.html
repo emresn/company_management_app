@@ -3,7 +3,7 @@
 
 {% block body %}
 
-<div name='products_view'  x-init="" x-data="{ isSelected: false, selectedProductId: ``, selectedProductName: ``, isDeleteButtonClicked: false }"
+<div name='products_view'  x-init="" x-data="{ isSelected: false, selectedId: ``, selectedName: ``, isDeleteButtonClicked: false }"
   class=" bg-gray-100 h-full "
 >
   <div class="bg-gray-800 flex flex-row items-center justify-between overflow-auto">
@@ -18,14 +18,14 @@
         {% include "./components/icon_button.html" with id="delete_button" name='delete_button' colors=colors.danger style="" href="#" title="Delete" icon="./img/delete.svg" %}
       </div>
       <div :class='isSelected ? `` : `hidden`' >
-        {% include "./components/icon_button.html" with id="edit_product_button" name='edit_product_button' colors=colors.primary style="" href="/products/edit/" title="Edit" icon="./img/edit.svg" %}
+        {% include "./components/icon_button.html" with id="edit_button" name='edit_button' colors=colors.primary style="" href="" title="Edit" icon="./img/edit.svg" %}
       </div>
       <div>
-        {% include "./components/icon_button.html" with id="add_product_button" name='add_product_button' colors=colors.light style="" href="./products/new" title="New Product" icon="./img/add.svg" %}
+        {% include "./components/icon_button.html" with id="new_button" name='new_button' colors=colors.light style="" href="" title="New Product" icon="./img/add.svg" %}
       </div>
     </div>
   </div>
-     {% include "./components/delete_alert.html" with id="selectedProductId" name="selectedProductName"  %}
+     {% include "./components/delete_alert.html" with id="selectedId" name="selectedName"  %}
 
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 m-2 p-2">
    
