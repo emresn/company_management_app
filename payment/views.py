@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 from customer.serializer import CustomerSerializer
 from erp.constants.context_consts import ContextConsts
+from erp.utils.time_functions import generateTimeObj, generateTimeObjBackend, generateTimeStr
 from payment.forms import PaymentForm
 from payment.serializer import PaymentSerializer
 from .models import Customer, Payment
@@ -29,12 +30,14 @@ def delete_payment(request, id):
 def edit_payment(request:Request,id):
     p:Payment = Payment.objects.get(id=id)
     serializer = PaymentSerializer(p)
+    p_date = generateTimeStr(generateTimeObjBackend(serializer.data['date']))
     context_consts = ContextConsts.dic()
     customer = CustomerSerializer(p.company)
-    form = PaymentForm(request.POST or None, initial={**serializer.data, "company": customer})
+    form = PaymentForm(request.POST or None, initial={**serializer.data, 'company': customer.data['id']})
     context = {
         "title": "Update Payment",
         "mode": "edit",
+        'date': p_date,
         "form": form, 
         **context_consts
     }
@@ -43,7 +46,9 @@ def edit_payment(request:Request,id):
         p.company= form.cleaned_data.get("company")
         p.is_received= form.cleaned_data.get("is_received")
         p.amount= form.cleaned_data.get("amount")
-        p.date= form.cleaned_data.get("date")
+        date_str= form.cleaned_data.get("date")
+        date = generateTimeObj(date_str)
+        p.date= date
         p.save()
         messages.success(request, "Successfully updated")
         return redirect("/payments")
@@ -68,7 +73,10 @@ def add_payment(request:Request):
         product.company= form.cleaned_data.get("company")
         product.is_received= form.cleaned_data.get("is_received")
         product.amount= form.cleaned_data.get("amount")
-        product.date= form.cleaned_data.get("date")
+        date_str= form.cleaned_data.get("date")
+        date = generateTimeObj(date_str)
+        product.date= date
+
         product.save()
         messages.success(request, "Successfully added")
         return redirect("/payments")
