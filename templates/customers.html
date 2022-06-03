@@ -12,7 +12,7 @@
           {% include "./components/icon_button.html" with id="edit_button" name='edit_button' colors=colors.primary style="" href="" title="Edit" icon="./img/edit.svg" %}
         </div>
         <div>
-          {% include "./components/icon_button.html" with id="new_button" name='new_button' colors=colors.light style="" href="" title="New Product" icon="./img/add.svg" %}
+          {% include "./components/icon_button.html" with id="new_button" name='new_button' colors=colors.light style="" href="" title="New Customer" icon="./img/add.svg" %}
         </div>
       </div>
     </div>
@@ -35,7 +35,7 @@
 
         <tr  
         x-on:click="isSelected = isSelected && selectedId !== '{{i.id}}' ? true : !isSelected; selectedId = '{{i.id}}';selectedName = '{{i.name}}'"
-        :class="isSelected && selectedId === '{{i.id}}' ? 'bg-yellow-200 hover:bg-yellow-300' : 'bg-gray-100 hover:bg-gray-300 border-b cursor-pointer'"
+        :class="isSelected && selectedId === '{{i.id}}' ? 'bg-yellow-200 hover:bg-yellow-300 cursor-pointer' : 'bg-gray-100 hover:bg-gray-300 border-b cursor-pointer'"
         
           
         >

@@ -13,7 +13,7 @@
           {% include "./components/icon_button.html" with id="edit_button" name='edit_button' colors=colors.primary style="" href="" title="Edit" icon="./img/edit.svg" %}
         </div>
         <div>
-          {% include "./components/icon_button.html" with id="new_button" name='new_button' colors=colors.light style="" href="" title="New Product" icon="./img/add.svg" %}
+          {% include "./components/icon_button.html" with id="new_button" name='new_button' colors=colors.light style="" href="" title="New Payment" icon="./img/add.svg" %}
         </div>
       </div>
     </div>
@@ -33,13 +33,13 @@
         </tr>
       </thead>
       <tbody>
-        {%for i in payments %}
 
+        {% for i in payments %}
         <tr
-          x-on:click="isSelected = isSelected && selectedId !== '{{i.id}}' ? true : !isSelected; selectedId = '{{i.id}}';selectedName = '{{i.company.name}}: {{i.amount}}{{currency}}'"
-        :class="isSelected && selectedId === '{{i.id}}' ? 'bg-yellow-200 hover:bg-yellow-300' : 'bg-gray-100 hover:bg-gray-300 border-b cursor-pointer'"
+        x-on:click="isSelected = isSelected && selectedId !== '{{i.id}}' ? true : !isSelected; selectedId = '{{i.id}}';selectedName = '{{i.company.name}}: {{i.amount}}{{currency}}'"
+        :class="isSelected && selectedId === '{{i.id}}' ? 'bg-yellow-200 hover:bg-yellow-300 cursor-pointer' : 'bg-gray-100 hover:bg-gray-300 border-b cursor-pointer'"
         >
-          <th class="text-wrap px-2 md:px-6 py-2 md:py-4 " scope="row" class="px-6 py-4 font-medium whitespace-nowrap">
+          <th class="text-wrap px-2 md:px-6 py-2 md:py-4 " scope="row" class="px-6 py-4 font-medium ">
             {{i.company.name}}
           </th>
             <td class="px-2 md:px-6 py-2 md:py-4 ">{{i.date | gen_date}}</td>

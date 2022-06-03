@@ -7,12 +7,7 @@
 <div name='customer_form' class=" bg-gray-100 h-full">
     <div class="bg-gray-800 flex flex-row items-center justify-between overflow-auto">
         <div class="rounded-tl-2xl bg-gradient-to-r from-blue-900 to-gray-800 p-2 shadow text-lg text-white"> 
-            {% if mode == 'edit' %}
-            <h2 class="font-bold pl-3">Update Customer</h2> 
-            {% else %}
-            <h2 class="font-bold pl-3">Add New Customer</h2> 
-            {% endif %}
-             
+            <h2 class="font-bold pl-3">{{title}}</h2> 
         </div>
         <a class="flex items-center px-4 py-2 mx-4 text-gray-800 rounded-md bg-gray-200 hover:bg-yellow-100" href="#" onClick="javascript:history.go(-1);">
             <img style="max-width:100%;height:auto;" width="20px" src="{% static 'img/back.svg' %}" alt="back"></img>

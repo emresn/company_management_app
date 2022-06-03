@@ -1,8 +1,4 @@
-from django.shortcuts import render
-
-# Create your views here.
 from django.shortcuts import render,redirect
-
 from customer.serializer import CustomerSerializer
 from erp.constants.context_consts import ContextConsts
 from payment.forms import PaymentForm
@@ -23,12 +19,46 @@ def index(request: Request):
                 **context_consts}
     return render(request, "payments.html", context)
     
+def delete_payment(request, id):
+    p:Payment = Payment.objects.get(id=id)
+    p.delete()
+    messages.warning(request, "Successfully deleted.")
+    return redirect("/payment")
+
+
+def edit_payment(request:Request,id):
+    p:Payment = Payment.objects.get(id=id)
+    serializer = PaymentSerializer(p)
+    context_consts = ContextConsts.dic()
+    customer = CustomerSerializer(p.company)
+    form = PaymentForm(request.POST or None, initial={**serializer.data, "company": customer})
+    context = {
+        "title": "Update Payment",
+        "mode": "edit",
+        "form": form, 
+        **context_consts
+    }
+
+    if form.is_valid():
+        p.company= form.cleaned_data.get("company")
+        p.is_received= form.cleaned_data.get("is_received")
+        p.amount= form.cleaned_data.get("amount")
+        p.date= form.cleaned_data.get("date")
+        p.save()
+        messages.success(request, "Successfully updated")
+        return redirect("/payments")
+  
+
+    return render(request, "payment_form.html", context)
+
+
 def add_payment(request:Request):
     context_consts = ContextConsts.dic()
     form = PaymentForm(request.POST or None)
 
     context = {
-        "title": "New Product","mode": "new",
+        "title": "New Payment",
+        "mode": "new",
         "form": form, 
         **context_consts
     }
@@ -41,10 +71,10 @@ def add_payment(request:Request):
         product.date= form.cleaned_data.get("date")
         product.save()
         messages.success(request, "Successfully added")
-        return redirect("/customers")
+        return redirect("/payments")
   
 
-    return render(request, "customer_form.html", context)
+    return render(request, "payment_form.html", context)
 
 
 class PaymentListApiView(APIView):

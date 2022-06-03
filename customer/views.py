@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
 from customer.forms import CustomerForm
 from django.contrib import messages
+from customer.models import Customer
 from customer.serializer import CustomerSerializer
 from erp.constants.context_consts import ContextConsts
-from .models import Customer
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -18,28 +19,67 @@ def index(request: Request):
                 **context_consts}
     return render(request, "customers.html", context)
 
+def delete_payment(request, id):
+    c:Customer = Customer.objects.get(id=id)
+    c.delete()
+    messages.warning(request, "Successfully deleted.")
+    return redirect("/customers")
+
+def edit_customer(request:Request,id):
+    c :Customer = Customer.objects.get(id=id)
+    serializer = CustomerSerializer(c)
+    form = CustomerForm(request.POST or None, initial={**serializer.data})
+    context_consts = ContextConsts.dic()
+
+    context = {
+        "title": "Edit Product",
+        "mode": "edit",
+        "form": form, 
+        **context_consts
+    }
+
+    if form.is_valid():
+        
+        c.name= form.cleaned_data.get("name")
+        c.person= form.cleaned_data.get("person")
+        c.taxnumber= form.cleaned_data.get("taxnumber")
+        c.address= form.cleaned_data.get("address")
+        c.telephone = form.cleaned_data.get("telephone")
+        c.email= form.cleaned_data.get("email")
+        c.bankAccount = form.cleaned_data.get("bankAccount")
+        c.save()
+       
+        messages.success(request, "Successfully added")
+        return redirect("/customers")
+  
+
+    return render(request, "customer_form.html", context)
+
+
+
 def new_customer(request:Request):
     context_consts = ContextConsts.dic()
     form = CustomerForm(request.POST or None)
 
     context = {
-        "title": "New Product","mode": "new",
-        "form": form, **context_consts
+        "title": "New Customer",
+        "mode": "new",
+        "form": form, 
+        **context_consts
     }
 
     if form.is_valid():
-        product = Customer()
-        product.name= form.cleaned_data.get("name")
-        product.person= form.cleaned_data.get("person")
-        product.taxnumber= form.cleaned_data.get("taxnumber")
-        product.address= form.cleaned_data.get("address")
-        product.telephone = form.cleaned_data.get("telephone")
-        product.email= form.cleaned_data.get("email")
-        product.bankAccount = form.cleaned_data.get("bankAccount")
-        product.save()
+        customer = Customer()
+        customer.name= form.cleaned_data.get("name")
+        customer.person= form.cleaned_data.get("person")
+        customer.taxnumber= form.cleaned_data.get("taxnumber")
+        customer.address= form.cleaned_data.get("address")
+        customer.telephone = form.cleaned_data.get("telephone")
+        customer.email= form.cleaned_data.get("email")
+        customer.bankAccount = form.cleaned_data.get("bankAccount")
+        customer.save()
        
         messages.success(request, "Successfully added")
-
         return redirect("/customers")
   
 
