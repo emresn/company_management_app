@@ -2,6 +2,10 @@ from django.shortcuts import render, redirect
 from customer.forms import CustomerForm
 from django.contrib import messages
 from customer.models import Customer
+from order.models import Order
+from order.serializers import OrderSerializer
+from payment.models import Payment
+from payment.serializer import PaymentSerializer
 from customer.serializer import CustomerSerializer
 from erp.constants.context_consts import ContextConsts
 
@@ -19,7 +23,26 @@ def index(request: Request):
                 **context_consts}
     return render(request, "customers.html", context)
 
-def delete_payment(request, id):
+def show_customer(request:Request,id):
+    c :Customer = Customer.objects.get(id=id)
+    serializer = CustomerSerializer(c)
+
+    payments = Payment.objects.filter(company = c, is_received = True)
+    payments_srl = PaymentSerializer(payments, many=True)
+
+    orders = Order.objects.filter(customer = c)
+    orders_srl = OrderSerializer(orders,many=True)
+    
+    context_consts = ContextConsts.dic()
+    context = {
+        "customer": serializer.data, 
+        "payments": payments_srl.data,
+        "orders": orders_srl.data,
+        **context_consts}
+    
+    return render(request, "show_customer.html", context)
+
+def delete_customer(request, id):
     c:Customer = Customer.objects.get(id=id)
     c.delete()
     messages.warning(request, "Successfully deleted.")

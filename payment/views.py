@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect
 from customer.serializer import CustomerSerializer
 from erp.constants.context_consts import ContextConsts
 from erp.utils.time_functions import generateTimeObj, generateTimeObjBackend, generateTimeStr
+from order.serializers import OrderSerializer
 from payment.forms import PaymentForm
 from payment.serializer import PaymentSerializer
 from .models import Customer, Payment
@@ -11,12 +12,39 @@ from rest_framework import status
 from rest_framework import permissions
 from urllib.request import Request
 from django.contrib import messages
+from order.models import Order, OrderItem
+from django.db.models import Sum
+
 
 def index(request: Request):
     payments = Payment.objects.all()
-    serializer = PaymentSerializer(payments, many=True)
+    payments_serializer = PaymentSerializer(payments, many=True)
+
+    left_amounts = {}
+    total_amounts = {}
+
+    customers = Customer.objects.all()
+    customers_serializer = CustomerSerializer(customers, many=True)
+    customers_total_prices = {}
+    
+    for customer in customers:
+        total_order_price = 0
+        orders : list[Order] = Order.objects.filter(customer = customer)
+        orders_serializer = OrderSerializer(orders, many=True)
+        for order in orders:
+            sum = OrderItem.objects.filter(order=order).aggregate(Sum('price'))['price__sum']
+            total_order_price += sum
+        customers_total_prices[f"{customer.id}"] = total_order_price
+    print(customers_total_prices)
+
+            
+
+
+
+
+    
     context_consts = ContextConsts.dic()
-    context = {"payments": serializer.data,
+    context = {"payments": payments_serializer.data,
                 **context_consts}
     return render(request, "payments.html", context)
     

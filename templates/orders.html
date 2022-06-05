@@ -31,6 +31,13 @@
           <th scope="col" class="px-2 md:px-6 py-2 md:py-4">Product</th>
           <th scope="col" class="px-2 md:px-6 py-2 md:py-4">Company</th>
           <th scope="col" class="px-2 md:px-6 py-2 md:py-4">Date</th>
+          <th scope="col" class="px-2 md:px-6 py-2 md:py-4">Note</th>
+          <th scope="col" class="px-2 md:px-6 py-2 md:py-4 text-right">Price {{currency}}</th>
+          <th scope="col" class="px-2 md:px-6 py-2 md:py-4 text-right">VAT {{currency}}</th>
+          <th scope="col" class="px-2 md:px-6 py-2 md:py-4 text-right">Total Price {{currency}}</th>
+         
+
+
         </tr>
       </thead>
       <tbody>
@@ -48,14 +55,28 @@
           <td class="px-2 md:px-6 py-2 md:py-4">
             <div class="flex flex-col">
               {%for j in i.items%}
-              <p>{{j.product.name}} x {{j.quantity}} pcs.</p>
+             <div class="flex flex-col">
+              <span class="font-medium list-item">{{j.product.name}}</span>
+              <span>{{j.quantity}} pcs. x {{j.price | floatformat}} {{currency}} = {{j.total_price | floatformat}} {{currency}}</span>
+             <div>
+              
+
               {%endfor%}
             </div>
           </td>
           <td class="px-2 md:px-6 py-2 md:py-4">{{i.customer.name }}</td>
           <td class="px-2 md:px-6 py-2 md:py-4">{{ i.date | gen_date }}</td>
+          <td class="px-2 md:px-6 py-2 md:py-4">{{ i.note }}</td>
+          <td class="px-2 md:px-6 py-2 md:py-4 text-right font-medium">{{ i.price | floatformat  }}</td>
+          <td class="px-2 md:px-6 py-2 md:py-4 text-right font-medium">{{ i.vat | floatformat  }}</td>
+          <td class="px-2 md:px-6 py-2 md:py-4 text-right font-medium">{{ i.total_price | floatformat }}</td>
+          
+
+
         </tr>
         {% endfor %}
+
+
       </tbody>
     </table>
   </div>

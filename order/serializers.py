@@ -12,7 +12,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = OrderItem
-        fields = ['id','product','quantity','price','status','is_active','created_at','updated_at']
+        fields = ['id','product','quantity','price','total_price','status','is_active','created_at','updated_at']
 
 
 class OrderSerializer(serializers.ModelSerializer):
@@ -28,15 +28,15 @@ class OrderSerializer(serializers.ModelSerializer):
             "customer",
             "items",
             "status",
+            "price",
+            "vat",
+            "total_price",
             "note",
             'date',
             "created_at",
             "updated_at",
         ]
     
-    # def to_representation(self, instance):
-    #     self.fields['customer'] =  CustomerSerializer(read_only=True)
-    #     return super(OrderSerializer, self).to_representation(instance)
 
     def create(self,validated_data):
         

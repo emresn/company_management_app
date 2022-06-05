@@ -33,14 +33,14 @@
       <tbody>
         {% for i in customers %}
 
-        <tr  
+        <tr   ondblclick="javascript: window.open('./show/{{i.id}}','_self');"
         x-on:click="isSelected = isSelected && selectedId !== '{{i.id}}' ? true : !isSelected; selectedId = '{{i.id}}';selectedName = '{{i.name}}'"
         :class="isSelected && selectedId === '{{i.id}}' ? 'bg-yellow-200 hover:bg-yellow-300 cursor-pointer' : 'bg-gray-100 hover:bg-gray-300 border-b cursor-pointer'"
         
           
         >
           <th scope="row" class="px-2 md:px-6 py-2 md:py-4 text-wrap font-medium">
-            {{i.name}}
+            <a href="./show/{{i.id}}">{{i.name}}</a>
           </th>
             <td class="px-2 md:px-6 py-2 md:py-4">2</td>
             <td class="px-2 md:px-6 py-2 md:py-4">4</td>

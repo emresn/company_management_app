@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from customer.models import Customer
 from erp.constants.context_consts import ContextConsts
+from erp.constants.site_constants import SiteConstants
 from erp.utils.time_functions import generateTimeObj, generateTimeObjBackend, generateTimeStr
 from order.forms import OrderForm, OrderItemForm
 from order.models import Order, OrderItem
@@ -24,19 +25,26 @@ from rest_framework import permissions
 from .models import Order
 from .serializers import OrderItemSerializer, OrderSerializer
 from customer.serializer import CustomerSerializer
-# Create your views here.
-
+from django.db.models import Sum
 
 def index(request: Request):
     orders = Order.objects.order_by("-date")
     serializer = OrderSerializer(orders, many=True)
+    order_prices = {}
+    for o in orders:
+        order_price = OrderItem.objects.all().filter(order=o).aggregate(Sum('total_price'))
+        order_prices["{}".format(o.id)] = order_price
+
     context_consts = ContextConsts.dic()
-    context = {"orders": serializer.data,
+    context = {"orders": serializer.data, "order_prices": order_prices,
                 **context_consts}
     return render(request, "orders.html", context)
 
 def delete_order(request,id):
     o:Order = Order.objects.get(id=id)
+    items = OrderItem.objects.all().filter(order=o)
+    for i in items:
+        i.delete()
     o.delete()
     messages.warning(request, "Successfully deleted.")
     return redirect("/orders")
@@ -83,16 +91,26 @@ def edit_order(request, id):
         items_obj:dict = orderForm.cleaned_data.get("items")
         items:list[OrderItem]= []
         items_id_list = []
+        order_price = 0
+        order_vat_price = 0
+        order_total_price = 0
         for i in items_obj.keys():
             orderItem = OrderItem()
             orderItem.product = Product.objects.get(id=items_obj[i]['id'])
             orderItem.quantity = items_obj[i]['qty']
             orderItem.price = items_obj[i]['price']
+            order_price += (int(orderItem.quantity) * float(orderItem.price))
+            order_vat_price = SiteConstants.VAT /100 * order_price
+            order_total_price = (order_price + order_vat_price)
             orderItem.save()
             items_id_list.append(orderItem.id)
             items.append(orderItem)
         order_items_list = OrderItem.objects.filter(id__in = items_id_list)
         o.items.set(order_items_list)
+        o.price = order_price
+        o.vat = order_vat_price
+        o.total_price = order_total_price
+        o.save()
         messages.success(request, "Successfully updated.")
 
         return redirect("/orders")
@@ -125,16 +143,26 @@ def new_order(request):
         items_obj:dict = orderForm.cleaned_data.get("items")
         items:list[OrderItem]= []
         items_id_list = []
+        order_price = 0
+        order_vat_price = 0
+        order_total_price = 0
         for i in items_obj.keys():
             orderItem = OrderItem()
             orderItem.product = Product.objects.get(id=i)
             orderItem.quantity = items_obj[i]['qty']
             orderItem.price = items_obj[i]['price']
+            order_price += (int(orderItem.quantity) * float(orderItem.price))
+            order_vat_price = SiteConstants.VAT /100 * order_price
+            order_total_price = (order_price + order_vat_price)
             orderItem.save()
             items_id_list.append(orderItem.id)
             items.append(orderItem)
         order_items_list = OrderItem.objects.filter(id__in = items_id_list)
         order.items.set(order_items_list)
+        order.price = order_price
+        order.vat = order_vat_price
+        order.total_price = order_total_price
+        order.save()
         messages.success(request, "Successfully added")
 
         return redirect("/orders")

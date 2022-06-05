@@ -1,6 +1,7 @@
 import json
 from django import template
 from datetime import datetime
+from erp.constants.site_constants import SiteConstants
 
 from erp.utils.time_functions import generateTimeStr
 
@@ -14,4 +15,6 @@ def gen_date(value):
     return time
 
 
+
 register.filter('gen_date', gen_date)
+

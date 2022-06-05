@@ -13,6 +13,7 @@ class ContextConsts:
             "company": company_info,
             "status_keys": STATUS_KEYS,
             "currency": SiteConstants.CURRENCY,
+            "vat": SiteConstants.VAT,
             "date_format": SiteConstants.DATE_FORMAT,
             "colors": {
                 "danger": "bg-red-600 text-gray-200 hover:bg-red-500",

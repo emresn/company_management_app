@@ -17,6 +17,7 @@ class SiteConstants:
     CURRENCY = '$'
     # DATE_FORMAT should be "DD-MM-YYYY", "YYYY-MM-DD" or "D d M, Y"
     DATE_FORMAT= "D d M, Y"
+    VAT = 18
 
 
 class CompanyInfo:

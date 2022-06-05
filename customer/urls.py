@@ -9,7 +9,9 @@ urlpatterns = [
     path('', views.index, name="customers"),
     path('new', views.new_customer, name="new_customers"),
     path('edit/<uuid:id>/', views.edit_customer, name="edit_customer"),
-    path('delete/<uuid:id>/', views.delete_payment, name="delete_customer"),
+    path('delete/<uuid:id>/', views.delete_customer, name="delete_customer"),
+    path('show/<uuid:id>/', views.show_customer, name="show_customer"),
+    
 
 
 ]
