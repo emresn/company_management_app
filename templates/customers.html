@@ -1,4 +1,5 @@
 {% extends 'layout.html' %} {% block body %}
+{% load custom_tags %}
 
 <div name='customers_view'  x-init="" x-data="{ isSelected: false, selectedId: ``, selectedName: ``, isDeleteButtonClicked: false }" class="bg-gray-100 h-full">
   <div class="bg-gray-800  overflow-auto">
@@ -42,8 +43,8 @@
           <th scope="row" class="px-2 md:px-6 py-2 md:py-4 text-wrap font-medium">
             <a href="./show/{{i.id}}">{{i.name}}</a>
           </th>
-            <td class="px-2 md:px-6 py-2 md:py-4">2</td>
-            <td class="px-2 md:px-6 py-2 md:py-4">4</td>
+            <td class="px-2 md:px-6 py-2 md:py-4">{{order_counts | active_order_count:i.id }}</td>
+            <td class="px-2 md:px-6 py-2 md:py-4">{{order_counts | total_order_count:i.id }}</td>
             <td class="px-2 md:px-6 py-2 md:py-4">{{i.telephone}}</td>
             <td class="hidden md:block px-2 md:px-6 py-2 md:py-4 hidden md:table-cell">{{i.email}}</td>
 

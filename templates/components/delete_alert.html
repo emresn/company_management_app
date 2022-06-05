@@ -14,9 +14,16 @@
         <button @click="isDeleteButtonClicked = false;">
           <p class="px-3 py-1 text-white bg-red-500 rounded-xl">No</p>
         </button>
-        <a :href="'./delete/'+{{id}}"
-          ><p class="px-3 py-1 text-white bg-blue-500 rounded-xl">Yes</p></a
-        >
+       {% if subdir %}
+          <a :href="'../../delete/'+{{id}}"
+            ><p class="px-3 py-1 text-white bg-blue-500 rounded-xl">Yes</p></a
+          >
+       {% else %}
+          <a :href="'./delete/'+{{id}}"
+            ><p class="px-3 py-1 text-white bg-blue-500 rounded-xl">Yes</p></a
+          >
+       {% endif %}
+
       </div>
     </div>
   </div>

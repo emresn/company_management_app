@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from customer.forms import CustomerForm
 from django.contrib import messages
 from customer.models import Customer
+from erp.constants.site_constants import Status
 from order.models import Order
 from order.serializers import OrderSerializer
 from payment.models import Payment
@@ -14,12 +15,22 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import permissions
 from urllib.request import Request
+from django.db.models import Count
 
 def index(request: Request):
     customers = Customer.objects.order_by("name")
     serializer = CustomerSerializer(customers, many=True)
+
+    order_counts = []
+    for customer in customers:
+        total_order_count = Order.objects.filter(customer=customer).count()
+        active_order_count = Order.objects.filter(customer=customer).filter(status__in = ['NS','IP']).count()
+        order_counts.append({
+            "id": f"{customer.id}",
+            "total_order_count": total_order_count,
+            "active_order_count": active_order_count})
     context_consts = ContextConsts.dic()
-    context = {"customers": serializer.data,
+    context = {"customers": serializer.data, "order_counts" : order_counts,
                 **context_consts}
     return render(request, "customers.html", context)
 

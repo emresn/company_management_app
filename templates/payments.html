@@ -1,4 +1,5 @@
 {% extends 'layout.html' %} {% block body %}
+{% load crispy_forms_tags %}
 {% load custom_tags %}
 
 <div name='customers_view'  x-init="" x-data="{ isSelected: false, selectedId: ``, selectedName: ``, isDeleteButtonClicked: false }" class="bg-gray-100 h-full">
@@ -26,9 +27,10 @@
         <tr>
             <th scope="col" class="px-2 md:px-6 py-2 md:py-4 ">Company</th>
             <th scope="col" class="px-2 md:px-6 py-2 md:py-4 ">Date</th>
-            <th scope="col" class="px-2 md:px-6 py-2 md:py-4 text-right">Received Payment {{currency}}</th>
+            <th scope="col" class="px-2 md:px-6 py-2 md:py-4 text-right">Amount {{currency}}</th>
+            <th scope="col" class="px-2 md:px-6 py-2 md:py-4 text-right">Total Paid Amount {{currency}}</th>
             <th scope="col" class="px-2 md:px-6 py-2 md:py-4 text-right">Left Amount {{currency}}</th>
-            <th scope="col" class="px-2 md:px-6 py-2 md:py-4 text-right">Total Amount {{currency}}</th>
+            <th scope="col" class="px-2 md:px-6 py-2 md:py-4 text-right">All Orders Costs{{currency}}</th>
           
         </tr>
       </thead>
@@ -43,9 +45,10 @@
             {{i.company.name}}
           </th>
             <td class="px-2 md:px-6 py-2 md:py-4 ">{{i.date | gen_date}}</td>
-            <td class="px-2 md:px-6 py-2 md:py-4 text-right">{{i.amount}}</td>
-            <td class="px-2 md:px-6 py-2 md:py-4 text-right">4</td>
-            <td class="px-2 md:px-6 py-2 md:py-4 text-right">3433</td>
+            <td class="px-2 md:px-6 py-2 md:py-4 text-right">{{i.amount | floatformat}}</td>
+            <td class="px-2 md:px-6 py-2 md:py-4 text-right">{{company_stats | paid_orders_sum:i.company.id  | floatformat}}</td>
+            <td class="px-2 md:px-6 py-2 md:py-4 text-right">{{company_stats | left_orders_sum:i.company.id  | floatformat}}</td>
+            <td class="px-2 md:px-6 py-2 md:py-4 text-right">{{company_stats | total_orders_sum:i.company.id  | floatformat}}</td>
 
         
         </tr>

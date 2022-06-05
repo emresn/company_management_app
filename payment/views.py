@@ -12,7 +12,7 @@ from rest_framework import status
 from rest_framework import permissions
 from urllib.request import Request
 from django.contrib import messages
-from order.models import Order, OrderItem
+from order.models import Order
 from django.db.models import Sum
 
 
@@ -20,31 +20,33 @@ def index(request: Request):
     payments = Payment.objects.all()
     payments_serializer = PaymentSerializer(payments, many=True)
 
-    left_amounts = {}
-    total_amounts = {}
+    
+    company_stats = []
 
     customers = Customer.objects.all()
-    customers_serializer = CustomerSerializer(customers, many=True)
-    customers_total_prices = {}
     
     for customer in customers:
-        total_order_price = 0
-        orders : list[Order] = Order.objects.filter(customer = customer)
-        orders_serializer = OrderSerializer(orders, many=True)
-        for order in orders:
-            sum = OrderItem.objects.filter(order=order).aggregate(Sum('price'))['price__sum']
-            total_order_price += sum
-        customers_total_prices[f"{customer.id}"] = total_order_price
-    print(customers_total_prices)
+        total_orders_sum = 0
+        paid_orders_sum = 0
+        total_orders_sum_q : list[Order] = Order.objects.filter(customer = customer).aggregate(Sum('total_price'))['total_price__sum']
+        paid_orders_sum_q = Payment.objects.filter(company= customer).filter(is_received = True).aggregate(Sum('amount'))['amount__sum']
 
-            
+        if total_orders_sum_q != None:
+            total_orders_sum = total_orders_sum_q
+        if paid_orders_sum_q != None:
+            paid_orders_sum = paid_orders_sum_q
 
+        company_stats.append({
+            "id" : f"{customer.id}",
+            "total_orders_sum": total_orders_sum,
+            "paid_orders_sum" : paid_orders_sum,
+            "left_orders_sum" : float(total_orders_sum) - float(paid_orders_sum)
+        })
+    print(company_stats)
 
-
-
-    
+  
     context_consts = ContextConsts.dic()
-    context = {"payments": payments_serializer.data,
+    context = {"payments": payments_serializer.data, "company_stats" : company_stats,
                 **context_consts}
     return render(request, "payments.html", context)
     
@@ -52,7 +54,7 @@ def delete_payment(request, id):
     p:Payment = Payment.objects.get(id=id)
     p.delete()
     messages.warning(request, "Successfully deleted.")
-    return redirect("/payment")
+    return redirect("/payments")
 
 
 def edit_payment(request:Request,id):
