@@ -1,0 +1,60 @@
+{% extends 'layout.html' %} {% block body %}
+{% load custom_tags %}
+
+<div name='customers_view'  x-init="" x-data="{ isSelected: false, selectedId: ``, selectedName: ``, isDeleteButtonClicked: false }" class="bg-gray-100 h-full">
+  <div class="bg-gray-800  overflow-auto">
+    <div class="flex flex-col md:flex-row items-center justify-between rounded-tl-2xl bg-gradient-to-r from-blue-900 to-gray-800 p-2 shadow text-lg text-white">
+      <h2 class="font-bold pl-3">Customers</h2>
+       <div class="flex flex-row">
+        <div :class='isSelected ? `` : `hidden`' @click="isDeleteButtonClicked = true;">
+          {% include "./components/icon_button.html" with id="delete_button" name='delete_button' colors=colors.danger style="" href="#" title="Delete" icon="./img/delete.svg" %}
+        </div>
+        <div :class='isSelected ? `` : `hidden`' >
+          {% include "./components/icon_button.html" with id="edit_button" name='edit_button' colors=colors.primary style="" href="" title="Edit" icon="./img/edit.svg" %}
+        </div>
+        <div>
+          {% include "./components/icon_button.html" with id="new_button" name='new_button' colors=colors.light style="" href="" title="New Customer" icon="./img/add.svg" %}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% include "./components/delete_alert.html" with id="selectedId" name="selectedName" %}
+  <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <table class="w-full text-lg font-sans text-left text-gray-900">
+      <thead class="font-medium bg-gray-300">
+        <tr class="">
+            <th class="px-2 md:px-6 py-2 md:py-4" scope="col" class="px-6 py-3">Name</th>
+            <th class="px-2 md:px-6 py-2 md:py-4" scope="col" class="px-6 py-3 text-wrap">Active Orders</th>
+            <th class="px-2 md:px-6 py-2 md:py-4" scope="col" class="px-6 py-3 text-wrap">Total Orders</th>
+            <th class="px-2 md:px-6 py-2 md:py-4" scope="col" class="px-6 py-3">Tel</th>
+            <th class="px-2 md:px-6 py-2 md:py-4 hidden md:table-cell" scope="col" class="px-6 py-3">Email</th>
+            
+        </tr>
+      </thead>
+      <tbody>
+        {% for i in customers %}
+
+        <tr   ondblclick="javascript: window.open('./show/{{i.id}}','_self');"
+        x-on:click="isSelected = isSelected && selectedId !== '{{i.id}}' ? true : !isSelected; selectedId = '{{i.id}}';selectedName = '{{i.name}}'"
+        :class="isSelected && selectedId === '{{i.id}}' ? 'bg-yellow-200 hover:bg-yellow-300 cursor-pointer' : 'bg-gray-100 hover:bg-gray-300 border-b cursor-pointer'"
+        
+          
+        >
+          <th scope="row" class="px-2 md:px-6 py-2 md:py-4 text-wrap font-medium">
+            <a href="./show/{{i.id}}">{{i.name}}</a>
+          </th>
+            <td class="px-2 md:px-6 py-2 md:py-4">{{order_counts | active_order_count:i.id }}</td>
+            <td class="px-2 md:px-6 py-2 md:py-4">{{order_counts | total_order_count:i.id }}</td>
+            <td class="px-2 md:px-6 py-2 md:py-4">{{i.telephone}}</td>
+            <td class="hidden md:block px-2 md:px-6 py-2 md:py-4 hidden md:table-cell">{{i.email}}</td>
+
+          
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+{% endblock body %}

@@ -1,0 +1,16 @@
+{% load static %}
+
+<div class="relative p-1 hidden md:block">
+  <span class="flex justify-center items-center w-full ">
+    <input
+      aria-label="search"
+      type="search"
+      id="search"
+      placeholder="Search"
+      class="w-full bg-gray-900 text-white transition border border-transparent focus:outline-none focus:border-gray-400 rounded py-3 px-2 pl-10 appearance-none leading-normal"
+    />
+    <div class="absolute left-4 " >
+      <img style="max-width:100%;height:auto;" width="28px" src="{% static 'img/home.svg' %}" alt="home"></img>
+    </div>
+  </span>
+</div>

@@ -1,0 +1,39 @@
+{% load static %}
+
+{% if status == status_keys.NOT_STARTED.key %}
+<div class="flex justify-center md:justify-start items-center flex-row md:gap-3">
+  <div class="w-6 h-6 bg-gray-500 rounded-full"></div>
+  <span class="hidden md:table-cell">{{status_keys.NOT_STARTED.value}}</span>
+</div>
+
+{% elif status == status_keys.IN_PROGRESS.key %}
+
+<div class="flex justify-center md:justify-start items-center flex-row md:gap-3">
+  <div class="w-6 h-6 bg-yellow-500 rounded-full"></div>
+  <span class="hidden md:table-cell">{{status_keys.IN_PROGRESS.value}}</span>
+</div>
+{% elif status == status_keys.COMPLETED.key %}
+
+<div class="flex justify-center md:justify-start items-center flex-row md:gap-3">
+  <div class="w-6 h-6 bg-green-600 rounded-full"></div>
+  <span class="hidden md:table-cell">{{status_keys.COMPLETED.value}}</span>
+</div>
+{% elif status == status_keys.DELIVERED.key %}
+
+<div class="flex justify-center md:justify-start items-center flex-row md:gap-3">
+  <div class="w-6 h-6 bg-blue-700 rounded-full"></div>
+  <span class="hidden md:table-cell">{{status_keys.DELIVERED.value}}</span>
+</div>
+{% elif status == status_keys.RETURNED_BACK.key %}
+
+<div class="flex justify-center md:justify-start items-center flex-row md:gap-3">
+<img class="w-6 h-6 rounded-full" src="{% static 'img/undo.svg' %}" />
+  <span class="hidden md:table-cell">{{status_keys.RETURNED_BACK.value}}</span>
+</div>
+{% elif status == status_keys.CANCELLED.key %}
+
+<div class="flex justify-center md:justify-start items-center flex-row md:gap-3">
+  <div class="w-6 h-6 bg-red-600 rounded-full"></div>
+  <span class="hidden md:table-cell">{{status_keys.CANCELLED.value}}</span>
+</div>
+{% endif %}
