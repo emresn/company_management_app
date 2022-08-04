@@ -1,0 +1,103 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* #region  /**=========== Primary Color =========== */
+  --tw-clr-primary-50: 249, 250, 251;
+  --tw-clr-primary-100: 243, 244, 246;
+  --tw-clr-primary-200: 229, 231, 235;
+  --tw-clr-primary-300: 209, 213, 219;
+  --tw-clr-primary-400: 156, 163, 175;
+  --tw-clr-primary-500: 107, 114, 128;
+  --tw-clr-primary-600: 75, 85, 99;
+  --tw-clr-primary-700: 55, 65, 81;
+  --tw-clr-primary-800: 31, 41, 55;
+  --tw-clr-primary-900: 17, 24, 39;
+  --clr-primary-50: rgb(var(--tw-clr-primary-50)); /* #f9fafb */
+  --clr-primary-100: rgb(var(--tw-clr-primary-100)); /* #f3f4f6 */
+  --clr-primary-200: rgb(var(--tw-clr-primary-200)); /* #e5e7eb */
+  --clr-primary-300: rgb(var(--tw-clr-primary-300)); /* #d1d5db */
+  --clr-primary-400: rgb(var(--tw-clr-primary-400)); /* #9ca3af */
+  --clr-primary-500: rgb(var(--tw-clr-primary-500)); /* #6b7280 */
+  --clr-primary-600: rgb(var(--tw-clr-primary-600)); /* #4b5563 */
+  --clr-primary-700: rgb(var(--tw-clr-primary-700)); /* #374151 */
+  --clr-primary-800: rgb(var(--tw-clr-primary-800)); /* #1f2937 */
+  --clr-primary-900: rgb(var(--tw-clr-primary-900)); /* #111827 */
+  /* #endregion  /**======== Primary Color =========== */
+  padding: 0;
+  margin: 0;
+  min-height: 100%;
+}
+
+
+body {
+  margin: 0;
+  background-color: #11101d;
+  color: #11101d;
+}
+
+li {
+  list-style: none;
+  margin: 0;
+  cursor: pointer;
+
+}
+
+nav{
+  color: aliceblue
+}
+
+
+h1{
+  font-size: 2em;
+  margin-top: 8px;
+  font-family: 'Saira', sans-serif;
+}
+
+h2{
+  font-size: 1.8em;
+  margin-top: 8px;
+  font-family: 'Saira', sans-serif;
+}
+
+h3{
+  font-size: 1.5em;
+  margin-top: 8px;
+  font-family: 'Saira', sans-serif;
+}
+
+h4{
+  font-size: 1.2em;
+  margin-top: 8px;
+  font-family: 'Saira', sans-serif;
+  text-decoration: underline;
+}
+
+
+iframe{
+  overflow:hidden;
+}
+
+p {
+  display: block;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  text-align: justify;
+}
+
+/* body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+} */
