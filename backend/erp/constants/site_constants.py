@@ -1,7 +1,3 @@
-from audioop import add
-from erp.constants.navbar_constants import Navbar
-
-
 class SiteConstants:
     LANGUAGE_CODE = 'en-us'
     TIME_ZONE = 'Europe/Istanbul'
@@ -51,7 +47,7 @@ STATUS_KEYS = {
 
 
 class Status():
-    def tolist():
+    def toList():
         CHOICES = []
         keylist = STATUS_KEYS.keys()
         for i in keylist:

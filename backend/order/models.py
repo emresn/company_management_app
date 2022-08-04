@@ -3,14 +3,13 @@ import string
 from django.db import models
 import uuid
 from customer.models import Customer
-from erp.constants.site_constants import SiteConstants, Status
+from erp.constants.site_constants import Status
 from product.models import  Product
 from django.core.validators import MinValueValidator
 from django.utils.timezone import now
-from django.db.models import Sum
 
 class OrderItem(models.Model):
-    choices = Status.tolist()
+    choices = Status.toList()
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, null=False, serialize=True) 
     price = models.FloatField(null=False, verbose_name="Price",
@@ -41,7 +40,7 @@ class Order(models.Model):
         generated_key = '{}_{}'.format(date.strftime("%Y"), randomstr)
         return generated_key
    
-    choices = Status.tolist()
+    choices = Status.toList()
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     order_no = models.CharField(editable=False,unique=True,max_length=50,null=True,verbose_name="Order No")
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL,null=True, blank=True)  
@@ -67,16 +66,7 @@ class Order(models.Model):
             self.order_no = self.generateOrderNo()
         super().save(*args, **kwargs)  
 
-        
-
-        # price = OrderItem.objects.filter(order=order).aggregate(Sum('total_price'))['total_price__sum']
-        # print(order)
-        # self.price = float(price)
-        # self.vat = float(self.price) * SiteConstants.VAT / 100
-        # self.total_price = self.price * self.vat
-
-               
-    
+ 
     class Meta:
         verbose_name_plural = "Orders"
         ordering = ['created_at']
