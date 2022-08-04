@@ -2,10 +2,10 @@ import React from 'react'
 
 type Props = {}
 
-const OrderView = (props: Props) => {
+const OrdersView = (props: Props) => {
   return (
     <div>OrderView</div>
   )
 }
 
-export default OrderView
+export default OrdersView

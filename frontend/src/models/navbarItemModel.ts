@@ -1,5 +1,6 @@
 export type NavbarItem = {
     alt: string,
     src: string,
-    name: string
+    name: string,
+    route: string
 }

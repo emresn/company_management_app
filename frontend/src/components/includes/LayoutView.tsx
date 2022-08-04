@@ -7,16 +7,16 @@ type Props = {};
 
 const Layout = (props: Props) => {
   return (
-    <div className="flex flex-col min-h-screen">
-      <div className="flex flex-row ">
-        <NavbarView />
-        <div className="bg-light flex-auto">
-          <BrowserRouter>
+    <BrowserRouter>
+      <div className="flex flex-col min-h-screen">
+        <div className="flex flex-row ">
+          <NavbarView />
+          <div className="bg-light flex-auto">
             <ApplicationRoutes />
-          </BrowserRouter>
+          </div>
         </div>
       </div>
-    </div>
+    </BrowserRouter>
   );
 };
 
