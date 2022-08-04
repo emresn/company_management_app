@@ -1,10 +1,15 @@
 import React from 'react'
+import { Product } from '../models/productModel'
 
-type Props = {}
+type Props = {
+    product:Product
+}
 
-const ProductComp = (props: Props) => {
+const ProductComp = ({product}: Props) => {
   return (
-    <div>ProductComp</div>
+    <div className='flex flex-col'>
+        <span>{product.name}</span>
+    </div>
   )
 }
 
