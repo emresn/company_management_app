@@ -4,31 +4,37 @@ import { AppState } from "../redux/store";
 
 export interface ProductState {
   isSelected: boolean;
-  selectedProductId: string;
+  selectedProduct: Product | undefined;
   selectedIndex: number | undefined;
+  editModeActive : boolean
 }
 
 const initialState: ProductState = {
   isSelected: false,
-  selectedProductId: "",
+  selectedProduct: undefined,
   selectedIndex: undefined,
+  editModeActive : false
 };
 
 export const productSlice = createSlice({
   name: "ProductState",
   initialState,
   reducers: {
+    switchEditMode: (state: ProductState) =>{
+      state.editModeActive = !state.editModeActive
+    },
     unSelectProduct: (state: ProductState) => {
       state.isSelected = false;
       state.selectedIndex = undefined;
-      state.selectedProductId = "";
+      state.selectedProduct =undefined ;
+      
     },
     selectProduct: (
       state: ProductState,
       action: PayloadAction<{ product: Product; index: number }>
     ) => {
       state.isSelected = true;
-      state.selectedProductId = action.payload.product.id;
+      state.selectedProduct = action.payload.product;
       state.selectedIndex = action.payload.index;
     },
   },
@@ -36,7 +42,7 @@ export const productSlice = createSlice({
   extraReducers: (builder) => {},
 });
 
-export const { selectProduct, unSelectProduct } = productSlice.actions;
+export const { selectProduct, unSelectProduct,switchEditMode } = productSlice.actions;
 
 export const selectProductState = (state: AppState) => state.productState;
 
