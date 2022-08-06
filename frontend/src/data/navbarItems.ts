@@ -10,32 +10,32 @@ import { NavbarItem } from "../models/navbarItemModel";
 const Home: NavbarItem = {
   alt: "home",
   name: "Home",
-  src: "./assets/home.svg",
+  src: "/assets/home.svg",
   route: homeRoute,
 };
 
 const Orders: NavbarItem = {
   alt: "order",
   name: "Orders",
-  src: "./assets/order.svg",
+  src: "/assets/order.svg",
   route: ordersRoute,
 };
 const Payments: NavbarItem = {
   alt: "payment",
   name: "Payments",
-  src: "./assets/payment.svg",
+  src: "/assets/payment.svg",
   route: paymentsRoute,
 };
 const Products: NavbarItem = {
   alt: "product",
   name: "Products",
-  src: "./assets/product.svg",
+  src: "/assets/product.svg",
   route: productsRoute,
 };
 const Customers: NavbarItem = {
   alt: "customer",
   name: "Customers",
-  src: "./assets/customer.svg",
+  src: "/assets/customer.svg",
   route: customersRoute,
 };
 

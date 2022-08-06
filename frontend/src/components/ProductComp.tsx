@@ -1,18 +1,31 @@
-import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Product } from "../models/productModel";
+import { AppState } from "../redux/store";
 import { dateFromString } from "../utils/dateFromString";
+import { selectProduct, unSelectProduct } from "../viewModels/productSlice";
+import UiButton from "./ui/UiButton";
 
 type Props = {
   product: Product;
   idx: number;
-  selected: number | undefined;
-  setSelected: React.Dispatch<React.SetStateAction<number | undefined>>;
 };
 
-const ProductComp = ({ product, idx, selected, setSelected }: Props) => {
-  function onClickHandler(current: number | undefined, idx: number) {
-    current === idx ? setSelected(undefined) : setSelected(idx);
+const ProductComp = ({ product, idx }: Props) => {
+  const state = useSelector((state: AppState) => state.productState);
+  const dispatch = useDispatch();
+
+  function selectHandler(product: Product, idx: number) {
+    if (state.selectedProductId === product.id) {
+      dispatch(unSelectProduct())
+    }else{
+      dispatch(selectProduct({product:product, index: idx}));
+    }
   }
+
+  function editButtonHandler() {
+    console.log("Edit")
+    
+  } 
 
   const productCreatedDate =
     product.createdAt === product.updatedAt
@@ -21,12 +34,15 @@ const ProductComp = ({ product, idx, selected, setSelected }: Props) => {
           product.createdAt
         )}\nUpdated : ${dateFromString(product.updatedAt)}`;
   return (
+    <div className="relative">
+      { state.isSelected && state.selectedProductId === product.id && state.selectedIndex === idx && <div onClick={()=>editButtonHandler()} className="absolute top-0 right-0"><UiButton color="success" size="sm" text="Edit" /> </div>}
     <div
       className={`${
-        selected === idx ? "bg-yellow-200" : "bg-primary-100 hover:bg-gray-50"
-      } flex flex-col justify-between rounded-md p-2  border hover:border-sm hover:border-gray-400 cursor-pointer`}
-      onClick={() => onClickHandler(selected, idx)}
+        state.isSelected && state.selectedProductId === product.id && state.selectedIndex === idx ? "ring-1  ring-yellow-800" : "bg-primary-100 hover:bg-gray-50"
+      } flex flex-col justify-between rounded-md p-2 border hover:border-sm hover:border-gray-400 cursor-pointer `}
+      onClick={() => selectHandler(product,idx)}
     >
+      
       <div className="flex flex-row justify-between items-start">
         <div className="flex flex-col gap-2 ">
           <span className="font-bold ">
@@ -37,7 +53,7 @@ const ProductComp = ({ product, idx, selected, setSelected }: Props) => {
               <span className="font-medium">Weight: </span> {product.gr} gr.
             </span>
             <span>
-              <span className="font-medium ">In Stock:</span> {product.stock}{" "}
+              <span className="font-medium ">In Stock:</span> {product.stock}
               pcs.
             </span>
             <div className="flex flex-col">
@@ -54,17 +70,18 @@ const ProductComp = ({ product, idx, selected, setSelected }: Props) => {
         />
       </div>
       <div className="flex flex-row justify-end items-end gap-1">
+      
         <span title={productCreatedDate} className="text-xs">
           {dateFromString(product.createdAt)}
         </span>
         <img
           width={16}
-          src="../assets/calendar.svg"
+          src="/assets/calendar.svg"
           alt="calendar"
           title={productCreatedDate}
         />
       </div>
-    </div>
+    </div></div>
   );
 };
 

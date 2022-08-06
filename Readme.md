@@ -1,5 +1,6 @@
 ### dj-erp
 A simple ERP system which keeps Customer, Product, Order and Payments data.
+
 **Backend :** Django
 **Frontend**: React
 

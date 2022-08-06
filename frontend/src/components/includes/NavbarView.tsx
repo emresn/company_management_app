@@ -16,7 +16,7 @@ const NavbarView = (props: Props) => {
         height={26}
         onClick={() => setMenuIsOpen(false)}
         className="cursor-pointer"
-        src="./assets/menu_close.svg"
+        src="/assets/menu_close.svg"
         alt="menu_close"
       />
     );
@@ -29,13 +29,13 @@ const NavbarView = (props: Props) => {
         height={26}
         className="cursor-pointer"
         onClick={() => setMenuIsOpen(true)}
-        src="./assets/menu_open.svg"
+        src="/assets/menu_open.svg"
         alt="menu_open"
       />
     );
   };
   return (
-    <nav className={`${menuIsOpen ? "w-1/6" : ""} h-screen relative`}>
+    <nav className={`${menuIsOpen ? "min-w-max" : ""} h-screen relative`}>
       <div className="flex flex-col">
         <NavLink to={homeRoute}>
           <div
