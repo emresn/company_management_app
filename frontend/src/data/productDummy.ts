@@ -18,3 +18,25 @@ export const ProductDummy: Product = {
   createdAt: "2022-05-26T05:53:44.531898+03:00",
   updatedAt: "2022-08-03T21:44:41.245052+03:00",
 };
+
+export const ProductDummy2: Product = {
+  id: "db080120-cc5e-4735-a2f8-fa573706e979",
+  name: "Laptop A Brand",
+  code: "AF_6960",
+  isActive: true,
+  images: [
+    {
+      id: "b7a9f17b-0aae-4fb8-b566-68c2e34b9b34",
+      href: "https://res.cloudinary.com/dc0uxmplw/image/upload/w_150,h_150,c_fill/v1625823646/products/laptop-tranmautritam-69432_mllluy.jpg",
+    },
+    {
+      href: "https://res.cloudinary.com/dc0uxmplw/image/upload/v1624813414/products/computer_1_blkizw.jpg",
+      id: "v1624813414",
+    },
+  ],
+  description: '15" LED',
+  stock: 50,
+  gr: 1200,
+  createdAt: "2022-05-27T16:03:25.122580+03:00",
+  updatedAt: "2022-05-27T16:03:25.122580+03:00",
+};

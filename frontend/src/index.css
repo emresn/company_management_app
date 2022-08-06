@@ -70,7 +70,8 @@ h3{
 h4{
   font-size: 1.2em;
   margin-top: 8px;
-  font-family: 'Saira', sans-serif;
+  margin-bottom: 8px;
+  font-weight: bold;
   text-decoration: underline;
 }
 
@@ -81,12 +82,13 @@ iframe{
 
 p {
   display: block;
-  margin-block-start: 1em;
+  margin-block-start: 0.2em;
   margin-block-end: 1em;
   margin-inline-start: 0px;
   margin-inline-end: 0px;
   text-align: justify;
 }
+
 
 /* body {
   margin: 0;

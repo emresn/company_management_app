@@ -56,7 +56,7 @@ const NavbarView = (props: Props) => {
         <hr />
         <ul>
           {NavbarItems.map((e) => (
-            <NavLink to={e.route}>
+            <NavLink to={e.route} key={e.alt}>
               <li
                 key={e.alt}
                 className="mx-2 px-2 py-3 flex flex-row gap-3 items-center hover:bg-primary-700 rounded-xl "
