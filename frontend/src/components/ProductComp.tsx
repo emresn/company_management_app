@@ -50,7 +50,7 @@ const ProductComp = ({ product, idx }: Props) => {
             onClick={() => editButtonHandler()}
             className="absolute top-0 right-0"
           >
-            <UiButton color="success" size="sm" text="Edit" />{" "}
+            <UiButton color="success" size="sm" text="Edit" />
           </div>
         )}
       <div
@@ -61,7 +61,7 @@ const ProductComp = ({ product, idx }: Props) => {
           state.selectedIndex === idx
             ? "ring-1  ring-yellow-800"
             : ""
-        } flex flex-col bg-primary-100 hover:bg-gray-50 justify-between rounded-md p-2 border hover:border-sm hover:border-gray-400 cursor-pointer min-w-max`}
+        } flex flex-col bg-primary-100 hover:bg-gray-50 justify-between rounded-md p-2 border hover:border-sm hover:border-gray-400 cursor-pointer h-full`}
         onClick={() => selectHandler(product, idx)}
       >
         <div className="flex flex-col sm:flex-row justify-between items-start ">
@@ -83,12 +83,12 @@ const ProductComp = ({ product, idx }: Props) => {
               </div>
             </div>
           </div>
-          <img
+          <div><img
             className=""
             width={100}
             src={product.images[0].href}
             alt={product.name}
-          />
+          /></div>
         </div>
         <div className="flex flex-row justify-end items-end gap-1">
           <span title={productCreatedDate} className="text-xs">

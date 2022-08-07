@@ -1,4 +1,5 @@
 import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
+import alertSlice from '../viewModels/alertSlice';
 import productSlice from '../viewModels/productSlice';
 
 
@@ -7,6 +8,8 @@ export function makeStore() {
   return configureStore({
     reducer: {
       productState: productSlice,
+      alertState: alertSlice
+      
     },
   });
 }

@@ -1,14 +1,12 @@
-import React from "react";
 import { useSelector } from "react-redux";
 import ProductComp from "../../components/ProductComp";
 import { ProductDummy, ProductDummy2 } from "../../data/productDummy";
 import { Product } from "../../models/productModel";
 import { AppState } from "../../redux/store";
-import EditProductView from "./editProduct/EditProductView";
+import EditProductView from "./components/EditProductView";
 
-type Props = {};
 
-const ProductsView = (props: Props) => {
+const ProductsView = () => {
   const state = useSelector((state: AppState) => state.productState);
   const ProductList: Product[] = [
     ProductDummy,
