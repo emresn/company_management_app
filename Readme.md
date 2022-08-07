@@ -1,9 +1,8 @@
-### company_management_app
+### company_resource_management_app
 A simple company management system which keeps Customer, Product, Order and Payments data.
 
-**Backend :** Django
-**Frontend**: React
-
+- **Backend :** Django
+- **Frontend**: React.js
 
 ## Backend Setup
 ### Database Settings
@@ -22,11 +21,11 @@ SECRET_KEY="your secret key"
 ```
 
 ### Run Api Server
-`sudo service postgresql restart`
-`source ../venv/bin/activate`
-`python3 manage.py runserver`
+1. `sudo service postgresql restart`
+2. `source ../venv/bin/activate`
+3. `python3 manage.py runserver`
 
-
+----------
 ## Frontend Setup
 
 ### Install Dependencies
@@ -34,6 +33,9 @@ SECRET_KEY="your secret key"
 
 ### Run Server
 `yarn start`
+
+
+----------
 
 
 ### Django Commands
@@ -70,9 +72,10 @@ SECRET_KEY="your secret key"
 **generate dependencies**
 `pip freeze > requirements.txt`
 
-
 **Change Password**
 `python3 manage.py changepassword <user_name>`
+
+----------
 
 ### API Queries
 
@@ -149,9 +152,12 @@ Authorization: Token 8a56309d20072860016f3a23
 ```
 
 #### PUT, DELETE Requests
+
 **Order**
 ***http://localhost:8000/orders/api/[id]?format=json*** 
+
 **Customer**
 ***http://localhost:8000/customers/api/[id]?format=json*** 
+
 **Product**
 ***http://localhost:8000/products/api/[id]?format=json*** 
