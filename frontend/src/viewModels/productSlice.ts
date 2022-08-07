@@ -1,10 +1,12 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
+import {  backendProductFetchAPIUrl } from "../constants/routeConstants";
 import { Product } from "../models/productModel";
 import { AppState } from "../redux/store";
 
 export interface ProductState {
   status: "initial" | "loading" | "failed" | "success";
+  productList : Product[];
   isSelected: boolean;
   selectedProduct: Product | undefined;
   selectedIndex: number | undefined;
@@ -15,6 +17,7 @@ export interface ProductState {
 
 const initialState: ProductState = {
   status: "initial",
+  productList : [],
   isSelected: false,
   selectedProduct: undefined,
   selectedIndex: undefined,
@@ -45,6 +48,18 @@ export const DeleteProductAsync = createAsyncThunk(
   async () => {
     try {
       const test = await axios.get("https://dummyjson.com/products/1");
+      console.log(test);
+    } catch (error) {
+      throw new Error("error");
+    }
+  }
+);
+
+export const FetchProductsAsync = createAsyncThunk(
+  "ProductState/FetchProductsAsync",
+  async () => {
+    try {
+      const test = await axios.get(backendProductFetchAPIUrl);
       console.log(test);
     } catch (error) {
       throw new Error("error");
