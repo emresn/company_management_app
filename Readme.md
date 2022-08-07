@@ -1,5 +1,5 @@
-### dj-erp
-A simple ERP system which keeps Customer, Product, Order and Payments data.
+### company_management_app
+A simple company management system which keeps Customer, Product, Order and Payments data.
 
 **Backend :** Django
 **Frontend**: React
@@ -76,10 +76,35 @@ SECRET_KEY="your secret key"
 
 ### API Queries
 
+
+### Authentication
+`POST http://localhost:8000/api-token-auth/ username=username password=password`
+
+**Response**
+```json
+{"token": "8a56309d20072860016f3a23"}
+```
+**Error: (Status: 400 Bad Request)**
+```json
+{
+    "non_field_errors": [
+        "Unable to log in with provided credentials."
+    ]
+}
+```
+
+**API Request with Token**
+```http
+GET /products/api?format=json HTTP/1.1
+Host: 127.0.0.1:8000
+Authorization: Token 8a56309d20072860016f3a23
+```
+
+
 #### POST Requests
 
 **New Product**
-***http://localhost:8000/products/api***
+***http://localhost:8000/products/api?format=json***
 ```json
 {
   "name": "Product-18",
@@ -88,14 +113,14 @@ SECRET_KEY="your secret key"
     "4b0ccb54-6406-42ea-8ee7-7a2d89ae70d5",
     "db47c6ea-29cd-4369-8668-d054ae3875f2"
   ],
-  "description": "Şeffaf afsg",
+  "description": "White",
   "price": 4.25,
   "stock": 8000
 }
 ```
 
 ***New Order***
-***http://localhost:8000/orders/api***
+***http://localhost:8000/orders/api?format=json***
 ```json
 {
   "customer": "162eeb12-eff1-4fea-bd96-a0a56c2b461e",
@@ -109,7 +134,7 @@ SECRET_KEY="your secret key"
 ```
 
 **New Customer**
-***http://localhost:8000/customers/api***
+***http://localhost:8000/customers/api?format=json***
 ```json
 {
   "name": "ABC Inc.",
@@ -125,8 +150,8 @@ SECRET_KEY="your secret key"
 
 #### PUT, DELETE Requests
 **Order**
-***http://localhost:8000/orders/api/[id]*** 
+***http://localhost:8000/orders/api/[id]?format=json*** 
 **Customer**
-***http://localhost:8000/customers/api/[id]*** 
+***http://localhost:8000/customers/api/[id]?format=json*** 
 **Product**
-***http://localhost:8000/products/api/[id]*** 
+***http://localhost:8000/products/api/[id]?format=json*** 
