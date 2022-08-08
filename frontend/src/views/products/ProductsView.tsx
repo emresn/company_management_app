@@ -26,7 +26,7 @@ const ProductsView = () => {
       </div>
 
       {productState.status === "success" ? (
-        <div className="flex flex-row ">
+        <div className="flex flex-col sm:flex-row ">
           <div
             className={`w-full grid ${
               productState.editModeActive

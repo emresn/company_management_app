@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { backendAuthenticationUrl } from "../constants/routeConstants";
+import { AuthenticationUrl } from "../constants/apiRoutes";
 import { SiteConstants } from "../constants/siteConstants";
 import { AppState } from "../redux/store";
 
@@ -35,7 +35,7 @@ export const SignInAsync = createAsyncThunk(
       const formData = new FormData()
       formData.append("username", request.username)
       formData.append("password", request.password)
-      const response = await axios.post(backendAuthenticationUrl, formData);
+      const response = await axios.post(AuthenticationUrl, formData);
       if (response.status === 200) {
         const payload: AuthPayload = response.data;
         return payload;

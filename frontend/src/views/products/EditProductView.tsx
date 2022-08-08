@@ -1,18 +1,48 @@
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import FormElement from "../../components/FormElement";
 import UiButton from "../../components/ui/UiButton";
 import UiSpinner from "../../components/ui/UiSpinner";
-import { Product } from "../../models/productModel";
+import { Product, ProductEmpty } from "../../models/productModel";
 import { useAppDispatch } from "../../redux/hooks";
 import { AppState } from "../../redux/store";
 import { setAlert } from "../../viewModels/alertSlice";
-import { UpdateProductAsync } from "../../viewModels/productSlice";
+import { deactiveMsg, UpdateProductAsync } from "../../viewModels/productSlice";
 
 const EditProductView = () => {
-  const state = useSelector((state: AppState) => state.productState);
+  const state = useSelector((state: AppState) => state);
+  const productState = state.productState;
+  const authState = state.auth;
   const dispatch = useAppDispatch();
+  const [productUpdated, setProductUpdated] = useState<Product>(
+    productState.selectedProduct ?? ProductEmpty
+  );
 
-  function updateHandler() {
-    dispatch(UpdateProductAsync());
+  useEffect(() => {
+    if (
+      productState.message.isActive &&
+      productState.message.type === "success"
+    ) {
+      setTimeout(() => {
+        dispatch(deactiveMsg());
+      }, 2000);
+    }
+  }, [dispatch, productState]);
+
+  if (
+    productState.selectedProduct &&
+    productState.selectedProduct.id !== productUpdated.id
+  ) {
+    setProductUpdated(productState.selectedProduct);
+  }
+
+  function updateHandler(id: string) {
+    dispatch(
+      UpdateProductAsync({
+        token: authState.token,
+        productUpdated: productUpdated,
+      })
+    );
   }
 
   function deleteHandler() {
@@ -25,96 +55,104 @@ const EditProductView = () => {
     );
     // dispatch(DeleteProductAsync());
   }
-  const ProductUpdated: Product = {
-    id: "",
-    name: "",
-    code: "",
-    isActive: false,
-    images: [],
-    description: "",
-    stock: 0,
-    gr: 0,
-    createdAt: "",
-    updatedAt: "",
-  };
+
   return (
-    <div className="w-1/3 flex flex-col gap-1 px-2">
+    <div className="w-1/3 flex flex-col gap-1 px-2 w-full">
       <h4>Edit </h4>
-      {state.selectedProduct && (
+      {productState.selectedProduct && (
         <div className="flex flex-col gap-2">
-          <div className="flex flex-col mr-2">
-            <label htmlFor="product_code">Code</label>
-            <input
-              type="text"
-              onChange={(evt) => {
-                ProductUpdated.code = evt.target.value;
-              }}
-              className="p-1 border border-gray-500"
-              name="product_code"
-              id="product_code"
-              value={state.selectedProduct.code}
-            />
-          </div>
-          <div className="flex flex-col mr-2">
-            <label htmlFor="product_name">Name</label>
-            <input
-              type="text"
-              onChange={(evt) => {
-                ProductUpdated.name = evt.target.value;
-              }}
-              className="p-1 border border-gray-500"
-              name="product_name"
-              id="product_name"
-              value={state.selectedProduct.name}
-            />
-          </div>
-          <div className="flex flex-col mr-2">
-            <label htmlFor="Weight">Weight (gr.)</label>
-            <input
-              type="text"
-              onChange={(evt) => {
-                ProductUpdated.gr = parseFloat(evt.target.value);
-              }}
-              className="p-1 border border-gray-500"
-              name="Weight"
-              id="Weight"
-              value={state.selectedProduct.gr}
-            />
-          </div>
-          <div className="flex flex-col mr-2">
-            <label htmlFor="stock">Stock (pcs.)</label>
-            <input
-              type="text"
-              onChange={(evt) => {
-                ProductUpdated.gr = parseInt(evt.target.value);
-              }}
-              className="p-1 border border-gray-500"
-              name="stock"
-              id="stock"
-              value={state.selectedProduct.stock}
-            />
-          </div>
-          <div className="flex flex-col mr-2">
-            <label htmlFor="description">Description</label>
-            <input
-              type="text"
-              onChange={(evt) => {
-                ProductUpdated.description = evt.target.value;
-              }}
-              className="p-1 border border-gray-500"
-              name="description"
-              id="description"
-              value={state.selectedProduct.description}
-            />
-          </div>
+          <FormElement
+            id={"product_code"}
+            label={"Product Code"}
+            value={productUpdated.code}
+            type={"text"}
+            onChange={(evt) => {
+              setProductUpdated({
+                ...productUpdated,
+                code: evt.target.value,
+              });
+            }}
+          />
+
+          <FormElement
+            id={"product_name"}
+            label={"Name"}
+            value={productUpdated.name}
+            type={"text"}
+            onChange={(evt) => {
+              setProductUpdated({
+                ...productUpdated,
+                name: evt.target.value,
+              });
+            }}
+          />
+
+          <FormElement
+            id={"product_weight"}
+            label={"Weight (gr.)"}
+            value={productUpdated.gr}
+            type={"number"}
+            step={0.1}
+            onChange={(evt) => {
+              setProductUpdated({
+                ...productUpdated,
+                gr: parseFloat(evt.target.value),
+              });
+            }}
+          />
+
+          <FormElement
+            id={"product_stock"}
+            label={"Stock (pcs.)"}
+            value={productUpdated.stock}
+            type={"number"}
+            step={1}
+            onChange={(evt) => {
+              setProductUpdated({
+                ...productUpdated,
+                stock: parseInt(evt.target.value),
+              });
+            }}
+          />
+
+          <FormElement
+            id={"product_description"}
+            label={"Description"}
+            value={productUpdated.description}
+            type={"text"}
+            onChange={(evt) => {
+              setProductUpdated({
+                ...productUpdated,
+                description: evt.target.value,
+              });
+            }}
+          />
+
           <div className="flex flex-col mr-2">
             <label htmlFor="images">Images</label>
-            {state.selectedProduct.images.map((e, idx) => (
+            {productUpdated.images.map((e, idx) => (
               <input
                 key={e.id}
                 type="text"
                 onChange={(evt) => {
-                  ProductUpdated.images[idx].href = evt.target.value;
+                  if (productState.selectedProduct) {
+                    const imagesList =
+                      productState.selectedProduct.images.filter(
+                        (im) => im.id !== e.id
+                      );
+
+                    const imageUpdated = {
+                      id: e.id,
+                      href: evt.target.value,
+                    };
+
+                    imagesList.push(imageUpdated);
+
+                    setProductUpdated({
+                      ...productUpdated,
+                      images: imagesList,
+                    });
+                  }
                 }}
                 className="p-1 border border-gray-500"
                 name="images"
@@ -124,15 +162,38 @@ const EditProductView = () => {
             ))}
           </div>
 
-          <div className="flex flex-row justify-between items-end">
-            {state.isUpdateProceed ? (
+          {productState.message.isActive && (
+            <div
+              className={
+                productState.message.type === "error"
+                  ? "text-red-600"
+                  : productState.message.type === "success"
+                  ? "text-cinder-600"
+                  : productState.message.type === "warning"
+                  ? "text-yellow-800"
+                  : "text-dark"
+              }
+            >
+              {productState.message.text}
+            </div>
+          )}
+
+          <div className="flex flex-col sm:flex-row justify-between items-end">
+            {productState.isUpdateProceed ? (
               <UiSpinner />
             ) : (
-              <div className="" onClick={() => updateHandler()}>
+              <div
+                className=""
+                onClick={() => {
+                  if (productState.selectedProduct) {
+                    updateHandler(productState.selectedProduct.id);
+                  }
+                }}
+              >
                 <UiButton color="success" size="lg" text="Update" />
               </div>
             )}
-            {state.isDeleteProceed ? (
+            {productState.isDeleteProceed ? (
               <UiSpinner />
             ) : (
               <div onClick={() => deleteHandler()}>
