@@ -1,12 +1,12 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
-import {  backendProductFetchAPIUrl } from "../constants/routeConstants";
-import { Product } from "../models/productModel";
+import { backendProductFetchAPIUrl } from "../constants/routeConstants";
+import { Product, ProductFromResponse, ProductResponseModel } from "../models/productModel";
 import { AppState } from "../redux/store";
 
 export interface ProductState {
   status: "initial" | "loading" | "failed" | "success";
-  productList : Product[];
+  productList: Product[];
   isSelected: boolean;
   selectedProduct: Product | undefined;
   selectedIndex: number | undefined;
@@ -17,7 +17,7 @@ export interface ProductState {
 
 const initialState: ProductState = {
   status: "initial",
-  productList : [],
+  productList: [],
   isSelected: false,
   selectedProduct: undefined,
   selectedIndex: undefined,
@@ -25,11 +25,6 @@ const initialState: ProductState = {
   isUpdateProceed: false,
   isDeleteProceed: false,
 };
-
-export interface ProductPayload {
-  data: Product;
-  message: string;
-}
 
 export const UpdateProductAsync = createAsyncThunk(
   "ProductState/UpdateProductAsync",
@@ -57,12 +52,23 @@ export const DeleteProductAsync = createAsyncThunk(
 
 export const FetchProductsAsync = createAsyncThunk(
   "ProductState/FetchProductsAsync",
-  async () => {
+  async (token: string) => {
     try {
-      const test = await axios.get(backendProductFetchAPIUrl);
-      console.log(test);
+      const response = await axios.get(backendProductFetchAPIUrl, {
+        headers: {
+          Authorization: `Token ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.status === 200) {
+        return response.data;
+      }
     } catch (error) {
-      throw new Error("error");
+      if (axios.isAxiosError(error)) {
+        throw error.message;
+      } else {
+        throw error;
+      }
     }
   }
 );
@@ -115,6 +121,28 @@ export const productSlice = createSlice({
       })
       .addCase(DeleteProductAsync.rejected, (state) => {
         state.isDeleteProceed = false;
+      })
+      .addCase(FetchProductsAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(FetchProductsAsync.fulfilled, (state, action: PayloadAction<ProductResponseModel[]>) => {
+        state.status = "success";
+        const productList: Product[] = [];
+
+        if (action.payload) {
+          const resData = action.payload;
+          for (const i in resData) {
+            if (Object.prototype.hasOwnProperty.call(resData, i)) {
+              const productRes = resData[i];
+              productList.push(ProductFromResponse(productRes));
+            }
+          }
+        }
+
+        state.productList = productList;
+      })
+      .addCase(FetchProductsAsync.rejected, (state) => {
+        state.status = "failed";
       });
   },
 });

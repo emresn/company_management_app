@@ -12,6 +12,17 @@ export function makeStore() {
       alertState: alertSlice,
       auth: authSlice
     },
+    middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      // serializableCheck: {
+        // Ignore these action types
+        // ignoredActions: ['your/action/type'],
+        // Ignore these field paths in all actions
+        // ignoredActionPaths: ['ProductState/FetchProductsAsync/fulfilled', 'payload.config.adapter'],
+        // Ignore these paths in the state
+      //   ignoredActionPaths: ['payload.config.transformRequest', 'payload.config.adapter', 'payload.config.transformResponse'],
+      // },
+    }),
   });
 }
 
