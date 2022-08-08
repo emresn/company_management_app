@@ -17,7 +17,7 @@ const initialState: AuthState = {
   token: "",
   isProceed: false,
   message: "",
-  username : ""
+  username : "",
 };
 
 export interface AuthPayload {
@@ -36,7 +36,6 @@ export const SignInAsync = createAsyncThunk(
       formData.append("username", request.username)
       formData.append("password", request.password)
       const response = await axios.post(backendAuthenticationUrl, formData);
-      console.log(response);
       if (response.status === 200) {
         const payload: AuthPayload = response.data;
         return payload;

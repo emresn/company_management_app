@@ -1,11 +1,11 @@
 import { useSelector } from "react-redux";
-import UiButton from "../../../components/ui/UiButton";
-import UiSpinner from "../../../components/ui/UiSpinner";
-import { Product } from "../../../models/productModel";
-import { useAppDispatch } from "../../../redux/hooks";
-import { AppState } from "../../../redux/store";
-import { setAlert } from "../../../viewModels/alertSlice";
-import { UpdateProductAsync } from "../../../viewModels/productSlice";
+import UiButton from "../../components/ui/UiButton";
+import UiSpinner from "../../components/ui/UiSpinner";
+import { Product } from "../../models/productModel";
+import { useAppDispatch } from "../../redux/hooks";
+import { AppState } from "../../redux/store";
+import { setAlert } from "../../viewModels/alertSlice";
+import { UpdateProductAsync } from "../../viewModels/productSlice";
 
 const EditProductView = () => {
   const state = useSelector((state: AppState) => state.productState);

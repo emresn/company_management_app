@@ -5,7 +5,7 @@ import UiSpinner from "../../components/ui/UiSpinner";
 import { useAppDispatch } from "../../redux/hooks";
 import { AppState } from "../../redux/store";
 import { FetchProductsAsync } from "../../viewModels/productSlice";
-import EditProductView from "./components/EditProductView";
+import EditProductView from "./EditProductView";
 
 const ProductsView = () => {
   const state = useSelector((state: AppState) => state);
@@ -43,7 +43,7 @@ const ProductsView = () => {
           )}
         </div>
       ) : productState.status === "loading" ? (
-        <div>
+        <div className="absolute top-1/3 left-1/2">
           <UiSpinner />
         </div>
       ) : productState.status === "failed" ? (

@@ -15,9 +15,11 @@ const Layout = (props: Props) => {
   const state = useSelector((state: AppState) => state);
   const alertState = state.alertState;
   const dispatch = useAppDispatch();
+
   useEffect(() => {
     dispatch(checkAuthentication());
-  }, [dispatch]);
+  }, [dispatch])
+  
 
   return (
     <BrowserRouter>
@@ -34,7 +36,7 @@ const Layout = (props: Props) => {
         )}
         <div className="flex flex-row ">
           <NavbarView />
-          <div className="bg-light flex-auto">
+          <div className="bg-light flex-auto relative">
             <ApplicationRoutes />
           </div>
         </div>
