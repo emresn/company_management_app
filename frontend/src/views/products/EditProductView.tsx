@@ -7,7 +7,7 @@ import { Product, ProductEmpty } from "../../models/productModel";
 import { useAppDispatch } from "../../redux/hooks";
 import { AppState } from "../../redux/store";
 import { setAlert } from "../../viewModels/alertSlice";
-import { deactiveMsg, UpdateProductAsync } from "../../viewModels/productSlice";
+import { deactiveMsg, switchEditMode, UpdateProductAsync } from "../../viewModels/productSlice";
 
 const EditProductView = () => {
   const state = useSelector((state: AppState) => state);
@@ -58,7 +58,11 @@ const EditProductView = () => {
 
   return (
     <div className="w-1/3 flex flex-col gap-1 px-2 w-full">
+      <div className="flex flex-row justify-between items-center">
       <h4>Edit </h4>
+      <div className="cursor-pointer" onClick={()=>dispatch(switchEditMode())}><img width={24} src="/assets/close.svg" alt="close" ></img></div>
+
+      </div>
       {productState.selectedProduct && (
         <div className="flex flex-col gap-2">
           <FormElement
@@ -179,7 +183,7 @@ const EditProductView = () => {
           )}
 
           <div className="flex flex-col sm:flex-row justify-between items-end">
-            {productState.isUpdateProceed ? (
+            {productState.isAsyncProcessing ? (
               <UiSpinner />
             ) : (
               <div
@@ -193,7 +197,7 @@ const EditProductView = () => {
                 <UiButton color="success" size="lg" text="Update" />
               </div>
             )}
-            {productState.isDeleteProceed ? (
+            {productState.isAsyncProcessing ? (
               <UiSpinner />
             ) : (
               <div onClick={() => deleteHandler()}>

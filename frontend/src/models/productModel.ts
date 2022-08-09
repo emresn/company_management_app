@@ -59,7 +59,7 @@ export const ProductEmpty: Product = {
   name: "",
   code: "",
   isActive: false,
-  images: [],
+  images: [{id:"", href:""}],
   description: "",
   stock: 0,
   gr: 0,
@@ -67,7 +67,7 @@ export const ProductEmpty: Product = {
   updatedAt: "",
 };
 
-export const ProductUpdateRequestModel = (p: Product) => {
+export const ProductRequestModel = (p: Product) => {
   const productUpdRequest: ProductResponseModelWithoutDate = {
     id: p.id,
     name: p.name,
@@ -80,3 +80,5 @@ export const ProductUpdateRequestModel = (p: Product) => {
   };
   return productUpdRequest;
 };
+
+

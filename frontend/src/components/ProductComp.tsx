@@ -83,12 +83,12 @@ const ProductComp = ({ product, idx }: Props) => {
               </div>
             </div>
           </div>
-          <div><img
+         {product.images.length > 0 && <div><img
             className=""
             width={100}
             src={product.images[0].href}
             alt={product.name}
-          /></div>
+          /></div>}
         </div>
         <div className="flex flex-row justify-end items-end gap-1">
           <span title={productCreatedDate} className="text-xs">

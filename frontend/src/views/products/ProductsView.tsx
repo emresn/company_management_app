@@ -1,10 +1,12 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import ProductComp from "../../components/ProductComp";
+import UiButton from "../../components/ui/UiButton";
 import UiSpinner from "../../components/ui/UiSpinner";
 import { useAppDispatch } from "../../redux/hooks";
 import { AppState } from "../../redux/store";
-import { FetchProductsAsync } from "../../viewModels/productSlice";
+import { FetchProductsAsync, switchAddMode } from "../../viewModels/productSlice";
+import AddProductView from "./AddProductView";
 import EditProductView from "./EditProductView";
 
 const ProductsView = () => {
@@ -22,7 +24,10 @@ const ProductsView = () => {
   return (
     <div className="flex flex-col ">
       <div id="title" className="bg-gray-300 px-4">
-        <h4 className="">Products</h4>
+        <div className="flex flex-row justify-between items-center">
+          <h4 className="">Products</h4>  
+          <div onClick={()=>dispatch(switchAddMode())}><UiButton color="success" text="New Product" size="sm" /></div>
+        </div>
       </div>
 
       {productState.status === "success" ? (
@@ -40,6 +45,9 @@ const ProductsView = () => {
           </div>
           {productState.editModeActive && productState.selectedProduct && (
             <EditProductView />
+          )}
+          {productState.addModeActive &&  (
+            <AddProductView />
           )}
         </div>
       ) : productState.status === "loading" ? (
