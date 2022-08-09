@@ -3,22 +3,20 @@ from rest_framework import serializers
 from .models import Image, Product
 
 class ImageSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Image
         fields = ['id','href']
+    
+    def create(self, validated_data):
+        instance = super().create(validated_data)
+        print(instance)
+        serializer = ImageSerializer(instance)
+        return serializer
+
 
 class ProductSerializer(serializers.ModelSerializer):
 
     images = ImageSerializer(many=True, read_only=True)
-
-
-    # images = serializers.SlugRelatedField(
-    #     many=True,
-    #     read_only=True,
-    #     slug_field='id'
-    # )
-
 
     class Meta:
         model = Product

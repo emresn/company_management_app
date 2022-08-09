@@ -1,10 +1,42 @@
-from .models import  Product
-from .serializers import  ProductSerializer
+from .models import  Image, Product
+from .serializers import  ImageSerializer, ProductSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import permissions
 
+
+class ImageApiView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    def get_object(self, id):
+        try:
+            return Image.objects.get(id=id)
+        except Image.DoesNotExist:
+            return None
+
+    # 3. Retrieve
+    def get(self, request, id, *args, **kwargs):
+        image_instance = self.get_object(id)
+        if not image_instance:
+            return Response(
+                {"res": "Object with todo id does not exists"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        serializer = ImageSerializer(image_instance)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request, *args, **kwargs):
+        data = {
+            "href": request.data.get('href') 
+        }
+        serializer = ImageSerializer(data=data)
+       
+        if serializer.is_valid():
+            new_serializer = serializer.create(data)
+            return Response(new_serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ProductListApiView(APIView):
