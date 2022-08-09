@@ -67,8 +67,10 @@ class ProductDetailApiView(APIView):
             )
         data = {
             "name": request.data.get('name'),
+            "code": request.data.get('code'),
             "description": request.data.get('description'),
             "stock": request.data.get('stock'),
+            "gr": request.data.get('gr'),
             "is_active": request.data.get('is_active'),
             "images": request.data.get('images'),
         }
