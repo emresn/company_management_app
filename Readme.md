@@ -113,13 +113,19 @@ Authorization: Token 8a56309d20072860016f3a23
   "name": "Product-18",
   "is_active": true,
   "images": [
-    "4b0ccb54-6406-42ea-8ee7-7a2d89ae70d5",
-    "db47c6ea-29cd-4369-8668-d054ae3875f2"
+    {"href":"https://picsum.photos/200/300"}
+    {"href":"https://picsum.photos/200/300"}
   ],
   "description": "White",
   "price": 4.25,
   "stock": 8000
 }
+```
+
+**New Product Image**
+***http://localhost:8000/products/api/image/?format=json***
+```json
+{"id":"1b1ae4be-9140-464c-ac96-9e2868a912ea","href":"https://picsum.photos/200/300"}
 ```
 
 ***New Order***
