@@ -1,4 +1,4 @@
-### company_resource_management_app
+### company_management_app
 A simple company management system which keeps Customer, Product, Order and Payments data.
 
 - **Backend :** Django
