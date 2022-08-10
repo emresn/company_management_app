@@ -6,7 +6,7 @@ import { SiteConstants } from "../../constants/siteConstants";
 import { NavbarItems } from "../../data/navbarItems";
 import { useAppDispatch } from "../../redux/hooks";
 import { AppState } from "../../redux/store";
-import { signOut } from "../../viewModels/authSlice";
+import { signOut } from "../../stores/authSlice";
 
 type Props = {};
 

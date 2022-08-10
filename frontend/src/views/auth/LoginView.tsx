@@ -4,7 +4,7 @@ import UiSpinner from "../../components/ui/UiSpinner";
 import { homeRoute } from "../../constants/routeConstants";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { AppState } from "../../redux/store";
-import { SignInAsync } from "../../viewModels/authSlice";
+import { SignInAsync } from "../../services/auth/signIn";
 
 const LoginView = () => {
   const authState = useAppSelector((state: AppState) => state.auth);

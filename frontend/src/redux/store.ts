@@ -1,7 +1,7 @@
 import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
-import alertSlice from '../viewModels/alertSlice';
-import authSlice from '../viewModels/authSlice';
-import productSlice from '../viewModels/productSlice';
+import alertSlice from '../stores/alertSlice';
+import authSlice from '../stores/authSlice';
+import productSlice from '../stores/productSlice';
 
 
 

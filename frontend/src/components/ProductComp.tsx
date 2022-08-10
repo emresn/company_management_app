@@ -6,7 +6,7 @@ import {
   selectProduct,
   switchEditMode,
   unSelectProduct,
-} from "../viewModels/productSlice";
+} from "../stores/productSlice";
 import UiButton from "./ui/UiButton";
 
 type Props = {

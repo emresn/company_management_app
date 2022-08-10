@@ -1,22 +1,24 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { initMessage, MessageModel } from "../models/messageModel";
 import { AppState } from "../redux/store";
 
 export interface AlertState {
-  alertType: "none" | "success" | "warning" | "danger";
   title: string;
-  message: string;
+  message: MessageModel;
+  isApproved: boolean;
+  
 }
 
 const initialState: AlertState = {
-  alertType: "none",
   title: "",
-  message: "",
+  message: initMessage(),
+  isApproved: false,
+  
 };
 
 export interface AlertPayload {
-  alertType: "none" | "success" | "warning" | "danger",
-  title: string,
-  message:string,
+  title: string;
+  message: MessageModel;
 }
 
 export const alertSlice = createSlice({
@@ -24,20 +26,23 @@ export const alertSlice = createSlice({
   initialState,
   reducers: {
     closeAlert: (state: AlertState) => {
-      state.alertType = "none";
-      state.message = "";
-      state.title = "";
+      state.title= ""
+      state.message = initMessage()
+      state.isApproved= false
     },
-    setAlert: (state: AlertState, action: PayloadAction<AlertPayload> ) => {
-      state.alertType = action.payload.alertType;
+    setAlert: (state: AlertState, action: PayloadAction<AlertPayload>) => {
       state.message = action.payload.message;
       state.title = action.payload.title;
     },
+    switchisApproved: (state: AlertState, action :PayloadAction<boolean>) => {
+      state.isApproved = action.payload;
+    },
+    
+
   },
- 
 });
 
-export const { closeAlert,setAlert } = alertSlice.actions;
+export const { closeAlert, setAlert, switchisApproved } = alertSlice.actions;
 
 export const selectAlertState = (state: AppState) => state.alertState;
 

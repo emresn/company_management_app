@@ -5,7 +5,8 @@ import UiButton from "../../components/ui/UiButton";
 import UiSpinner from "../../components/ui/UiSpinner";
 import { useAppDispatch } from "../../redux/hooks";
 import { AppState } from "../../redux/store";
-import { FetchProductsAsync, switchAddMode } from "../../viewModels/productSlice";
+import { FetchProductsAsync } from "../../services/product/fetchProducts";
+import {  switchAddMode } from "../../stores/productSlice";
 import AddProductView from "./AddProductView";
 import EditProductView from "./EditProductView";
 

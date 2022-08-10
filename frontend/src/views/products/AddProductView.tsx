@@ -6,11 +6,11 @@ import UiSpinner from "../../components/ui/UiSpinner";
 import { Product, ProductEmpty } from "../../models/productModel";
 import { useAppDispatch } from "../../redux/hooks";
 import { AppState } from "../../redux/store";
+import { AddProductAsync } from "../../services/product/addProducts";
 import {
-  AddProductAsync,
   deactiveMsg,
   switchAddMode,
-} from "../../viewModels/productSlice";
+} from "../../stores/productSlice";
 
 const AddProductView = () => {
   const state = useSelector((state: AppState) => state);

@@ -3,16 +3,23 @@ import { useSelector } from "react-redux";
 import FormElement from "../../components/FormElement";
 import UiButton from "../../components/ui/UiButton";
 import UiSpinner from "../../components/ui/UiSpinner";
+import { warningMessage } from "../../models/messageModel";
 import { Product, ProductEmpty } from "../../models/productModel";
 import { useAppDispatch } from "../../redux/hooks";
 import { AppState } from "../../redux/store";
-import { setAlert } from "../../viewModels/alertSlice";
-import { deactiveMsg, switchEditMode, UpdateProductAsync } from "../../viewModels/productSlice";
+import { DeleteProductAsync } from "../../services/product/deleteProduct";
+import { UpdateProductAsync } from "../../services/product/updateProduct";
+import { closeAlert, setAlert } from "../../stores/alertSlice";
+import {
+  deactiveMsg,
+  switchEditMode,
+} from "../../stores/productSlice";
 
 const EditProductView = () => {
   const state = useSelector((state: AppState) => state);
   const productState = state.productState;
   const authState = state.auth;
+  const alertState = state.alertState;
   const dispatch = useAppDispatch();
   const [productUpdated, setProductUpdated] = useState<Product>(
     productState.selectedProduct ?? ProductEmpty
@@ -27,7 +34,20 @@ const EditProductView = () => {
         dispatch(deactiveMsg());
       }, 2000);
     }
-  }, [dispatch, productState]);
+    if (alertState.isApproved && !productState.isAsyncProcessing) {
+      
+      dispatch(
+        DeleteProductAsync(
+          {
+            token: authState.token,
+            id: productUpdated.id,
+          }
+        )
+      );
+      dispatch(closeAlert())
+      
+    }
+  }, [dispatch, productState, alertState, productUpdated, authState]);
 
   if (
     productState.selectedProduct &&
@@ -45,23 +65,30 @@ const EditProductView = () => {
     );
   }
 
-  function deleteHandler() {
+  function deleteWarning() {
     dispatch(
       setAlert({
-        alertType: "warning",
         title: "Are You sure?",
-        message: "This product will be deleted. Do you want to continue?",
+        message: warningMessage(
+          "This product will be deleted. Do you want to continue?"
+        ),
       })
     );
     // dispatch(DeleteProductAsync());
   }
 
+  
+
   return (
     <div className="w-1/3 flex flex-col gap-1 px-2 w-full">
       <div className="flex flex-row justify-between items-center">
-      <h4>Edit </h4>
-      <div className="cursor-pointer" onClick={()=>dispatch(switchEditMode())}><img width={24} src="/assets/close.svg" alt="close" ></img></div>
-
+        <h4>Edit </h4>
+        <div
+          className="cursor-pointer"
+          onClick={() => dispatch(switchEditMode())}
+        >
+          <img width={24} src="/assets/close.svg" alt="close"></img>
+        </div>
       </div>
       {productState.selectedProduct && (
         <div className="flex flex-col gap-2">
@@ -200,7 +227,7 @@ const EditProductView = () => {
             {productState.isAsyncProcessing ? (
               <UiSpinner />
             ) : (
-              <div onClick={() => deleteHandler()}>
+              <div onClick={() => deleteWarning()}>
                 <UiButton color="danger" size="sm" text="Delete Product" />
               </div>
             )}
