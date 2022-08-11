@@ -1,6 +1,7 @@
 import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
 import alertSlice from '../stores/alertSlice';
 import authSlice from '../stores/authSlice';
+import notificationSlice from '../stores/notificationSlice';
 import productSlice from '../stores/productSlice';
 
 
@@ -8,9 +9,10 @@ import productSlice from '../stores/productSlice';
 export function makeStore() {
   return configureStore({
     reducer: {
-      productState: productSlice,
       alertState: alertSlice,
-      auth: authSlice
+      notificationState: notificationSlice,
+      auth: authSlice,
+      productState: productSlice,
     },
     middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
