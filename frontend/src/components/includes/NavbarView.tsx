@@ -47,20 +47,20 @@ const NavbarView = (props: Props) => {
   }
   return (
     <nav className={`${menuIsOpen ? "min-w-max" : ""} h-screen relative`}>
-      <div className="flex flex-col h-full justify-between ">
+      <div className="flex flex-col h-full justify-between items-center ">
         <NavLink to={homeRoute}>
           <div
             className={
               menuIsOpen
-                ? "text-lg font-bold m-2 p-4 text-center"
-                : "text-sm flex flex-wrap p-1 m-2 w-12"
+                ? "text-lg font-bold my-8 mx-4 p-4 text-center"
+                : "text-sm  py-2 px-1 my-8 w-12 text-center"
             }
           >
             {menuIsOpen ? SiteConstants.siteName : SiteConstants.shortName}
           </div>
         </NavLink>
 
-        <div className="absolute top-0 right-0">
+        <div className="absolute top-0 right-0 p-2">
           {menuIsOpen ? <CloseMenu /> : <ExpandMenu />}
         </div>
 
@@ -80,9 +80,9 @@ const NavbarView = (props: Props) => {
         </ul>
         <div className="flex-auto"></div>
 
-        <div className="m-2">
+        <div className="w-full">
           {authState.isAuthenticated ? (
-            <div className="flex flex-row justify-between items-center">
+            <div className="flex flex-row justify-between items-center m-2 ">
              {menuIsOpen && <div
                 className={`border border-light ${
                   menuIsOpen ? "p-3" : "p-1"

@@ -6,7 +6,7 @@ import UiSpinner from "../../components/ui/UiSpinner";
 import { useAppDispatch } from "../../redux/hooks";
 import { AppState } from "../../redux/store";
 import { FetchProductsAsync } from "../../services/product/fetchProducts";
-import {  switchAddMode } from "../../stores/productSlice";
+import { switchAddMode } from "../../stores/productSlice";
 import AddProductView from "./AddProductView";
 import EditProductView from "./EditProductView";
 
@@ -14,6 +14,7 @@ const ProductsView = () => {
   const state = useSelector((state: AppState) => state);
   const productState = state.productState;
   const authState = state.auth;
+ 
 
   const dispatch = useAppDispatch();
 
@@ -26,8 +27,10 @@ const ProductsView = () => {
     <div className="flex flex-col ">
       <div id="title" className="bg-gray-300 px-4">
         <div className="flex flex-row justify-between items-center">
-          <h4 className="">Products</h4>  
-          <div onClick={()=>dispatch(switchAddMode())}><UiButton color="success" text="New Product" size="sm" /></div>
+          <h4 className="">Products</h4>
+          <div onClick={() => dispatch(switchAddMode())}>
+            <UiButton color="success" text="New Product" size="sm" />
+          </div>
         </div>
       </div>
 
@@ -47,9 +50,7 @@ const ProductsView = () => {
           {productState.editModeActive && productState.selectedProduct && (
             <EditProductView />
           )}
-          {productState.addModeActive &&  (
-            <AddProductView />
-          )}
+          {productState.addModeActive && <AddProductView />}
         </div>
       ) : productState.status === "loading" ? (
         <div className="absolute top-1/3 left-1/2">

@@ -1,13 +1,16 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { initMessage, MessageModel } from "../models/messageModel";
 import { AppState } from "../redux/store";
+import { makeId } from "../utils/randomId";
 
 export interface NotificationState {
   message: MessageModel;
+  id : string;
 }
 
 const initialState: NotificationState = {
   message: initMessage(),
+  id: ""
 };
 
 export interface NotificationPayload {
@@ -20,12 +23,16 @@ export const NotificationSlice = createSlice({
   reducers: {
     closeNotification: (state: NotificationState) => {
       state.message = initMessage();
+      state.id = makeId(16)
+      
     },
     setNotification: (
       state: NotificationState,
       action: PayloadAction<NotificationPayload>
     ) => {
       state.message = action.payload.message;
+      state.id = makeId(16)
+     
     },
   },
 });

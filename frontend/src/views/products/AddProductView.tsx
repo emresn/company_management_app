@@ -7,10 +7,8 @@ import { Product, ProductEmpty } from "../../models/productModel";
 import { useAppDispatch } from "../../redux/hooks";
 import { AppState } from "../../redux/store";
 import { AddProductAsync } from "../../services/product/addProducts";
-import {
-  deactiveMsg,
-  switchAddMode,
-} from "../../stores/productSlice";
+import { setNotification } from "../../stores/notificationSlice";
+import { switchAddMode } from "../../stores/productSlice";
 
 const AddProductView = () => {
   const state = useSelector((state: AppState) => state);
@@ -20,17 +18,19 @@ const AddProductView = () => {
   const [newProduct, setNewProduct] = useState<Product>(ProductEmpty);
 
   useEffect(() => {
-    if (
-      productState.message.isActive &&
-      productState.message.type === "success"
-    ) {
-      setTimeout(() => {
-        dispatch(deactiveMsg());
-      }, 2000);
-    }
-
-    if (productState.isAddSuccess) {
+    if (productState.asyncStatus === "success") {
       setNewProduct(ProductEmpty);
+    }
+    if (
+      (productState.asyncStatus === "success" ||
+        productState.asyncStatus === "failed")
+    ) {
+      dispatch(
+        setNotification({
+          message: productState.message,
+        })
+      );
+      dispatch(switchAddMode())
     }
   }, [dispatch, productState]);
 
@@ -135,23 +135,7 @@ const AddProductView = () => {
           />
         </div>
 
-        {productState.message.isActive && (
-          <div
-            className={
-              productState.message.type === "error"
-                ? "text-red-600"
-                : productState.message.type === "success"
-                ? "text-cinder-600"
-                : productState.message.type === "warning"
-                ? "text-yellow-800"
-                : "text-dark"
-            }
-          >
-            {productState.message.text}
-          </div>
-        )}
-
-        {productState.isAsyncProcessing ? (
+        {productState.asyncStatus === "loading" ? (
           <UiSpinner />
         ) : (
           <div

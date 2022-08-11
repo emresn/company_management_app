@@ -24,8 +24,7 @@ export interface ProductState {
   selectedIndex: number | undefined;
   editModeActive: boolean;
   addModeActive: boolean;
-  isAddSuccess: boolean;
-  isAsyncProcessing: boolean;
+  asyncStatus: "initial" | "loading" | "failed" | "success";
   message: MessageModel;
 }
 
@@ -37,14 +36,9 @@ const initialState: ProductState = {
   selectedIndex: undefined,
   editModeActive: false,
   addModeActive: false,
-  isAddSuccess: false,
-  isAsyncProcessing: false,
+  asyncStatus: "initial",
   message: initMessage(),
 };
-
-
-
-
 
 export const productSlice = createSlice({
   name: "ProductState",
@@ -57,10 +51,20 @@ export const productSlice = createSlice({
         state.selectedIndex = undefined;
         state.selectedProduct = undefined;
         state.editModeActive = false;
+        state.message = initMessage();
+        state.isSelected = false;
+        state.selectedIndex = undefined;
+        state.selectedProduct = undefined;
+        state.asyncStatus = "initial";
       }
     },
     switchAddMode: (state: ProductState) => {
       state.addModeActive = !state.addModeActive;
+      state.message = initMessage();
+      state.isSelected = false;
+      state.selectedIndex = undefined;
+      state.selectedProduct = undefined;
+      state.asyncStatus = "initial";
     },
     unSelectProduct: (state: ProductState) => {
       state.isSelected = false;
@@ -75,9 +79,6 @@ export const productSlice = createSlice({
       state.isSelected = true;
       state.selectedProduct = action.payload.product;
       state.selectedIndex = action.payload.index;
-    },
-    deactiveMsg: (state: ProductState) => {
-      state.message.isActive = false;
     },
   },
 
@@ -107,72 +108,66 @@ export const productSlice = createSlice({
       )
       .addCase(FetchProductsAsync.rejected, (state) => {
         state.status = "failed";
+        state.message = errorMessage("Error while fetching product");
       })
 
       .addCase(AddProductAsync.pending, (state) => {
-        state.isAsyncProcessing = true;
+        state.asyncStatus = "loading";
       })
       .addCase(AddProductAsync.fulfilled, (state, action) => {
-        state.isAsyncProcessing = false;
         if (action.payload) {
           const resData: ProductResponseModel = action.payload;
           const product = ProductFromResponse(resData);
           const updatedList = [...state.productList, product];
           state.productList = updatedList;
           state.selectedProduct = product;
-          state.isAddSuccess = true;
-          state.message = successMessage("Successfully added");
+          state.asyncStatus = "success";
+          state.message = successMessage("Successfully added.");
+          
         }
       })
       .addCase(AddProductAsync.rejected, (state) => {
-        state.isAsyncProcessing = false;
-        state.message = errorMessage("Error");
+        state.asyncStatus = "failed";
+        state.message = errorMessage("Error while adding product");
       })
 
       .addCase(UpdateProductAsync.pending, (state) => {
-        state.isAsyncProcessing = true;
+        state.asyncStatus = "loading";
       })
       .addCase(UpdateProductAsync.fulfilled, (state, action) => {
-        state.isAsyncProcessing = false;
         if (action.payload) {
           const resData: ProductResponseModel = action.payload;
           const idx = state.productList.findIndex((e) => e.id === resData.id);
           state.productList[idx] = ProductFromResponse(resData);
           state.selectedProduct = ProductFromResponse(resData);
+          state.asyncStatus = "success";
           state.message = successMessage("Successfully updated");
         }
       })
       .addCase(UpdateProductAsync.rejected, (state) => {
-        state.isAsyncProcessing = false;
+        state.asyncStatus = "failed";
+        state.message = errorMessage("Error while updating product");
       })
 
       .addCase(DeleteProductAsync.pending, (state) => {
-        state.isAsyncProcessing = true;
+        state.asyncStatus = "loading";
       })
       .addCase(DeleteProductAsync.fulfilled, (state, action) => {
-        state.isAsyncProcessing = false;
         state.productList = state.productList.filter(
           (p) => p.id !== action.payload
         );
-        state.isSelected = false;
-        state.selectedIndex = undefined;
-        state.selectedProduct = undefined;
-        state.editModeActive = false;
+        state.asyncStatus = "success";
+        state.message = successMessage("Successfully deleted.");
       })
       .addCase(DeleteProductAsync.rejected, (state) => {
-        state.isAsyncProcessing = false;
-        state.message = errorMessage("Error");
+        state.asyncStatus = "failed";
+        state.message = errorMessage("Error while deleting product");
       });
   },
 });
 
-export const {
-  selectProduct,
-  unSelectProduct,
-  switchEditMode,
-  deactiveMsg,
-  switchAddMode,
-} = productSlice.actions;
+export const { selectProduct, unSelectProduct, switchEditMode, switchAddMode } =
+  productSlice.actions;
 
 export const selectProductState = (state: AppState) => state.productState;
 

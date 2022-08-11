@@ -3,6 +3,7 @@ import {
   customersRoute,
   homeRoute,
   loginRoute,
+  notificationsTestRoutes,
   ordersRoute,
   paymentsRoute,
   productsRoute,
@@ -15,6 +16,7 @@ import HomeView from "../views/home/HomeView";
 import OrdersView from "../views/orders/OrdersView";
 import PaymentsView from "../views/payments/PaymentsView";
 import ProductsView from "../views/products/ProductsView";
+import NotificationsTest from "../views/test/NotificationsTest";
 import UiButtonsPage from "../views/test/UiButtons";
 import UiSpinnerPage from "../views/test/UiSpinner";
 import RequireAuth from "./requireAuth";
@@ -30,6 +32,7 @@ const AppRoutes = () => {
       <Route path={customersRoute} element={<RequireAuth><CustomersView /></RequireAuth>} />
       <Route path={uiButtonsRoutes} element={<UiButtonsPage />} />
       <Route path={uiSpinnerRoutes} element={<UiSpinnerPage />} />
+      <Route path={notificationsTestRoutes} element={<NotificationsTest />} />
       <Route path={loginRoute} element={<LoginView />} />
     </Routes>
   );

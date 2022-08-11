@@ -25,11 +25,11 @@ const UiNotification = ({ message }: Props) => {
 
   const colorStr =
     message.type === "success"
-      ? "bg-indigo-300"
+      ? "bg-green-200 border border-green-500"
       : message.type === "error"
-      ? "bg-red-300"
+      ? "bg-red-300 border border-red-500"
       : message.type === "warning"
-      ? "bg-yellow-300"
+      ? "bg-yellow-300 border border-yellow-500"
       : "";
   return (
     <div className={`${!message.isActive && 'invisible'} `}>

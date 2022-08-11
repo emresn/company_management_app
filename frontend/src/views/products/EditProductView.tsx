@@ -10,44 +10,52 @@ import { AppState } from "../../redux/store";
 import { DeleteProductAsync } from "../../services/product/deleteProduct";
 import { UpdateProductAsync } from "../../services/product/updateProduct";
 import { closeAlert, setAlert } from "../../stores/alertSlice";
-import {
-  deactiveMsg,
-  switchEditMode,
-} from "../../stores/productSlice";
+import { setNotification } from "../../stores/notificationSlice";
+import { switchEditMode } from "../../stores/productSlice";
 
 const EditProductView = () => {
   const state = useSelector((state: AppState) => state);
   const productState = state.productState;
   const authState = state.auth;
   const alertState = state.alertState;
+  const notificationState = state.notificationState;
+
   const dispatch = useAppDispatch();
   const [productUpdated, setProductUpdated] = useState<Product>(
     productState.selectedProduct ?? ProductEmpty
   );
 
   useEffect(() => {
-    if (
-      productState.message.isActive &&
-      productState.message.type === "success"
-    ) {
-      setTimeout(() => {
-        dispatch(deactiveMsg());
-      }, 2000);
-    }
-    if (alertState.isApproved && !productState.isAsyncProcessing) {
-      
+    if (alertState.isApproved) {
       dispatch(
-        DeleteProductAsync(
-          {
-            token: authState.token,
-            id: productUpdated.id,
-          }
-        )
+        DeleteProductAsync({
+          token: authState.token,
+          id: productUpdated.id,
+        })
       );
-      dispatch(closeAlert())
-      
+      dispatch(closeAlert());
     }
-  }, [dispatch, productState, alertState, productUpdated, authState]);
+    if (
+      (productState.asyncStatus === "success" ||
+        productState.asyncStatus === "failed")
+    ) {
+      dispatch(
+        setNotification({
+          message: productState.message,
+        })
+      );
+      dispatch(switchEditMode())
+    }
+
+    
+  }, [
+    dispatch,
+    productState,
+    alertState,
+    productUpdated,
+    authState,
+    notificationState,
+  ]);
 
   if (
     productState.selectedProduct &&
@@ -76,8 +84,6 @@ const EditProductView = () => {
     );
     // dispatch(DeleteProductAsync());
   }
-
-  
 
   return (
     <div className="w-1/3 flex flex-col gap-1 px-2 w-full">
@@ -193,24 +199,8 @@ const EditProductView = () => {
             ))}
           </div>
 
-          {productState.message.isActive && (
-            <div
-              className={
-                productState.message.type === "error"
-                  ? "text-red-600"
-                  : productState.message.type === "success"
-                  ? "text-cinder-600"
-                  : productState.message.type === "warning"
-                  ? "text-yellow-800"
-                  : "text-dark"
-              }
-            >
-              {productState.message.text}
-            </div>
-          )}
-
           <div className="flex flex-col sm:flex-row justify-between items-end">
-            {productState.isAsyncProcessing ? (
+            {productState.asyncStatus === "loading" ? (
               <UiSpinner />
             ) : (
               <div
@@ -224,7 +214,7 @@ const EditProductView = () => {
                 <UiButton color="success" size="lg" text="Update" />
               </div>
             )}
-            {productState.isAsyncProcessing ? (
+            {productState.asyncStatus === "loading" ? (
               <UiSpinner />
             ) : (
               <div onClick={() => deleteWarning()}>
