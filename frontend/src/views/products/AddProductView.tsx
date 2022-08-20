@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import FormElement from "../../components/FormElement";
+import ImageForm from "../../components/ImageForm";
 import UiButton from "../../components/ui/UiButton";
 import UiSpinner from "../../components/ui/UiSpinner";
 import { Product, ProductEmpty } from "../../models/productModel";
@@ -22,15 +23,15 @@ const AddProductView = () => {
       setNewProduct(ProductEmpty);
     }
     if (
-      (productState.asyncStatus === "success" ||
-        productState.asyncStatus === "failed")
+      productState.asyncStatus === "success" ||
+      productState.asyncStatus === "failed"
     ) {
       dispatch(
         setNotification({
           message: productState.message,
         })
       );
-      dispatch(switchAddMode())
+      dispatch(switchAddMode());
     }
   }, [dispatch, productState]);
 
@@ -109,31 +110,10 @@ const AddProductView = () => {
           }}
         />
 
-        <div className="flex flex-col mr-2">
-          <label htmlFor="images">Images</label>
-          <input
-            type="text"
-            onChange={(evt) => {
-              const imagesList = [];
-
-              const image = {
-                id: "",
-                href: evt.target.value,
-              };
-
-              imagesList.push(image);
-
-              setNewProduct({
-                ...newProduct,
-                images: imagesList,
-              });
-            }}
-            className="p-1 border border-gray-500"
-            name="images"
-            id="images"
-            value={newProduct.images[0].href || ""}
-          />
-        </div>
+        <ImageForm
+          productUpdated={newProduct}
+          setProductUpdated={setNewProduct}
+        />
 
         {productState.asyncStatus === "loading" ? (
           <UiSpinner />

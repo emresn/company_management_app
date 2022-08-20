@@ -1,4 +1,4 @@
-import { ProductImage } from "./productImageModel";
+import { ProductImage, ProductImageWithoutID } from "./productImageModel";
 
 export type Product = {
   id: string;
@@ -26,12 +26,11 @@ export type ProductResponseModel = {
   updated_at: string;
 };
 
-export type ProductResponseModelWithoutDate = {
-  id: string;
+export type ProductResponseModelWithoudID = {
   name: string;
   code: string;
   is_active: boolean;
-  images: ProductImage[];
+  images: ProductImageWithoutID[];
   description: string;
   stock: number;
   gr: number;
@@ -68,12 +67,12 @@ export const ProductEmpty: Product = {
 };
 
 export const ProductRequestModel = (p: Product) => {
-  const productUpdRequest: ProductResponseModelWithoutDate = {
-    id: p.id,
+  const imagesWithoutId =  ProductImagesWithoutID(p.images)
+  const productUpdRequest: ProductResponseModelWithoudID = {
     name: p.name,
     code: p.code,
     is_active: p.isActive,
-    images: p.images,
+    images: imagesWithoutId,
     description: p.description,
     stock: p.stock,
     gr: p.gr,
@@ -81,4 +80,13 @@ export const ProductRequestModel = (p: Product) => {
   return productUpdRequest;
 };
 
-
+export const ProductImagesWithoutID= (imageList : ProductImage[]) => {
+  const newList = []
+  for (const i in imageList) {
+    if (Object.prototype.hasOwnProperty.call(imageList, i)) {
+      const image : ProductImageWithoutID= {href: imageList[i].href}
+      newList.push(image)
+    }
+  }
+  return newList;
+}

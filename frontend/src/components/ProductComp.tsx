@@ -83,7 +83,7 @@ const ProductComp = ({ product, idx }: Props) => {
               </div>
             </div>
           </div>
-         {product.images.length > 0 && <div><img
+         {product.images.length > 0 && product.images[0].href !=="" && <div><img
             className=""
             width={100}
             src={product.images[0].href}

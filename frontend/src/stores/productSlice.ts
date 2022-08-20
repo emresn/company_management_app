@@ -15,6 +15,7 @@ import { AddProductAsync } from "../services/product/addProducts";
 import { DeleteProductAsync } from "../services/product/deleteProduct";
 import { FetchProductsAsync } from "../services/product/fetchProducts";
 import { UpdateProductAsync } from "../services/product/updateProduct";
+import { ProductImage } from "../models/productImageModel";
 
 export interface ProductState {
   status: "initial" | "loading" | "failed" | "success";
@@ -80,6 +81,22 @@ export const productSlice = createSlice({
       state.selectedProduct = action.payload.product;
       state.selectedIndex = action.payload.index;
     },
+    addImageField: (state: ProductState) => {
+      const blankImage: ProductImage = { href: "", id: "" };
+      if (state.selectedProduct) {
+        state.selectedProduct.images.push(blankImage);
+      }
+    },
+    removeImageField: (
+      state: ProductState,
+      action: PayloadAction<{ index: number }>
+    ) => {
+      if (state.selectedProduct) {
+        state.selectedProduct.images = state.selectedProduct.images.filter(
+          (e, idx) => idx !== action.payload.index
+        );
+      }
+    },
   },
 
   extraReducers: (builder) => {
@@ -94,11 +111,14 @@ export const productSlice = createSlice({
           const productList: Product[] = [];
 
           if (action.payload) {
-            const resData = action.payload;
-            for (const i in resData) {
-              if (Object.prototype.hasOwnProperty.call(resData, i)) {
-                const productRes = resData[i];
-                productList.push(ProductFromResponse(productRes));
+            const snapshot = action.payload;
+            for (const i in snapshot) {
+              if (Object.prototype.hasOwnProperty.call(snapshot, i)) {
+                const element = snapshot[i];
+                if (element.images.length === 0 || !element.images) {
+                  element.images = [{ href: "", id: "" }];
+                }
+                productList.push(ProductFromResponse(element));
               }
             }
           }
@@ -123,7 +143,6 @@ export const productSlice = createSlice({
           state.selectedProduct = product;
           state.asyncStatus = "success";
           state.message = successMessage("Successfully added.");
-          
         }
       })
       .addCase(AddProductAsync.rejected, (state) => {
@@ -166,7 +185,7 @@ export const productSlice = createSlice({
   },
 });
 
-export const { selectProduct, unSelectProduct, switchEditMode, switchAddMode } =
+export const { selectProduct, unSelectProduct, switchEditMode, switchAddMode} =
   productSlice.actions;
 
 export const selectProductState = (state: AppState) => state.productState;

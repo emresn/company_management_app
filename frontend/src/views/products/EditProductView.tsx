@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import FormElement from "../../components/FormElement";
+import ImageForm from "../../components/ImageForm";
 import UiButton from "../../components/ui/UiButton";
 import UiSpinner from "../../components/ui/UiSpinner";
 import { warningMessage } from "../../models/messageModel";
@@ -36,18 +37,16 @@ const EditProductView = () => {
       dispatch(closeAlert());
     }
     if (
-      (productState.asyncStatus === "success" ||
-        productState.asyncStatus === "failed")
+      productState.asyncStatus === "success" ||
+      productState.asyncStatus === "failed"
     ) {
       dispatch(
         setNotification({
           message: productState.message,
         })
       );
-      dispatch(switchEditMode())
+      dispatch(switchEditMode());
     }
-
-    
   }, [
     dispatch,
     productState,
@@ -82,9 +81,27 @@ const EditProductView = () => {
         ),
       })
     );
-    // dispatch(DeleteProductAsync());
   }
 
+  const Buttons = () => {
+    return (
+      <div className="flex flex-col sm:flex-row justify-between items-end">
+        <div
+          className=""
+          onClick={() => {
+            if (productState.selectedProduct) {
+              updateHandler(productState.selectedProduct.id);
+            }
+          }}
+        >
+          <UiButton color="success" size="lg" text="Update" />
+        </div>
+        <div onClick={() => deleteWarning()}>
+          <UiButton color="danger" size="sm" text="Delete Product" />
+        </div>
+      </div>
+    );
+  };
   return (
     <div className="w-1/3 flex flex-col gap-1 px-2 w-full">
       <div className="flex flex-row justify-between items-center">
@@ -165,63 +182,12 @@ const EditProductView = () => {
             }}
           />
 
-          <div className="flex flex-col mr-2">
-            <label htmlFor="images">Images</label>
-            {productUpdated.images.map((e, idx) => (
-              <input
-                key={e.id}
-                type="text"
-                onChange={(evt) => {
-                  if (productState.selectedProduct) {
-                    const imagesList =
-                      productState.selectedProduct.images.filter(
-                        (im) => im.id !== e.id
-                      );
+          <ImageForm
+            productUpdated={productUpdated}
+            setProductUpdated={setProductUpdated}
+          />
 
-                    const imageUpdated = {
-                      id: e.id,
-                      href: evt.target.value,
-                    };
-
-                    imagesList.push(imageUpdated);
-
-                    setProductUpdated({
-                      ...productUpdated,
-                      images: imagesList,
-                    });
-                  }
-                }}
-                className="p-1 border border-gray-500"
-                name="images"
-                id="images"
-                value={e.href}
-              />
-            ))}
-          </div>
-
-          <div className="flex flex-col sm:flex-row justify-between items-end">
-            {productState.asyncStatus === "loading" ? (
-              <UiSpinner />
-            ) : (
-              <div
-                className=""
-                onClick={() => {
-                  if (productState.selectedProduct) {
-                    updateHandler(productState.selectedProduct.id);
-                  }
-                }}
-              >
-                <UiButton color="success" size="lg" text="Update" />
-              </div>
-            )}
-            {productState.asyncStatus === "loading" ? (
-              <UiSpinner />
-            ) : (
-              <div onClick={() => deleteWarning()}>
-                <UiButton color="danger" size="sm" text="Delete Product" />
-              </div>
-            )}
-          </div>
+          {productState.asyncStatus === "loading" ? <UiSpinner /> : <Buttons />}
         </div>
       )}
     </div>
