@@ -4,6 +4,14 @@ A simple company management system which keeps Customer, Product, Order and Paym
 - **Backend :** Django
 - **Frontend**: React.js
 
+##### Modules
+
+- :heavy_check_mark: Authentication
+- :heavy_check_mark: Product
+- &#9744; Home
+- &#9744; Orders
+- &#9744; Payments
+
 ## Backend Setup
 ### Database Settings
 Create an .env file and add these parameters for your Postgresql DB. 
