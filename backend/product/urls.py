@@ -12,6 +12,8 @@ urlpatterns = [
     path('api', ProductListApiView.as_view()), 
     path('api/<uuid:id>/', ProductDetailApiView.as_view()), 
     path('api/image/', ImageApiView.as_view()),
+    path('api/image/<uuid:id>/', ImageApiView.as_view()),
+
     path('', json_error_msg)
 
 ]

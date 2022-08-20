@@ -1,5 +1,5 @@
-from .models import  Image, Product
-from .serializers import  ImageSerializer, ProductSerializer
+from .models import Image, Product
+from .serializers import ImageSerializer, ProductSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -8,6 +8,7 @@ from rest_framework import permissions
 
 class ImageApiView(APIView):
     permission_classes = [permissions.IsAuthenticated]
+
     def get_object(self, id):
         try:
             return Image.objects.get(id=id)
@@ -28,10 +29,10 @@ class ImageApiView(APIView):
 
     def post(self, request, *args, **kwargs):
         data = {
-            "href": request.data.get('href') 
+            "href": request.data.get('href')
         }
         serializer = ImageSerializer(data=data)
-       
+
         if serializer.is_valid():
             new_serializer = serializer.create(data)
             return Response(new_serializer.data, status=status.HTTP_201_CREATED)
@@ -61,8 +62,8 @@ class ProductListApiView(APIView):
 
         serializer = ProductSerializer(data=data)
         if serializer.is_valid():
-            new_serializer = serializer.create(data)
-            return Response(new_serializer.data, status=status.HTTP_201_CREATED)
+            bg = serializer.save()
+            return Response(bg.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -91,13 +92,14 @@ class ProductDetailApiView(APIView):
 
     # 4. Update
     def put(self, request, id, *args, **kwargs):
-        product_instance = self.get_object(id)
-        if not product_instance:
+        instance = self.get_object(id)
+        if not instance:
             return Response(
                 {"res": "Object with todo id does not exists"},
                 status=status.HTTP_400_BAD_REQUEST
             )
         data = {
+            "id": id,
             "name": request.data.get('name'),
             "code": request.data.get('code'),
             "description": request.data.get('description'),
@@ -107,10 +109,10 @@ class ProductDetailApiView(APIView):
             "images": request.data.get('images'),
         }
         serializer = ProductSerializer(
-            instance=product_instance, data=data, partial=True)
+            instance=instance, data=data)
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            bg = serializer.save()
+            return Response(bg.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     # 5. Delete

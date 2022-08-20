@@ -9,7 +9,8 @@ class Image(models.Model):
     href = models.URLField(null=True)
 
     def __str__(self) -> str:
-        return '{}'.format(self.href[self.href.rfind('/')+1:])
+        return '{}'.format(self.href)
+        # return '{}'.format(self.href[self.href.rfind('/')+1:])
 
 
 # Create your models here.
@@ -44,7 +45,8 @@ class Product(models.Model):
         return '{}-{}'.format(self.code,self.name)
 
     def save(self, *args, **kwargs):
-        self.code = self.generateProductCode()
+        if(self.code == ""):
+            self.code = self.generateProductCode()
         super().save(*args, **kwargs)  # Call the "real" save() method.
 
     class Meta:
