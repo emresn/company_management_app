@@ -1,13 +1,15 @@
 import React from "react";
+import { FormValidationError } from "../models/formValidationErrorModel";
 import { ProductImage } from "../models/productImageModel";
 import { Product } from "../models/productModel";
 
 type Props = {
   productUpdated: Product;
   setProductUpdated: React.Dispatch<React.SetStateAction<Product>>;
+  formValidationErrors: FormValidationError[];
 };
 
-const ImageForm = ({ productUpdated, setProductUpdated }: Props) => {
+const ImageForm = ({ productUpdated, setProductUpdated,formValidationErrors }: Props) => {
   function addImageFieldHandler() {
     const blankImage: ProductImage = { href: "", id: "" };
     const productImagesNew = [...productUpdated.images, blankImage];
@@ -27,14 +29,17 @@ const ImageForm = ({ productUpdated, setProductUpdated }: Props) => {
           className="bg-cinder-800 rounded-full m-1 cursor-pointer"
           onClick={() => addImageFieldHandler()}
         >
-          <img width={20} src="assets/add.svg" alt="add"></img>{" "}
+          <img width={20} src="assets/add.svg" alt="add"></img>
         </div>
       </div>
 
-      {productUpdated.images &&
-        productUpdated.images.map((e, idx) => (
-          <div className="flex flex-col" key={idx}>
-            <div className="flex flex-row justify-between items-center gap-2">
+      <div className="flex flex-col gap-1">
+        {productUpdated.images &&
+          productUpdated.images.map((e, idx) => (
+            <div
+              key={idx}
+              className="flex flex-row justify-between items-center gap-2"
+            >
               <div className="flex flex-auto">
                 <input
                   key={e.id}
@@ -69,8 +74,9 @@ const ImageForm = ({ productUpdated, setProductUpdated }: Props) => {
                 <img width={20} src="assets/remove.svg" alt="add"></img>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+      </div>
+      {formValidationErrors.map((e) => e.id === "product_images" && <span key={e.id} className="text-red-500">{e.message}</span>)}
     </div>
   );
 };

@@ -4,6 +4,7 @@ import FormElement from "../../components/FormElement";
 import ImageForm from "../../components/ImageForm";
 import UiButton from "../../components/ui/UiButton";
 import UiSpinner from "../../components/ui/UiSpinner";
+import { FormValidationError } from "../../models/formValidationErrorModel";
 import { warningMessage } from "../../models/messageModel";
 import { Product, ProductEmpty } from "../../models/productModel";
 import { useAppDispatch } from "../../redux/hooks";
@@ -13,6 +14,8 @@ import { UpdateProductAsync } from "../../services/product/updateProduct";
 import { closeAlert, setAlert } from "../../stores/alertSlice";
 import { setNotification } from "../../stores/notificationSlice";
 import { switchEditMode } from "../../stores/productSlice";
+import { productFormValidation } from "../../utils/productFormValidation";
+
 
 const EditProductView = () => {
   const state = useSelector((state: AppState) => state);
@@ -25,6 +28,9 @@ const EditProductView = () => {
   const [productUpdated, setProductUpdated] = useState<Product>(
     productState.selectedProduct ?? ProductEmpty
   );
+  const [formValidationErrors, setFormValidationErrors] = useState<
+    FormValidationError[]
+  >([]);
 
   useEffect(() => {
     if (alertState.isApproved) {
@@ -63,13 +69,17 @@ const EditProductView = () => {
     setProductUpdated(productState.selectedProduct);
   }
 
-  function updateHandler(id: string) {
-    dispatch(
-      UpdateProductAsync({
-        token: authState.token,
-        productUpdated: productUpdated,
-      })
-    );
+  function updateHandler() {
+    setFormValidationErrors([])
+    const validation = productFormValidation(productUpdated,setFormValidationErrors);
+    if (validation === true) {
+      dispatch(
+        UpdateProductAsync({
+          token: authState.token,
+          productUpdated: productUpdated,
+        })
+      );
+    }
   }
 
   function deleteWarning() {
@@ -83,6 +93,8 @@ const EditProductView = () => {
     );
   }
 
+ 
+
   const Buttons = () => {
     return (
       <div className="flex flex-col sm:flex-row justify-between items-end">
@@ -90,7 +102,7 @@ const EditProductView = () => {
           className=""
           onClick={() => {
             if (productState.selectedProduct) {
-              updateHandler(productState.selectedProduct.id);
+              updateHandler();
             }
           }}
         >
@@ -116,23 +128,11 @@ const EditProductView = () => {
       {productState.selectedProduct && (
         <div className="flex flex-col gap-2">
           <FormElement
-            id={"product_code"}
-            label={"Product Code"}
-            value={productUpdated.code}
-            type={"text"}
-            onChange={(evt) => {
-              setProductUpdated({
-                ...productUpdated,
-                code: evt.target.value,
-              });
-            }}
-          />
-
-          <FormElement
             id={"product_name"}
             label={"Name"}
             value={productUpdated.name}
             type={"text"}
+            formValidationErrors={formValidationErrors}
             onChange={(evt) => {
               setProductUpdated({
                 ...productUpdated,
@@ -146,6 +146,7 @@ const EditProductView = () => {
             label={"Weight (gr.)"}
             value={productUpdated.gr}
             type={"number"}
+            formValidationErrors={formValidationErrors}
             step={0.1}
             onChange={(evt) => {
               setProductUpdated({
@@ -160,6 +161,7 @@ const EditProductView = () => {
             label={"Stock (pcs.)"}
             value={productUpdated.stock}
             type={"number"}
+            formValidationErrors={formValidationErrors}
             step={1}
             onChange={(evt) => {
               setProductUpdated({
@@ -174,6 +176,7 @@ const EditProductView = () => {
             label={"Description"}
             value={productUpdated.description}
             type={"text"}
+            formValidationErrors={formValidationErrors}
             onChange={(evt) => {
               setProductUpdated({
                 ...productUpdated,
@@ -182,7 +185,7 @@ const EditProductView = () => {
             }}
           />
 
-          <ImageForm
+          <ImageForm formValidationErrors={formValidationErrors}
             productUpdated={productUpdated}
             setProductUpdated={setProductUpdated}
           />

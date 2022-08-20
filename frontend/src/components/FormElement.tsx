@@ -1,4 +1,5 @@
 import React from "react";
+import { FormValidationError } from "../models/formValidationErrorModel";
 
 type Props = {
   label: string;
@@ -7,9 +8,18 @@ type Props = {
   type: "text" | "number";
   step?: number;
   onChange: (evt: React.ChangeEvent<HTMLInputElement>) => void;
+  formValidationErrors: FormValidationError[];
 };
 
-const FormElementText = ({ id, label, type, step, value, onChange }: Props) => {
+const FormElementText = ({
+  id,
+  label,
+  type,
+  step,
+  value,
+  onChange,
+  formValidationErrors,
+}: Props) => {
   return (
     <div className="flex flex-col mr-2">
       <label htmlFor={id}>{label}</label>
@@ -33,6 +43,7 @@ const FormElementText = ({ id, label, type, step, value, onChange }: Props) => {
           value={value}
         />
       )}
+      {formValidationErrors.map((e) => e.id === id && <span key={e.id} className="text-red-500">{e.message}</span>)}
     </div>
   );
 };

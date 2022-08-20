@@ -85,7 +85,10 @@ export const ProductImagesWithoutID= (imageList : ProductImage[]) => {
   for (const i in imageList) {
     if (Object.prototype.hasOwnProperty.call(imageList, i)) {
       const image : ProductImageWithoutID= {href: imageList[i].href}
-      newList.push(image)
+      if (image.href !== "") {
+        newList.push(image)
+      }
+     
     }
   }
   return newList;

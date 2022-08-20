@@ -4,12 +4,14 @@ import FormElement from "../../components/FormElement";
 import ImageForm from "../../components/ImageForm";
 import UiButton from "../../components/ui/UiButton";
 import UiSpinner from "../../components/ui/UiSpinner";
+import { FormValidationError } from "../../models/formValidationErrorModel";
 import { Product, ProductEmpty } from "../../models/productModel";
 import { useAppDispatch } from "../../redux/hooks";
 import { AppState } from "../../redux/store";
 import { AddProductAsync } from "../../services/product/addProducts";
 import { setNotification } from "../../stores/notificationSlice";
 import { switchAddMode } from "../../stores/productSlice";
+import { productFormValidation } from "../../utils/productFormValidation";
 
 const AddProductView = () => {
   const state = useSelector((state: AppState) => state);
@@ -17,6 +19,9 @@ const AddProductView = () => {
   const authState = state.auth;
   const dispatch = useAppDispatch();
   const [newProduct, setNewProduct] = useState<Product>(ProductEmpty);
+  const [formValidationErrors, setFormValidationErrors] = useState<
+    FormValidationError[]
+  >([]);
 
   useEffect(() => {
     if (productState.asyncStatus === "success") {
@@ -36,12 +41,19 @@ const AddProductView = () => {
   }, [dispatch, productState]);
 
   function addHandler() {
-    dispatch(
-      AddProductAsync({
-        token: authState.token,
-        newProduct: newProduct,
-      })
+    setFormValidationErrors([])
+    const validation = productFormValidation( 
+      newProduct,
+      setFormValidationErrors
     );
+    if (validation === true) {
+      dispatch(
+        AddProductAsync({
+          token: authState.token,
+          newProduct: newProduct,
+        })
+      );
+    }
   }
 
   return (
@@ -61,6 +73,7 @@ const AddProductView = () => {
           label={"Name"}
           value={newProduct.name}
           type={"text"}
+          formValidationErrors={formValidationErrors}
           onChange={(evt) => {
             setNewProduct({
               ...newProduct,
@@ -73,6 +86,7 @@ const AddProductView = () => {
           id={"product_weight"}
           label={"Weight (gr.)"}
           value={newProduct.gr}
+          formValidationErrors={formValidationErrors}
           type={"number"}
           step={0.1}
           onChange={(evt) => {
@@ -88,6 +102,7 @@ const AddProductView = () => {
           label={"Stock (pcs.)"}
           value={newProduct.stock}
           type={"number"}
+          formValidationErrors={formValidationErrors}
           step={1}
           onChange={(evt) => {
             setNewProduct({
@@ -101,6 +116,7 @@ const AddProductView = () => {
           id={"product_description"}
           label={"Description"}
           value={newProduct.description}
+          formValidationErrors={formValidationErrors}
           type={"text"}
           onChange={(evt) => {
             setNewProduct({
@@ -111,7 +127,7 @@ const AddProductView = () => {
         />
 
         <ImageForm
-          productUpdated={newProduct}
+          productUpdated={newProduct} formValidationErrors={formValidationErrors}
           setProductUpdated={setNewProduct}
         />
 

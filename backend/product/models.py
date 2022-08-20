@@ -24,7 +24,7 @@ class Product(models.Model):
         chars2 = string.digits
         str1 = "".join(random.choice(chars1) for _ in range(size1))
         str2 = "".join(random.choice(chars2) for _ in range(size2))
-        generated_code = '{}_{}'.format(str1, str2)
+        generated_code = '{}{}'.format(str1, str2)
         return generated_code
 
     
