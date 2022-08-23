@@ -1,15 +1,11 @@
 import { Routes, Route, } from "react-router-dom";
 import {
-  customersRoute,
-  homeRoute,
   loginRoute,
   notificationsTestRoutes,
-  ordersRoute,
-  paymentsRoute,
-  productsRoute,
   uiButtonsRoutes,
   uiSpinnerRoutes,
 } from "../constants/routeConstants";
+import { Customers, Home, Orders, Payments, Products } from "../data/navbarItems";
 import LoginView from "../views/auth/LoginView";
 import CustomersView from "../views/customers/CustomersView";
 import HomeView from "../views/home/HomeView";
@@ -25,11 +21,11 @@ import RequireAuth from "./requireAuth";
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route path={homeRoute} element={<RequireAuth><HomeView /></RequireAuth>}/>
-      <Route path={ordersRoute} element={<RequireAuth><OrdersView /></RequireAuth>} />
-      <Route path={productsRoute} element={<RequireAuth><ProductsView /></RequireAuth>} />
-      <Route path={paymentsRoute} element={<RequireAuth><PaymentsView /></RequireAuth>} />
-      <Route path={customersRoute} element={<RequireAuth><CustomersView /></RequireAuth>} />
+      <Route path={Home.route} element={<RequireAuth><HomeView title={Home.name}/></RequireAuth>}/>
+      <Route path={Orders.route} element={<RequireAuth><OrdersView title={Orders.name}/></RequireAuth>} />
+      <Route path={Products.route} element={<RequireAuth><ProductsView title={Products.name} /></RequireAuth>} />
+      <Route path={Payments.route} element={<RequireAuth><PaymentsView title={Payments.name} /></RequireAuth>} />
+      <Route path={Customers.route} element={<RequireAuth><CustomersView title={Customers.name} /></RequireAuth>} />
       <Route path={uiButtonsRoutes} element={<UiButtonsPage />} />
       <Route path={uiSpinnerRoutes} element={<UiSpinnerPage />} />
       <Route path={notificationsTestRoutes} element={<NotificationsTest />} />

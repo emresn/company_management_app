@@ -7,32 +7,32 @@ import {
 } from "../constants/routeConstants";
 import { NavbarItem } from "../models/navbarItemModel";
 
-const Home: NavbarItem = {
+export const Home: NavbarItem = {
   alt: "home",
-  name: "Home",
+  name: "Dashboard",
   src: "/assets/home.svg",
   route: homeRoute,
 };
 
-const Orders: NavbarItem = {
+export const Orders: NavbarItem = {
   alt: "order",
   name: "Orders",
   src: "/assets/order.svg",
   route: ordersRoute,
 };
-const Payments: NavbarItem = {
+export const Payments: NavbarItem = {
   alt: "payment",
   name: "Payments",
   src: "/assets/payment.svg",
   route: paymentsRoute,
 };
-const Products: NavbarItem = {
+export const Products: NavbarItem = {
   alt: "product",
   name: "Products",
   src: "/assets/product.svg",
   route: productsRoute,
 };
-const Customers: NavbarItem = {
+export const Customers: NavbarItem = {
   alt: "customer",
   name: "Customers",
   src: "/assets/customer.svg",

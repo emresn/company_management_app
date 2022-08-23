@@ -1,11 +1,19 @@
-import React from 'react'
+import React from "react";
 
-type Props = {}
+type Props = {
+  title :string
+};
 
-const HomeView = (props: Props) => {
+const HomeView = ({title}: Props) => {
   return (
-    <div>HomeView</div>
-  )
-}
+    <div className="flex flex-col ">
+      <div id="title" className="bg-gray-300 px-4">
+        <div className="flex flex-row justify-between items-center">
+          <h4 className="">{title}</h4>
+        </div>
+      </div>
+    </div>
+  );
+};
 
-export default HomeView
+export default HomeView;

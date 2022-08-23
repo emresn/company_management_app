@@ -9,8 +9,10 @@ import { FetchProductsAsync } from "../../services/product/fetchProducts";
 import { switchAddMode } from "../../stores/productSlice";
 import AddProductView from "./AddProductView";
 import EditProductView from "./EditProductView";
-
-const ProductsView = () => {
+type Props = {
+  title :string
+};
+const ProductsView = ({title}: Props) => {
   const state = useSelector((state: AppState) => state);
   const productState = state.productState;
   const authState = state.auth;
@@ -27,7 +29,7 @@ const ProductsView = () => {
     <div className="flex flex-col ">
       <div id="title" className="bg-gray-300 px-4">
         <div className="flex flex-row justify-between items-center">
-          <h4 className="">Products</h4>
+          <h4 className="">{title}</h4>
           <div onClick={() => dispatch(switchAddMode())}>
             <UiButton color="success" text="New Product" size="sm" />
           </div>
