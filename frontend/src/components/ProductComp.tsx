@@ -12,9 +12,10 @@ import UiButton from "./ui/UiButton";
 type Props = {
   product: Product;
   idx: number;
+  isEditActive: boolean;
 };
 
-const ProductComp = ({ product, idx }: Props) => {
+const ProductComp = ({ product, idx, isEditActive }: Props) => {
   const state = useSelector((state: AppState) => state.productState);
   const dispatch = useDispatch();
 
@@ -47,7 +48,7 @@ const ProductComp = ({ product, idx }: Props) => {
         state.selectedProduct.id === product.id &&
         state.selectedIndex === idx && (
           <div
-            onClick={() => editButtonHandler()}
+            onClick={() =>  editButtonHandler()}
             className="absolute top-0 right-0"
           >
             <UiButton color="success" size="sm" text="Edit" />
@@ -62,13 +63,15 @@ const ProductComp = ({ product, idx }: Props) => {
             ? "ring-1  ring-yellow-800"
             : ""
         } flex flex-col bg-primary-100 hover:bg-gray-50 justify-between rounded-md p-2 border hover:border-sm hover:border-gray-400 cursor-pointer h-full`}
-        onClick={() => selectHandler(product, idx)}
+        onClick={() => isEditActive === true && selectHandler(product, idx)}
       >
-        <div className="flex flex-col sm:flex-row justify-between items-start ">
+        <div className="flex flex-col sm:flex-row justify-between items-start gap-3 ">
           <div className="flex flex-col gap-2 ">
-            <span className="font-bold ">
-              {product.name} - {product.code}
-            </span>
+            <div className="flex  flex-col font-semibold">
+              <span>  {product.code}</span>
+              <span> {product.name}</span>
+              
+            </div>
             <div className="flex flex-col text-sm">
               <span>
                 <span className="font-medium">Weight: </span> {product.gr} gr.

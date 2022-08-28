@@ -46,7 +46,7 @@ const ProductsView = ({title}: Props) => {
             } gap-4 p-4`}
           >
             {productState.productList.map((e, idx) => (
-              <ProductComp key={`${e.id}-${idx}`} idx={idx} product={e} />
+              <ProductComp key={`${e.id}-${idx}`} idx={idx} product={e} isEditActive={true} />
             ))}
           </div>
           {productState.editModeActive && productState.selectedProduct && (
