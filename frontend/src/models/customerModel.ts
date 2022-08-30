@@ -2,7 +2,7 @@ export type Customer = {
     id: string,
     name: string,
     person: string,
-    taxNumber: string,
+    taxnumber: string,
     address: string,
     telephone: string,
     email: string,

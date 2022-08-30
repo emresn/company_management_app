@@ -1,5 +1,4 @@
-import { OrderItem } from "../models/orderItemModel";
-import { Order } from "../models/orderModel";
+import { Order, OrderItem } from "../models/orderModel";
 import { customerDummy, customerDummy2 } from "./customerDummy";
 import { ProductDummy, ProductDummy2 } from "./productDummy";
 
@@ -10,9 +9,9 @@ const OrderItemDummy:OrderItem = {
     price: 14.5,
     total_price: 1450,
     status: "NS",
-    isActive: true,
-    createdAt: "2022-06-05T05:54:16.846086+03:00",
-    updatedAt: "2022-08-04 17:51:56.525 +0300"
+    is_active: true,
+    created_at: "2022-06-05T05:54:16.846086+03:00",
+    updated_at: "2022-08-04 17:51:56.525 +0300"
 }
 
 const OrderItemDummy2:OrderItem = {
@@ -22,9 +21,9 @@ const OrderItemDummy2:OrderItem = {
     price: 14.5,
     total_price: 1450,
     status: "NS",
-    isActive: true,
-    createdAt: "2022-06-05T05:54:16.846086+03:00",
-    updatedAt: "2022-08-04 17:51:56.525 +0300"
+    is_active: true,
+    created_at: "2022-06-05T05:54:16.846086+03:00",
+    updated_at: "2022-08-04 17:51:56.525 +0300"
 }
 
 
@@ -32,7 +31,7 @@ const OrderItemDummy2:OrderItem = {
 
 export const OrderDummy:Order = {
     id: "87cb9290-a693-4f9f-9cbc-1a4edddaf91a",
-    orderNo: "2022_Q33A",
+    order_no: "2022_Q33A",
     customer: customerDummy,
     items: [OrderItemDummy],
     status: "NS",
@@ -41,14 +40,14 @@ export const OrderDummy:Order = {
     total_price: 1711,
     note: "note",
     date: "2022-06-05T00:00:00+03:00",
-    createdAt: "2022-06-05T05:54:16.846086+03:00",
-    updatedAt: "2022-08-04 17:51:56.525 +0300"
+    created_at: "2022-06-05T05:54:16.846086+03:00",
+    updated_at: "2022-08-04 17:51:56.525 +0300"
 }
 
 
 export const OrderDummy2:Order= {
     id: "a5f0f74f-4702-4bf3-9244-99b378a96ca9",
-    orderNo : "2022_BVVP",
+    order_no : "2022_BVVP",
     customer: customerDummy2,
     items: [
        OrderItemDummy2, OrderItemDummy
@@ -59,6 +58,6 @@ export const OrderDummy2:Order= {
     total_price: 1504.5,
     note: "sdgsdgsgs",
     date: "2022-06-12T00:00:00+03:00",
-    createdAt: "2022-06-01T06:13:02.512625+03:00",
-    updatedAt: "2022-06-02T06:13:02.538129+03:00"
+    created_at: "2022-06-01T06:13:02.512625+03:00",
+    updated_at: "2022-06-02T06:13:02.538129+03:00"
 }

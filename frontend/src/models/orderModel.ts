@@ -1,9 +1,22 @@
 import { Customer } from "./customerModel"
-import { OrderItem } from "./orderItemModel"
+import { Product } from "./productModel"
+
+export type OrderItem = {
+    id: string,
+    product: Product,
+    quantity: number,
+    price: number,
+    total_price: number,
+    status: string,
+    is_active: boolean,
+    created_at: string,
+    updated_at: string,
+}
+
 
 export type Order = {
     id: string,
-    orderNo: string,
+    order_no: string,
     customer: Customer,
     items: OrderItem[],
     status: string,
@@ -12,7 +25,7 @@ export type Order = {
     total_price: number,
     note: string,
     date: string,
-    createdAt: string,
-    updatedAt: string
+    created_at: string,
+    updated_at: string
 
 }

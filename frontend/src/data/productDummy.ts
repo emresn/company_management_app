@@ -10,20 +10,20 @@ export const ProductDummy: Product = {
   id: "70193131-139a-49ee-b42b-14578eaf2810",
   name: "Smartphone 6SE Black",
   code: "SX_9251",
-  isActive: true,
+  is_active: true,
   images: [ProductImageDummy],
   description: "Medium size",
   stock: 8000,
   gr: 15.2,
-  createdAt: "2022-05-26T05:53:44.531898+03:00",
-  updatedAt: "2022-08-03T21:44:41.245052+03:00",
+  created_at: "2022-05-26T05:53:44.531898+03:00",
+  updated_at: "2022-08-03T21:44:41.245052+03:00",
 };
 
 export const ProductDummy2: Product = {
   id: "db080120-cc5e-4735-a2f8-fa573706e979",
   name: "Laptop A Brand",
   code: "AF_6960",
-  isActive: true,
+  is_active: true,
   images: [
     {
       id: "b7a9f17b-0aae-4fb8-b566-68c2e34b9b34",
@@ -37,6 +37,6 @@ export const ProductDummy2: Product = {
   description: '15" LED',
   stock: 50,
   gr: 1200,
-  createdAt: "2022-05-27T16:03:25.122580+03:00",
-  updatedAt: "2022-05-27T16:03:25.122580+03:00",
+  created_at: "2022-05-27T16:03:25.122580+03:00",
+  updated_at: "2022-05-27T16:03:25.122580+03:00",
 };

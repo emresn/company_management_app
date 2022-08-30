@@ -6,9 +6,7 @@ import {
   successMessage,
 } from "../models/messageModel";
 import {
-  Product,
-  ProductFromResponse,
-  ProductResponseModel,
+  Product
 } from "../models/productModel";
 import { AppState } from "../redux/store";
 import { AddProductAsync } from "../services/product/addProducts";
@@ -106,7 +104,7 @@ export const productSlice = createSlice({
       })
       .addCase(
         FetchProductsAsync.fulfilled,
-        (state, action: PayloadAction<ProductResponseModel[]>) => {
+        (state, action: PayloadAction<Product[]>) => {
           state.status = "success";
           const productList: Product[] = [];
 
@@ -118,7 +116,7 @@ export const productSlice = createSlice({
                 if (element.images.length === 0 || !element.images) {
                   element.images = [{ href: "", id: "" }];
                 }
-                productList.push(ProductFromResponse(element));
+                productList.push(element);
               }
             }
           }
@@ -136,8 +134,8 @@ export const productSlice = createSlice({
       })
       .addCase(AddProductAsync.fulfilled, (state, action) => {
         if (action.payload) {
-          const resData: ProductResponseModel = action.payload;
-          const product = ProductFromResponse(resData);
+          const resData: Product = action.payload;
+          const product = resData;
           const updatedList = [...state.productList, product];
           state.productList = updatedList;
           state.selectedProduct = product;
@@ -155,10 +153,10 @@ export const productSlice = createSlice({
       })
       .addCase(UpdateProductAsync.fulfilled, (state, action) => {
         if (action.payload) {
-          const resData: ProductResponseModel = action.payload;
+          const resData: Product = action.payload;
           const idx = state.productList.findIndex((e) => e.id === resData.id);
-          state.productList[idx] = ProductFromResponse(resData);
-          state.selectedProduct = ProductFromResponse(resData);
+          state.productList[idx] = resData;
+          state.selectedProduct = resData;
           state.asyncStatus = "success";
           state.message = successMessage("Successfully updated");
         }

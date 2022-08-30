@@ -36,11 +36,11 @@ const ProductComp = ({ product, idx, isEditActive }: Props) => {
   }
 
   const productCreatedDate =
-    product.createdAt === product.updatedAt
-      ? `Created At : ${dateFromString(product.createdAt)}`
+    product.created_at === product.updated_at
+      ? `Created At : ${dateFromString(product.created_at)}`
       : `Created At : ${dateFromString(
-          product.createdAt
-        )}\nUpdated : ${dateFromString(product.updatedAt)}`;
+          product.created_at
+        )}\nUpdated : ${dateFromString(product.updated_at)}`;
   return (
     <div className="relative">
       {state.isSelected &&
@@ -95,7 +95,7 @@ const ProductComp = ({ product, idx, isEditActive }: Props) => {
         </div>
         <div className="flex flex-row justify-end items-end gap-1">
           <span title={productCreatedDate} className="text-xs">
-            {dateFromString(product.createdAt)}
+            {dateFromString(product.created_at)}
           </span>
           <img
             width={16}
